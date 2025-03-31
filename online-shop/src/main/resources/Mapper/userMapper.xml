@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlineshop.Mapper.UserMapper">
+    <!--根据用户名查找-->
+    <select id="queryByName" resultType="com.onlineshop.entity.User">
+        select * from User
+        where userName =#{username}
+    </select>
+   <!-- 根据电话号查找-->
+    <select id="queryByPhone" resultType="com.onlineshop.entity.User">
+        select * from User
+        where phone =#{phone}
+    </select>
+    <!--根据用户ID查找-->
+    <select id="queryByID" resultType="com.onlineshop.entity.User">
+        select * from User
+        where userId =#{userId}
+    </select>
+    <!--创建用户-->
+    <insert id="createUser">
+        insert into User (userId,userName,passWord,isAdmin,phone,createTime,updateTime,nickName)
+        values (#{userId},#{userName},#{passWord},#{isAdmin},#{phone},#{createTime},#{updateTime},#{userName})
+    </insert>
+    <update id="updateUser">
+        update User
+        set phone =#{phone},nickName=#{nickName},updateTime=#{updateTime}
+        where userId =#{userId}
+    </update>
+
+</mapper>

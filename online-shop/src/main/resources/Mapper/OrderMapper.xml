@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlineshop.Mapper.OrderMapper">
+    <!--查询某一用户的全部订单信息-->
+    <select id="checkOrder" resultType="com.onlineshop.entity.Order">
+        select * from Order
+        where userId =#{userId}
+    </select>
+</mapper>

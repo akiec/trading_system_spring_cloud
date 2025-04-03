@@ -11,5 +11,7 @@ public class NameContains {
     public static final String LOGIN_CODE="login:code:";
     //用户ID前缀
     public static final String USER_ID="user:id:";
+    //商品名称前缀
+    public static final String Goods_NAME="goods:name:";
 
 }

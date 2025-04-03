@@ -23,6 +23,7 @@
         insert into User (userId,userName,passWord,isAdmin,phone,createTime,updateTime,nickName)
         values (#{userId},#{userName},#{passWord},#{isAdmin},#{phone},#{createTime},#{updateTime},#{userName})
     </insert>
+    <!--更新用户信息-->
     <update id="updateUser">
         update User
         set phone =#{phone},nickName=#{nickName},updateTime=#{updateTime}

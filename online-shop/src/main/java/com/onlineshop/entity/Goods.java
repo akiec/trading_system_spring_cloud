@@ -28,5 +28,4 @@ public class Goods {
     private LocalDateTime createTime;
     //更新时间
     private LocalDateTime updateTime;
-
 }

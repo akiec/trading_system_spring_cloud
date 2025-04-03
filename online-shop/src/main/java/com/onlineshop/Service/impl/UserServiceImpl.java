@@ -26,10 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 import static com.onlineshop.Utils.NameContains.*;
 
-
-
-@Service
 @Slf4j
+@Service
 public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;

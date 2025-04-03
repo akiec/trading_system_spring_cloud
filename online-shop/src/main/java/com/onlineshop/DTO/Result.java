@@ -18,12 +18,7 @@ public class Result {
     private Object data;
     private Long total;
 
-    public Result(Boolean success, String errormessage, Object data, Long total) {
-        this.success = success;
-        this.errormessage = errormessage;
-        this.data = data;
-        this.total = total;
-    }
+
 
     public static Result success() {return new Result(true,null,null,null);}
     public static Result success(Object data) {return new Result(true,null,data,null);}

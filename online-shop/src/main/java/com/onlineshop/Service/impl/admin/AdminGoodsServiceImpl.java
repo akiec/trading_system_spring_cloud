@@ -3,7 +3,7 @@ package com.onlineshop.Service.impl.admin;
 import cn.hutool.core.util.StrUtil;
 import com.onlineshop.DTO.Result;
 import com.onlineshop.Mapper.GoodsMapper;
-import com.onlineshop.Service.admin.GoodsService;
+import com.onlineshop.Service.admin.AdminGoodsService;
 import com.onlineshop.Utils.NameContains;
 import com.onlineshop.entity.Goods;
 import jakarta.annotation.Resource;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class GoodsServiceImpl implements GoodsService {
+public class AdminGoodsServiceImpl implements AdminGoodsService {
     @Resource
     private GoodsMapper goodsMapper;
     @Resource

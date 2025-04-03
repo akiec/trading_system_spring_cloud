@@ -1,7 +1,7 @@
 package com.onlineshop.controller.admin;
 
 import com.onlineshop.DTO.Result;
-import com.onlineshop.Service.admin.GoodsService;
+import com.onlineshop.Service.admin.AdminGoodsService;
 import com.onlineshop.entity.Goods;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminGoodsController {
     @Resource
-    private GoodsService goodsService;
+    private AdminGoodsService goodsService;
     //新增商品
     @PostMapping("/add")
     public Result addGoods(@RequestBody Goods goods) {

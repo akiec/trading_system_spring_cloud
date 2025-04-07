@@ -8,4 +8,8 @@
         select * from Order
         where userId =#{userId}
     </select>
+    <insert id="createOrder">
+        insert into Order(orderId,customerId,productId,paymentId,address,status,goodsId,orderTime)
+        values (#{orderId},#{customerId},#{productId},#{paymentId},#{address},#{status},#{goodsId},#{orderTime})
+    </insert>
 </mapper>

@@ -28,4 +28,8 @@ public class Goods {
     private LocalDateTime createTime;
     //更新时间
     private LocalDateTime updateTime;
+    //版本号
+    private String version;
+    //商户ID
+    private Long productId;
 }

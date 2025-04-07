@@ -49,4 +49,12 @@
         where goodsId=#{goodsId}
     </select>
 
+
+    <!--下单减少库存-->
+    <update id="putOrder" parameterType="boolean">
+        update Goods
+        set stock=#{stock-1},version=#{newVersion}
+        where goodsId=#{goodsId} and version=#{version}
+    </update>
+
 </mapper>

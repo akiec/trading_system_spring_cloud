@@ -21,4 +21,6 @@ public interface GoodsMapper {
     void delete(Long goodsId);
 
     void updateGoods(Goods goods);
+
+    Boolean putOrder(Goods goods, String newVersion);
 }

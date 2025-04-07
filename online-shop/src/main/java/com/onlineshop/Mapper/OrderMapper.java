@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface OrderMapper {
     List<Order> checkOrder(Long userId);
+
+    void createOrder(Order order);
 }

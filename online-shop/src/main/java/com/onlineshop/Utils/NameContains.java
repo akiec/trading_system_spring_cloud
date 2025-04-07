@@ -13,5 +13,11 @@ public class NameContains {
     public static final String USER_ID="user:id:";
     //商品名称前缀
     public static final String Goods_NAME="goods:name:";
+    //版本号前缀
+    public static final String VERSION_NAME="version:";
+    //订单前缀
+    public static final String ORDER_ID="order:id:";
+    //支付id前缀
+    public static final String PAYMENT_ID="payment:id:";
 
 }

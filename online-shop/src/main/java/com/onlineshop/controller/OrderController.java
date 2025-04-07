@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     @Resource
     private OrderService orderService;
-    //
+
     //下单
+    @PostMapping("/createOrder/{userId}/{goodsId}")
+    public Result createOrder(@PathVariable Long userId, @PathVariable Long goodsId){
+        return orderService.createOrder(userId,goodsId);
+    }
     //查看订单
     @GetMapping("/check/{id}")
     public Result checkOrder(@PathVariable ("id") Long userId){

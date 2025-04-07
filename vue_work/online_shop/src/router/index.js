@@ -1,11 +1,11 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHistory, createWebHashHistory} from 'vue-router'
 
 import ProfilePage from '../views/ProfilePage.vue'
 import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
 
 const router = createRouter({
-    history:createWebHistory(),
+    history:createWebHashHistory(),
     routes:[
         {
             path:'/home',

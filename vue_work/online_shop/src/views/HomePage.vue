@@ -70,7 +70,7 @@ onMounted(() => {
  
 </template>
 
-<style>
+<style scoped>
   /* 商品卡片 */
   .product-grid {
     display: grid;

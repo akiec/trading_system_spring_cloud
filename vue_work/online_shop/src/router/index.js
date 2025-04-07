@@ -17,9 +17,17 @@ const router = createRouter({
             component:ShoppingCartPage
         },
         {
+            path:'/login',
+            component:LoginPage
+        },
+        {
             path:'/profile',
             component:ProfilePage
         },
+        {
+            path:'/',
+            redirect:'/home'
+        }
     ]
 })
 

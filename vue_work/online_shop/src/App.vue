@@ -1,5 +1,7 @@
 <script setup>
 import { RouterView,RouterLink } from 'vue-router';
+import { ref, onMounted } from 'vue';
+const islogin = ref(false)
 </script>
 
 <template>
@@ -21,7 +23,10 @@ import { RouterView,RouterLink } from 'vue-router';
         <li>
           <router-link to="/shoppingcart" active-class="active"><span>购物车</span></router-link>
         </li>
-        <li>
+        <li v-if="!islogin">
+          <router-link to="/login" active-class="active"><span>登录</span></router-link>
+        </li>
+        <li v-else> 
           <router-link to="/profile" active-class="active"><span>用户中心</span></router-link>
         </li>        
       </ul> 
@@ -33,7 +38,7 @@ import { RouterView,RouterLink } from 'vue-router';
   </div>  
 </template>
 
-<style>
+<style scoped>
   form {
     unicode-bidi: isolate;
   }

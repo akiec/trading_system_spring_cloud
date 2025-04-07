@@ -4,4 +4,4 @@
     <h1>hello</h1>
 </template>
 
-<style></style>
+<style scoped></style>

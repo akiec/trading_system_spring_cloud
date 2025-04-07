@@ -21,10 +21,16 @@ function renderProducts() {
   //console.log("访问成功！");
   container.innerHTML = mockProducts.map(product => `
     <div class="product-card">
-      <h3>${product.product_name}</h3>
-      <p>价格：¥${product.price.toFixed(2)}</p>
-      <p>库存：${product.stock}件</p>
-      <button onclick="addToCart(${product.product_id})">加入购物车</button>
+      <div class = "card-text">
+        <h3>${product.product_name}</h3>
+        <p>价格：¥${product.price.toFixed(2)}</p>
+        <p>库存：${product.stock}件</p>
+        <button onclick="addToCart(${product.product_id})">查看详情页</button>
+        <button onclick="addToCart(${product.product_id})">加入购物车</button>
+      </div>
+      <div class = "card-img">
+        <img src="/src/assets/commodity.png" alt="商品图片" width=80px heighth=auto></img>
+      </div>
     </div>
   `).join('');
   
@@ -38,6 +44,27 @@ onMounted(() => {
 
 <template>
   <div id="home" class="page">
+    <div class = "product-recommend">
+      <div class="product-category">
+        <h2 >商品分类</h2>
+        <ul>
+          <li>服装</li>
+          <li>食品</li>
+          <li>家具</li>
+          <li>电子产品</li>
+        </ul>
+      </div>
+      <div class="popular">
+        <h2>热门推荐</h2>
+        <div class="slide">
+          <ul class="list">
+            <li class="item">轮播图1</li>
+            <li class="item">轮播图2</li>
+            <li class="item">轮播图3</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="product-grid" id="productList"></div>
   </div>
  
@@ -51,8 +78,36 @@ onMounted(() => {
     gap: 2rem;
     padding: 2rem;
   }
-
+  .product-recommend {
+    display: flex;
+    justify-content: space-around;
+  }
+  .product-category {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #ddd;
+  }
+  .popular {
+    display: flex;
+    border: 1px solid #ddd;
+    flex-direction: column;
+  }
+  .slide {
+    display: flex;
+    flex-direction: column;
+  }
   .product-card {
+    display: flex;
+    box-shadow: 8px 8px 8px rgba(0,0,0,0.4);
+  }
+  .card-text {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s;
+  }
+  .card-img {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 1rem;
@@ -61,6 +116,7 @@ onMounted(() => {
 
   .product-card:hover {
     transform: translateY(-5px);
-}
-
+    box-shadow: 8px 18px 18px rgba(0,0,0,0.3);
+  }/*
+*/
 </style>

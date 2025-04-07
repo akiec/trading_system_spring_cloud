@@ -19,7 +19,7 @@ import { RouterView,RouterLink } from 'vue-router';
           <router-link to="/home" active-class="active"><span>首页</span></router-link>
         </li> 
         <li>
-          <router-link to="/login" active-class="active"><span>登录</span></router-link>
+          <router-link to="/shoppingcart" active-class="active"><span>购物车</span></router-link>
         </li>
         <li>
           <router-link to="/profile" active-class="active"><span>用户中心</span></router-link>

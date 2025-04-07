@@ -3,6 +3,7 @@ import {createRouter, createWebHistory, createWebHashHistory} from 'vue-router'
 import ProfilePage from '../views/ProfilePage.vue'
 import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
+import ShoppingCartPage from '../views/ShoppingCartPage.vue'
 
 const router = createRouter({
     history:createWebHashHistory(),
@@ -12,8 +13,8 @@ const router = createRouter({
             component:HomePage
         },
         {
-            path:'/login',
-            component:LoginPage
+            path:'/shoppingcart',
+            component:ShoppingCartPage
         },
         {
             path:'/profile',

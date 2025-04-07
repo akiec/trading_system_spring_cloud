@@ -4,11 +4,13 @@ import { RouterView,RouterLink } from 'vue-router';
 
 <template>
   <div class="app-container">
-    <h1 class="title">线上交易系统</h1>
     <nav class="navigater">
-      <router-link to="/home" active-class="active">首页</router-link>
-      <router-link to="/login" active-class="active">登录</router-link>
-      <router-link to="/profile" active-class="active">用户中心</router-link>
+      <h1>电商平台</h1>
+      <div class="navigater-links">     
+        <router-link to="/home" active-class="active">首页</router-link>
+        <router-link to="/login" active-class="active">登录</router-link>
+        <router-link to="/profile" active-class="active">用户中心</router-link>
+      </div> 
     </nav>
     
     <main class="main-content">
@@ -17,41 +19,29 @@ import { RouterView,RouterLink } from 'vue-router';
   </div>  
 </template>
 
-<style scoped>
-  .title {
-    text-align: center;
-    word-spacing: 5px;
-    margin: 30px 0;
-    height: 70px;
-    line-height: 70px;
-    border-radius: 10px;
-    box-shadow: 0 0 2px;
-    font-size: 30px;
-  }
-
+<style>
   .navigater {
     display: flex;
-    justify-content: space-around;
-    margin: 0 100px;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: black;
+    color: white;
   }
 
-  .navigater a {
-    display: block;
+  .navigater-links a {
     text-align: center;
     width: 100px;
     height: 40px;
     line-height: 40px;
-    border-radius: 10px;
-    background-color: gray;
     text-decoration: none;
     color: white;
-    font-size: 18px;
-    letter-spacing: 5px;
+    font-size: 20px;
+    text-decoration: none;
+    margin-left: 2rem;
   }
 
   .navigater a.active {
-    background-color: #64967E;
-    color: #ffc268;
+    color: orange;
     font-weight: 900;
     text-shadow: 0 0 1px black;
     font-family: 微软雅黑;
@@ -60,10 +50,8 @@ import { RouterView,RouterLink } from 'vue-router';
   .main-content {
     margin: 0 auto;
     margin-top: 30px;
-    border-radius: 10px;
     width: 90%;
     height: 400px;
-    border: 1px solid;
   }
 </style>
 

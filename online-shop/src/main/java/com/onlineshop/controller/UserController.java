@@ -3,8 +3,10 @@ package com.onlineshop.controller;
 import com.onlineshop.DTO.LoginDTO;
 import com.onlineshop.DTO.Result;
 import com.onlineshop.DTO.UserDTO;
+import com.onlineshop.Service.PaymentService;
 import com.onlineshop.Service.UserService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private PaymentService paymentService;
     //账号密码登录
     @PostMapping ("/login")
     public Result login(@RequestBody LoginDTO loginDTO) {
@@ -37,5 +41,10 @@ public class UserController {
     @PutMapping("/detail")
     public Result updateUser(@RequestBody UserDTO userDTO) {
         return userService.updateUser(userDTO);
+    }
+    //待支付信息查看
+    @GetMapping("/toPayment/{id}")
+    public Result toPayment(@PathVariable("id") Long userId) {
+        return paymentService.toPayment(userId);
     }
 }

@@ -22,5 +22,5 @@ public interface GoodsMapper {
 
     void updateGoods(Goods goods);
 
-    Boolean putOrder(Goods goods, String newVersion);
+    Boolean putOrder(Goods goods,String newVersion);
 }

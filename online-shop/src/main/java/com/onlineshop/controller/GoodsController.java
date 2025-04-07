@@ -29,7 +29,7 @@ public class GoodsController {
         return goodsService.searchByType(type,page,pageSize);
     }
     //根据名称检索商品
-    @PostMapping("/search")
+    @PostMapping("/search/{name}")
     public Result name(@PathVariable("name") String name,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
         return goodsService.searchByName(name,page,pageSize);
     }

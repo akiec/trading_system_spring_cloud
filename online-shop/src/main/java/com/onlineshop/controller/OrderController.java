@@ -18,10 +18,22 @@ public class OrderController {
     public Result createOrder(@PathVariable Long userId, @PathVariable Long goodsId){
         return orderService.createOrder(userId,goodsId);
     }
-    //查看订单
+    //查看某一用户订单
     @GetMapping("/check/{id}")
     public Result checkOrder(@PathVariable ("id") Long userId){
         return orderService.checkOrder(userId);
+    }
+    //查看某一具体订单信息
+    @GetMapping("/details/{id}")
+    public Result details(@PathVariable ("id") Long orderId){
+        return orderService.details(orderId);
+    }
+    //修改订单信息
+
+    //取消订单or退款？
+    @DeleteMapping("/delete/{id}/{status}")
+    public Result deleteOrder(@PathVariable ("id") Long orderId,@PathVariable("status") Integer status ){
+        return orderService.deleteOrder(orderId,status);
     }
 
 }

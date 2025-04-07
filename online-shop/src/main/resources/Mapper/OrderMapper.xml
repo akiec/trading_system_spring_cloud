@@ -8,8 +8,19 @@
         select * from Order
         where userId =#{userId}
     </select>
+    <!--创建订单-->
     <insert id="createOrder">
         insert into Order(orderId,customerId,productId,paymentId,address,status,goodsId,orderTime)
         values (#{orderId},#{customerId},#{productId},#{paymentId},#{address},#{status},#{goodsId},#{orderTime})
     </insert>
+    <!--查询订单具体信息-->
+    <select id="getDetails" resultType="com.onlineshop.entity.Order">
+        select * from Order
+        where orderId=#{orderId}
+    </select>
+    <!--删除订单-->
+    <delete id="delete">
+        delete from Order
+        where orderId=#{orderId}
+    </delete>
 </mapper>

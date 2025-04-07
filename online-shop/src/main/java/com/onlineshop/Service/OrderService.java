@@ -6,4 +6,8 @@ public interface OrderService {
     Result checkOrder(Long userId);
 
     Result createOrder(Long userId, Long goodsId);
+
+    Result deleteOrder(Long orderId,Integer status);
+
+    Result details(Long orderId);
 }

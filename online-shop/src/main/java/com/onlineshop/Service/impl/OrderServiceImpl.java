@@ -3,15 +3,13 @@ package com.onlineshop.Service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.onlineshop.DTO.Result;
-import com.onlineshop.Mapper.AddressMapper;
-import com.onlineshop.Mapper.GoodsMapper;
-import com.onlineshop.Mapper.OrderMapper;
-import com.onlineshop.Mapper.UserMapper;
+import com.onlineshop.Mapper.*;
 import com.onlineshop.Service.OrderService;
 import com.onlineshop.Utils.IdCreater;
 import com.onlineshop.Utils.NameContains;
 import com.onlineshop.entity.Goods;
 import com.onlineshop.entity.Order;
+import com.onlineshop.entity.Payment;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -32,9 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private IdCreater idCreater;
     @Resource
     private AddressMapper addressMapper;
-
-
-
+    @Resource
+    private PaymentMapper paymentMapper;
 
     //查看用户的订单信息
     @Override
@@ -42,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orderList = orderMapper.checkOrder(userId);
         return Result.success(orderList, (long) orderList.size());
     }
-
+    //创建订单
     @Override
     public Result createOrder(Long userId, Long goodsId) {
         //前面具体页面使用了redis查询，所以一定存在
@@ -66,14 +63,39 @@ public class OrderServiceImpl implements OrderService {
             Long paymentId = idCreater.createId(NameContains.PAYMENT_ID + orderId);
             //查找地址，地址维护表查询
             String address = addressMapper.searchByUserId(userId);
-
-
+            //生成新的订单
             Order order = new Order(orderId,userId,goods.getProductId(),paymentId,address,0,goodsId, LocalDateTime.now());
             orderMapper.createOrder(order);
+            //生成待支付信息
+            Payment payment = new Payment(paymentId,orderId,userId,0,goods.getProductId(),LocalDateTime.now(),LocalDateTime.now());
+            paymentMapper.createPayment(payment);
+            return Result.success();
         }
+        return Result.error("加载失败");
 
-        return Result.success();
+
     }
+    //删除订单
+    @Override
+    public Result deleteOrder(Long orderId, Integer status) {
+        //判断是否已经支付
+        if(status>0){
+            //删除订单
+            orderMapper.delete(orderId);
+            return Result.success("已经退款至您的账户");
+        }
+        //删除不需要的待支付信息
+        paymentMapper.deleteByOrderId(orderId);
+        orderMapper.delete(orderId);
+        return Result.success("成功删除订单");
+    }
+    //查看具体订单信息
+    @Override
+    public Result details(Long orderId) {
+        return Result.success(orderMapper.getDetails(orderId));
+    }
+
+
 }
 
 

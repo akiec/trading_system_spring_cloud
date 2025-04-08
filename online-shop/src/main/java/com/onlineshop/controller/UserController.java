@@ -47,4 +47,9 @@ public class UserController {
     public Result toPayment(@PathVariable("id") Long userId) {
         return paymentService.toPayment(userId);
     }
+    //修改用户收货
+    @PostMapping("/address")
+    public Result changeAddress(@RequestBody UserDTO userDTO) {
+        return userService.changeAddress(userDTO);
+    }
 }

@@ -20,4 +20,6 @@ public interface UserService {
     Result userDetails(Long userId);
 
     Result updateUser(UserDTO userDTO);
+
+    Result changeAddress(UserDTO userDTO);
 }

@@ -1,4 +1,9 @@
 package com.onlineshop.Service.impl;
 
-public class ShopCartSerivceImpl {
+import com.onlineshop.Service.ShopCartService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ShopCartSerivceImpl implements ShopCartService {
+
 }

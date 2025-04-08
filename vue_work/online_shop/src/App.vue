@@ -1,19 +1,33 @@
 <script setup>
-import { RouterView,RouterLink } from 'vue-router';
-import { ref, onMounted } from 'vue';
-const islogged = ref(false)
+  import { RouterView,RouterLink } from 'vue-router';
+  import { ref, watchEffect, provide } from 'vue';
+  // const islogged = ref(false)
 
-const checkLoginStatus = () => {
-  console.log('success!');
-  islogged.value = !!localStorage.getItem('token')
-}
+  // const checkLoginStatus = () => {
+  //   // console.log('success!');
+  //   islogged.value = !!localStorage.getItem('token')
+  // }
+  const islogged = ref(localStorage.getItem('islogged') === 'true' || false);
 
+  watchEffect(() => {
+    if (islogged.value) {
+      localStorage.setItem('islogged', 'true');
+    } else {
+      localStorage.removeItem('islogged');
+    }
+  });
+
+  provide('login-out', {
+    islogged,
+    login: () => (islogged.value = true),
+    logout: () => (islogged.value = false)
+  });
 </script>
 
 <template>
   <div class="app-container">
     <nav class="navigater">
-      <h1>电商平台</h1>    
+      <router-link to="/home" class="h1-home"><h1>电商平台</h1> </router-link>        
       <form id="nav-searchform" style="border-radius: 8px;">
         <div class="nav-search-content">
           <input class="nav-search-input" type="text" autocomplete="off" maxlength="100" placeholder="请输入搜索信息">
@@ -27,7 +41,12 @@ const checkLoginStatus = () => {
           <router-link to="/home" active-class="active"><span>首页</span></router-link>
         </li> 
         <li>
-          <router-link to="/shoppingcart" active-class="active"><span>购物车</span></router-link>
+          <router-link :to="{
+            path:'/shoppingcart',
+            query: {
+              islogged:islogged
+            }
+          }" active-class="active"><span>购物车</span></router-link>
         </li>
         <li v-if="!islogged">
           <router-link to="/login" active-class="active"><span>登录</span></router-link>
@@ -39,7 +58,7 @@ const checkLoginStatus = () => {
     </nav>
     
     <main class="main-content">
-      <router-view @login-success="checkLoginStatus"></router-view>
+      <router-view></router-view>
     </main>
   </div>  
 </template>
@@ -53,6 +72,12 @@ const checkLoginStatus = () => {
     list-style-type: none;
     unicode-bidi: isolate;
   }
+
+  .h1-home {
+    text-decoration: none;
+    color: white;
+  }
+  
 
   .navigater {
     display: flex;

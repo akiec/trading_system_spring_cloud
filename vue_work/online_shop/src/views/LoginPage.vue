@@ -1,12 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 const username = ref() 
 const password = ref() 
 const phone = ref() 
 const keyword = ref() 
 const router = useRouter()
-const emit = defineEmits(['login-success'])
+const {islogged, login, logout} = inject('login-out')
 
 function showRegister() {
     document.getElementById('loginForm').style.display = 'none';
@@ -19,9 +19,8 @@ function showLogin() {
 }
 
 function LoginSuccess() {
-    localStorage.setItem('token', 'mock-token')
+    login()
     router.push('/profile')
-    emit('login-success')
     // console.log(username.value)
 }
 </script>

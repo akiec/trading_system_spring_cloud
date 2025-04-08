@@ -1,4 +1,13 @@
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const username = ref() 
+const password = ref() 
+const phone = ref() 
+const keyword = ref() 
+const router = useRouter()
+const emit = defineEmits(['login-success'])
+
 function showRegister() {
     document.getElementById('loginForm').style.display = 'none';
     document.getElementById('registerForm').style.display = 'block';
@@ -8,35 +17,49 @@ function showLogin() {
     document.getElementById('registerForm').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
 }
+
+function LoginSuccess() {
+    localStorage.setItem('token', 'mock-token')
+    router.push('/profile')
+    emit('login-success')
+    // console.log(username.value)
+}
 </script>
 
 <template>
   <div id="login" class="page" style="display: block;">
       <form class="auth-form" id="loginForm">
           <h1>用户登录</h1>
-          <div class="form-group">
-              <label>手机号：</label>
-              <input type="text" id="username" required>
-          </div>
-          <div class="form-group">
-              <label>验证码：</label>
-              <input type="password" id="password" required>
-          </div>
-          <div class="login-btn">
-            <button type="submit">登录</button>
-            <button type="button" @click="showRegister()">切换到注册</button>
+          <div class="form-box">
+            <div class="form-group">
+                <label>账号：</label>
+                <input type="text" id="username" placeholder="请输入账号" required v-model="username">
+            </div>
+            <div class="form-group">
+                <label>密码：</label>
+                <input type="password" id="password" placeholder="请输入密码" required v-model="password">
+            </div>
+            <div class="login-btn">
+                <button type="submit" @click="LoginSuccess()">登录</button>
+                <button type="button" @click="showRegister()">切换到注册</button>
+            </div>
           </div>
       </form>
 
       <form class="auth-form" id="registerForm" style="display: none;">
           <h1>用户注册</h1>
-          <div class="form-group">
-              <label>手机号：</label>
-              <input type="text" id="phone" required pattern="\d{11}">
+          <div class="form-box">
+            <div class="form-group">
+                <label>手机号：</label>
+                <input type="text" placeholder="请输入手机号" required pattern="\d{11}" v-model="phone">
+            </div>
+            <div class="form-group">
+                <label>验证码：</label>
+                <input type="text" placeholder="请输入验证码" required v-model="keyword">
+            </div>
           </div>
-
           <div class="login-btn">
-            <button type="submit">注册</button>
+            <button type="submit" @click="LoginSuccess()">注册</button>
             <button type="button" @click="showLogin()">返回登录</button>
           </div>
       </form>
@@ -54,6 +77,8 @@ function showLogin() {
         top: 72px;
         background-image: url(../assets/背景1.jpg);
         background-size: cover;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
     }
 
     .auth-form {
@@ -61,7 +86,7 @@ function showLogin() {
         top: 200px;
         left: 0;
         right: 0;
-        padding: 25px;
+        padding: 30px;
         margin: auto;
         width: 26%;
         min-width: 460px;
@@ -73,5 +98,62 @@ function showLogin() {
         background: rgb(232, 229, 229);
         border-radius: 5%;
         box-shadow: 2px 2px 10px #ddd;
+        opacity:0.7;
+        line-height: 70px;
+    }
+
+    .form-box {
+        width: 400px;
+        height: 90px;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 20px;
+        color: #212121;
+        margin-top: 10px;
+    }
+
+    .form-group {
+        display: flex;
+        position: relative;
+        justify-content: flex-start;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: 44px;
+        padding: 12px 20px;
+    }
+
+    .login-btn {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+        width: 400px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    input {
+        margin-left: 20px;
+        flex: 1;
+        min-width: 0;
+        min-height: 30px;
+        font-size: 20px;
+        padding-left: 10px;
+        border: none;
+    }
+
+    button {
+        box-sizing: border-box;
+        width: 100px;
+        height: 40px;
+        cursor: pointer;
+        color: #18191c;
+        background: skyblue;
+        border: 1px solid #e3e5e7;
+        border-radius: 8px;
+        font-size: 16px;
     }
 </style>

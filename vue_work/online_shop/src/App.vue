@@ -1,7 +1,13 @@
 <script setup>
 import { RouterView,RouterLink } from 'vue-router';
 import { ref, onMounted } from 'vue';
-const islogin = ref(false)
+const islogged = ref(false)
+
+const checkLoginStatus = () => {
+  console.log('success!');
+  islogged.value = !!localStorage.getItem('token')
+}
+
 </script>
 
 <template>
@@ -23,7 +29,7 @@ const islogin = ref(false)
         <li>
           <router-link to="/shoppingcart" active-class="active"><span>购物车</span></router-link>
         </li>
-        <li v-if="!islogin">
+        <li v-if="!islogged">
           <router-link to="/login" active-class="active"><span>登录</span></router-link>
         </li>
         <li v-else> 
@@ -33,7 +39,7 @@ const islogin = ref(false)
     </nav>
     
     <main class="main-content">
-      <router-view></router-view>
+      <router-view @login-success="checkLoginStatus"></router-view>
     </main>
   </div>  
 </template>

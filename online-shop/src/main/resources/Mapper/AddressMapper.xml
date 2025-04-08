@@ -8,4 +8,9 @@
         from Address
         where userId=#{userId}
     </select>
+    <update id="changeAddress">
+        update Address
+        set address=#{address}
+        where userId=#{userId}
+    </update>
 </mapper>

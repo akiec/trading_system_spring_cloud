@@ -6,6 +6,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.onlineshop.DTO.LoginDTO;
 import com.onlineshop.DTO.Result;
 import com.onlineshop.DTO.UserDTO;
+import com.onlineshop.Mapper.AddressMapper;
 import com.onlineshop.Mapper.UserMapper;
 import com.onlineshop.Service.UserService;
 import com.onlineshop.Utils.FormatUtils;
@@ -14,6 +15,7 @@ import com.onlineshop.Utils.UserHolder;
 import com.onlineshop.entity.User;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,8 @@ public class UserServiceImpl implements UserService {
     private StringRedisTemplate stringRedisTemplate;
     @Resource
     private IdCreater idCreater;
+    @Resource
+    private AddressMapper addressMapper;
     //账号密码登录
     @Override
     public Result login(LoginDTO loginDTO) {
@@ -114,6 +118,12 @@ public class UserServiceImpl implements UserService {
         BeanUtil.copyProperties(userDTO, user,CopyOptions.create().setIgnoreNullValue(true));
         user.setUpdateTime(LocalDateTime.now());
         userMapper.updateUser(user);
+        return Result.success();
+    }
+
+    @Override
+    public Result changeAddress(UserDTO userDTO) {
+        addressMapper.changeAddress(userDTO);
         return Result.success();
     }
 

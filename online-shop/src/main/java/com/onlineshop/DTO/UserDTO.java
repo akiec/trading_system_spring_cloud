@@ -14,4 +14,5 @@ public class UserDTO {
     private String token;
     private String phone;
     private String nickName;
+    private String address;
 }

@@ -28,5 +28,7 @@ public class User {
     private LocalDateTime updateTime;
     //用户昵称
     private String nickName;
+    //用户收货地址
+    private String address;
 
 }

@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
+    //支付金额
+    private double totalMoney;
     //支付id
     private Long paymentId;
     //订单id

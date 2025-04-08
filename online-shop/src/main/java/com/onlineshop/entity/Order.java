@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
+    //订单金额
+    private double totalPrice;
+    //商品数量
+    private int count;
     //订单id
     private Long orderId;
     //客户id

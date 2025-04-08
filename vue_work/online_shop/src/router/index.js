@@ -30,7 +30,10 @@ const router = createRouter({
             children: [
                 {
                     path: '/order',
-                    component: OrderPage
+                    component: OrderPage,
+                    props(route) {
+                        return route.query
+                    }
                 }
             ]
         },

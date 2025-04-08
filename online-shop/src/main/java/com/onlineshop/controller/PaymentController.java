@@ -8,6 +8,8 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController("/payment")
 public class PaymentController {
     @Resource
@@ -21,5 +23,10 @@ public class PaymentController {
     @PostMapping("/payOrder")
     public Result payOrder(@RequestBody Payment payment) {
         return paymentService.payOrder(payment);
+    }
+    //购物车支付
+    @PostMapping("/payShopCart")
+    public Result payShopCart(@RequestBody List<Payment> payments) {
+        return paymentService.PayShopCart(payments);
     }
 }

@@ -77,6 +77,7 @@ function addToCart() {
   .product-recommend {
     display: flex;
     justify-content: space-around;
+    background-color:rgb(255, 236, 209);
   }
   .product-category {
     display: flex;

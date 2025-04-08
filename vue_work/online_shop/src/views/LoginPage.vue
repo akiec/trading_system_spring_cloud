@@ -85,7 +85,11 @@
 </template>
 
 <style scoped>
-    label
+    label {
+        width: 100px;
+        display: inline-block;
+        text-align: right;
+    }
 
     #login {
         border: 1px solid black;

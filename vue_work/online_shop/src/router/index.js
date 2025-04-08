@@ -5,6 +5,7 @@ import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import ShoppingCartPage from '../views/ShoppingCartPage.vue'
 import CommodityPage from '../views/CommodityPage.vue'
+import OrderPage from '../views/OrderPage.vue'
 
 const router = createRouter({
     history:createWebHashHistory(),
@@ -23,7 +24,13 @@ const router = createRouter({
         },
         {
             path:'/profile',
-            component:ProfilePage
+            component:ProfilePage,
+            children: [
+                {
+                    path: '/order',
+                    component: OrderPage
+                }
+            ]
         },
         {
             path: '/commodity',

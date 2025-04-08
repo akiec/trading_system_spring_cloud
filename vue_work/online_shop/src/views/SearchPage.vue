@@ -1,5 +1,6 @@
 <script setup>
-    import { useAuthStore } from '../stores/auth';
+//通过query传入content参数作为搜索依据，随后显示对应搜索结果
+
 // 模拟数据
 const mockProducts = [
     { product_id: 1, product_name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
@@ -15,50 +16,39 @@ const mockProducts = [
     { product_id: 11, product_name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { product_id: 12, product_name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
 ];
-const authStore = useAuthStore()
+//加入购物车
+function addToCart() {
+  //提示弹窗
+  alert("已加入购物车")
+  //加入逻辑
+}
 
-function notLoggedAlert() {//弹窗登录警告函数
-    alert("未登录，将跳转至登录界面!");
-}
-function buy() {//商品结算函数
-    
-}
-function selected() {//选择该商品函数
-    
-}
 </script>
 
 <template>
-    <div v-if="!authStore.isLogged">
-        <!--todo 
-        调用弹窗警告函数，跳转登录页面
-        -->
-    </div>
+    <h1>这是搜索界面</h1>
+    <h2>搜索信息为{{this.$route.query.content}}</h2>
 
     <div class="product-grid" id="productList">
       <div v-for="product in mockProducts" class = "product-card">
         <div class = "card-text">
-            <button @click="selected()">选择该商品</button>
             <h3>{{product.product_name}}</h3>
             <p>价格：{{product.price.toFixed(2)}}</p>
             <p>库存：${{product.stock}}件</p>
             <router-link :to="{path:'commodity',query:{product_id:product.product_id}}">
                 <button >查看详情页</button>
             </router-link>
-            <button @click="buy()">单独结算</button>
+            <button @click="addToCart()">加入购物车</button>
         </div>
         <div class = "card-img">
             <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
         </div>
       </div>
     </div>
-    <button @click="buy()">结算</button>
-
 
 </template>
 
 <style scoped>
-
 .product-card {
     display: flex;
     box-shadow: 8px 8px 8px rgba(0,0,0,0.4);
@@ -81,5 +71,6 @@ function selected() {//选择该商品函数
     transform: translateY(-5px);
     box-shadow: 8px 18px 18px rgba(0,0,0,0.3);
   }
+
 
 </style>

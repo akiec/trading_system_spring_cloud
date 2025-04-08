@@ -1,9 +1,9 @@
 <script setup>
     import { reactive, toRefs } from 'vue';
-    import { useRouter, RouterLink, useRoute } from 'vue-router';
+    import { useRouter, RouterLink } from 'vue-router';
     import { useAuthStore } from '../stores/auth';
+    import axios from 'axios';
     const router = useRouter()
-    const route = useRoute()
     const authStore = useAuthStore()
     const user = toRefs(getUserInformation())
     const orders = getOrderInformation()
@@ -20,9 +20,9 @@
     function getOrderInformation() {
         // 从数据库获取订单数据
         return [
-            {order_id: 'uoid1', product_id: 'upid1', seller_id: 'uuid1'},
-            {order_id: 'uoid2', product_id: 'upid2', seller_id: 'uuid2'},
-            {order_id: 'uoid3', product_id: 'upid3', seller_id: 'uuid3'},
+            {order_id: 'uoid1', product_id: '1', seller_id: 'uuid1'},
+            {order_id: 'uoid2', product_id: '2', seller_id: 'uuid2'},
+            {order_id: 'uoid3', product_id: '3', seller_id: 'uuid3'},
         ]
     }
 
@@ -41,7 +41,7 @@
 </script>
 
 <template>
-    <div class="profile">
+    <div class="page">
         <div class="auth-box">
             <img src="../assets/vue.svg" class="auth-img">
             <form class="auth-form">
@@ -65,8 +65,15 @@
         </div>
         <div class="orders">
             <ul class="nav-order">
-                <li v-for="order in orders" :key="order.order_id">
-                    <router-link to="/order">{{ order.order_id }}</router-link>
+                <li v-for="order in orders" :key="order.order_id" class="nav-order-tip">
+                    <router-link :to="{
+                        path:'/order',
+                        query:{
+                            order: order.order_id,
+                            product: order.product_id,
+                            seller: order.seller_id
+                        }
+                    }">{{ order.order_id }}</router-link>
                 </li>
             </ul>
             <main class="order-content">
@@ -101,10 +108,10 @@
     .auth-form {
         display: flex;
         justify-content: space-around;
-        min-width: 1000px;
-        margin: 2rem auto;
+        margin: 2rem;
         padding: 1rem;
-        border-radius: 8px;
+        text-align: center;
+        align-items: center;
     }
 
     .auth-btn {
@@ -124,14 +131,30 @@
         display: flex;
         flex-direction: column;
         line-height: 50px;
-        width: 100px;
+        width: 150px;
         margin: 20px;
         padding: 20px;
-        border: 1px solid blue;
-        font-size: 20px;
+        border: 1px solid;
+        font-size: 30px;
         list-style-type: none;
         unicode-bidi: isolate;
         text-align: center;
+    }
+
+    .nav-order a {
+        text-decoration: none;
+    }
+
+    .nav-order a:active {
+        color: orange;
+        font-weight: 900;
+        text-shadow: 0 0 1px black;
+    }
+
+    .nav-order-tip {
+        border: 1px solid;
+        background-color: aquamarine;
+        opacity:0.7;
     }
     
     .order-content {

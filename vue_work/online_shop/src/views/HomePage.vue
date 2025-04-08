@@ -1,7 +1,7 @@
 <script setup>
 
 import { RouterLink } from 'vue-router';
-
+const testProducts = []
 // 模拟数据
 const mockProducts = [
     { product_id: 1, product_name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},

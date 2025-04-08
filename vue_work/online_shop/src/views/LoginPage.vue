@@ -1,11 +1,12 @@
 <script setup>
-    import { ref, watchEffect } from 'vue';
+    import { ref } from 'vue';
     import { useRouter } from 'vue-router';
     import { useAuthStore } from '../stores/auth';
     const username = ref() 
     const password = ref() 
     const phone = ref() 
     const keyword = ref() 
+    const confirm_password = ref()
     const router = useRouter()
     const authStore = useAuthStore()
 
@@ -19,10 +20,19 @@
         document.getElementById('loginForm').style.display = 'block';
     }
 
-    function LoginSuccess() {
+    function LoginSubmit() {
+        // 写提交的代码
+
         authStore.login()
         router.push('/profile')
         // console.log(username.value)
+    }
+
+    function RegisterSubmit() {
+        // 写提交的代码
+
+        authStore.login()
+        router.push('/profile')
     }
 </script>
 
@@ -40,8 +50,8 @@
                 <input type="password" id="password" placeholder="请输入密码" required v-model="password">
             </div>
             <div class="login-btn">
-                <button type="submit" @click="LoginSuccess()">登录</button>
-                <button type="button" @click="showRegister()">切换到注册</button>
+                <button type="submit" @click="LoginSubmit">登录</button>
+                <button type="button" @click="showRegister">切换到注册</button>
             </div>
           </div>
       </form>
@@ -54,13 +64,21 @@
                 <input type="text" placeholder="请输入手机号" required pattern="\d{11}" v-model="phone">
             </div>
             <div class="form-group">
+                <label>密码：</label>
+                <input type="text" placeholder="请输入密码" required v-model="password">
+            </div>
+            <div class="form-group">
+                <label>确认密码：</label>
+                <input type="text" placeholder="请确认密码" required v-model="confirm_password">
+            </div>
+            <div class="form-group">
                 <label>验证码：</label>
                 <input type="text" placeholder="请输入验证码" required v-model="keyword">
             </div>
           </div>
-          <div class="login-btn">
-            <button type="submit" @click="LoginSuccess()">注册</button>
-            <button type="button" @click="showLogin()">返回登录</button>
+          <div class="register-btn">
+            <button type="submit" @click="RegisterSubmit">注册</button>
+            <button type="button" @click="showLogin">返回登录</button>
           </div>
       </form>
   </div>
@@ -88,18 +106,26 @@
         right: 0;
         padding: 30px;
         margin: auto;
-        width: 26%;
-        min-width: 460px;
-        height: 30%;
-        min-height: 300px;
-        font-size: 22px;
-        text-align: center;
-        margin-bottom: 22px;
         background: rgb(232, 229, 229);
         border-radius: 5%;
         box-shadow: 2px 2px 10px #ddd;
         opacity:0.7;
+        text-align: center;
+        width: 26%;
+        min-width: 460px;
+        font-size: 22px;
+    }
+
+    #loginForm {                
+        height: 30%;
+        min-height: 300px;
         line-height: 70px;
+    }
+    
+    #registerForm {
+        height: 50%;
+        min-height: 300px;
+        line-height: 90px;
     }
 
     .form-box {
@@ -127,6 +153,18 @@
         display: flex;
         justify-content: space-around;
         margin-top: 30px;
+        width: 400px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    .register-btn {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 110px;
         width: 400px;
         font-style: normal;
         font-weight: 400;

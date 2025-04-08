@@ -4,11 +4,9 @@
     import { useAuthStore } from '../stores/auth';
     const router = useRouter()
     const authStore = useAuthStore()
-    const count = ref(0)
-    function updateProfile() {
-        count.value++
-        console.log(count.value)
-    }
+
+    
+    
     function Logout() {
         authStore.logout()
         router.push('/home')
@@ -27,7 +25,7 @@
                 <label>手机号：</label>
                 <input type="text" id="profilePhone">
             </div>
-            <button @click="updateProfile">更新信息</button>
+            <button>更新信息</button>
             <button @click="Logout">退出登录</button>
         </div>
     </div>    

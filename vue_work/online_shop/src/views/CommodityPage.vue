@@ -2,10 +2,16 @@
 
 
 //根据商品id调数据库查询商品其余详细信息
-
+function getProductById(id) {
+    const product = id;//数据库查询
+}
 //加入购物车
 function addToCart() {
 
+}
+//立即购买
+function buy() {
+    
 }
 </script>
 

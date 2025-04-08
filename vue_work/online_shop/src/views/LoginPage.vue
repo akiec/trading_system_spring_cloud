@@ -85,6 +85,8 @@
 </template>
 
 <style scoped>
+    label
+
     #login {
         border: 1px solid black;
         line-height: 70px;
@@ -136,6 +138,7 @@
         line-height: 20px;
         color: #212121;
         margin-top: 10px;
+        text-align: right;
     }
 
     .form-group {

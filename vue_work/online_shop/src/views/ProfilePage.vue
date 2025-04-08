@@ -5,7 +5,9 @@
     const router = useRouter()
     const authStore = useAuthStore()
 
-    
+    function getUserInformation() {
+        //从数据库获取数据
+    }
     
     function Logout() {
         authStore.logout()
@@ -32,13 +34,13 @@
 </template>
 
 <style scoped>
-.auth-form {
+/* .auth-form {
     max-width: 400px;
     margin: 2rem auto;
     padding: 2rem;
     border: 1px solid #ddd;
     border-radius: 8px;
-}
+} */
 
 .form-group {
     margin-bottom: 1rem;

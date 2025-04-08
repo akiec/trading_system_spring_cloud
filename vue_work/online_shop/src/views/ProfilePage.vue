@@ -1,10 +1,18 @@
 <script setup>
-import { ref } from 'vue';
-const count = ref(0)
-function updateProfile() {
-  count.value++
-  console.log(count.value)
-}
+    import { ref } from 'vue';
+    import { useRouter } from 'vue-router';
+    import { useAuthStore } from '../stores/auth';
+    const router = useRouter()
+    const authStore = useAuthStore()
+    const count = ref(0)
+    function updateProfile() {
+        count.value++
+        console.log(count.value)
+    }
+    function Logout() {
+        authStore.logout()
+        router.push('/home')
+    }
 </script>
 
 <template>
@@ -19,7 +27,8 @@ function updateProfile() {
                 <label>手机号：</label>
                 <input type="text" id="profilePhone">
             </div>
-            <button @click="updateProfile()">更新信息</button>
+            <button @click="updateProfile">更新信息</button>
+            <button @click="Logout">退出登录</button>
         </div>
     </div>    
 </template>

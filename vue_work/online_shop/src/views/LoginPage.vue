@@ -1,28 +1,29 @@
 <script setup>
-import { ref, inject } from 'vue';
-import { useRouter } from 'vue-router';
-const username = ref() 
-const password = ref() 
-const phone = ref() 
-const keyword = ref() 
-const router = useRouter()
-const {islogged, login, logout} = inject('login-out')
+    import { ref, watchEffect } from 'vue';
+    import { useRouter } from 'vue-router';
+    import { useAuthStore } from '../stores/auth';
+    const username = ref() 
+    const password = ref() 
+    const phone = ref() 
+    const keyword = ref() 
+    const router = useRouter()
+    const authStore = useAuthStore()
 
-function showRegister() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
-}
+    function showRegister() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+    }
 
-function showLogin() {
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'block';
-}
+    function showLogin() {
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+    }
 
-function LoginSuccess() {
-    login()
-    router.push('/profile')
-    // console.log(username.value)
-}
+    function LoginSuccess() {
+        authStore.login()
+        router.push('/profile')
+        // console.log(username.value)
+    }
 </script>
 
 <template>

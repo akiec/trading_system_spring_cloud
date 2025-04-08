@@ -3,8 +3,7 @@
 import axios from 'axios';
 function add() {
     console.log("开始上传");
-    const url = "https://127.0.0.1/admin/add";
-    console.log(document.getElementById("commodity_name"));
+    const url = "http://localhost:8080/api/admin/add";
     const commodity_information = {
         goodsId: document.getElementById("commodity_name").value,
         name: document.getElementById("commodity_id").value,
@@ -13,10 +12,6 @@ function add() {
         stock:document.getElementById("commodity_stock").value,
         image:document.getElementById("commodity_image").value,
         category: document.getElementById("commodity_category").value,
-        createTime: 1,
-        updateTime: 1,
-        version: 1,
-        productId: 1,
     }
     console.log(commodity_information);
     axios.post(url,commodity_information)
@@ -26,18 +21,16 @@ function add() {
     .catch(function (error) {
         console.log(error);
     });
-    console.log("上传成功");
 }
 function show() {
     console.log("开始查询");
-    const url = "127.0.0.1:8080/goods"    
-    axios.get(url).then(function (response) {// 成功处理
+    const url = "http://localhost:8080/test/post"    
+    axios.post(url).then(function (response) {// 成功处理
         console.log(response);
     }).catch(function (error) {// 错误处理
         console.log(error);
     }).finally(function () {// 总是执行
     });
-    console.log("查询成功");
 }
 </script>
 

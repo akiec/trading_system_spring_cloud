@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     }
     //创建订单
     @Override
-    public Result createOrder(Long userId, Long goodsId) {
+    public Result createOrder(Long userId, Long goodsId,Integer count) {
         //前面具体页面使用了redis查询，所以一定存在
         String redisData = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
         Goods goods = JSONUtil.toBean(redisData, Order.class, true);
@@ -64,10 +64,10 @@ public class OrderServiceImpl implements OrderService {
             //查找地址，地址维护表查询
             String address = addressMapper.searchByUserId(userId);
             //生成新的订单
-            Order order = new Order(orderId,userId,goods.getProductId(),paymentId,address,0,goodsId, LocalDateTime.now());
+            Order order = new Order(goods.getPrice()*count,count,orderId,userId,goods.getProductId(),paymentId,address,0,goodsId, LocalDateTime.now());
             orderMapper.createOrder(order);
             //生成待支付信息
-            Payment payment = new Payment(paymentId,orderId,userId,0,goods.getProductId(),LocalDateTime.now(),LocalDateTime.now());
+            Payment payment = new Payment(order.getTotalPrice(),paymentId,orderId,userId,0,goods.getProductId(),LocalDateTime.now(),LocalDateTime.now());
             paymentMapper.createPayment(payment);
             return Result.success();
         }

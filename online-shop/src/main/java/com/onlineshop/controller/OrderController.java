@@ -14,9 +14,9 @@ public class OrderController {
     private OrderService orderService;
 
     //下单
-    @PostMapping("/createOrder/{userId}/{goodsId}")
-    public Result createOrder(@PathVariable Long userId, @PathVariable Long goodsId){
-        return orderService.createOrder(userId,goodsId);
+    @PostMapping("/createOrder/{userId}/{goodsId}/{count}")
+    public Result createOrder(@PathVariable Long userId, @PathVariable Long goodsId,@PathVariable Integer count){
+        return orderService.createOrder(userId,goodsId,count);
     }
     //查看某一用户订单
     @GetMapping("/check/{id}")

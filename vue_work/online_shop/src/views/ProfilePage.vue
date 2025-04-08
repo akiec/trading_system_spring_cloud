@@ -24,7 +24,7 @@ function updateProfile() {
     </div>    
 </template>
 
-<style>
+<style scoped>
 .auth-form {
     max-width: 400px;
     margin: 2rem auto;

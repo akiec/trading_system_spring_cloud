@@ -1,16 +1,60 @@
 <script setup>
-import { RouterView,RouterLink } from 'vue-router';
+  import { RouterView,RouterLink } from 'vue-router';
+  import { ref, watchEffect, provide } from 'vue';
+  // const islogged = ref(false)
+
+  // const checkLoginStatus = () => {
+  //   // console.log('success!');
+  //   islogged.value = !!localStorage.getItem('token')
+  // }
+  const islogged = ref(localStorage.getItem('islogged') === 'true' || false);
+
+  watchEffect(() => {
+    if (islogged.value) {
+      localStorage.setItem('islogged', 'true');
+    } else {
+      localStorage.removeItem('islogged');
+    }
+  });
+
+  provide('login-out', {
+    islogged,
+    login: () => (islogged.value = true),
+    logout: () => (islogged.value = false)
+  });
 </script>
 
 <template>
   <div class="app-container">
     <nav class="navigater">
-      <h1>电商平台</h1>
-      <div class="navigater-links">     
-        <router-link to="/home" active-class="active">首页</router-link>
-        <router-link to="/login" active-class="active">登录</router-link>
-        <router-link to="/profile" active-class="active">用户中心</router-link>
-      </div> 
+      <router-link to="/home" class="h1-home"><h1>电商平台</h1> </router-link>        
+      <form id="nav-searchform" style="border-radius: 8px;">
+        <div class="nav-search-content">
+          <input class="nav-search-input" type="text" autocomplete="off" maxlength="100" placeholder="请输入搜索信息">
+        </div>
+        <div class="nav-search-btn">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.3451 15.2003C16.6377 15.4915 16.4752 15.772 16.1934 16.0632C16.15 16.1279 16.0958 16.1818 16.0525 16.2249C15.7707 16.473 15.4456 16.624 15.1854 16.3652L11.6848 12.8815C10.4709 13.8198 8.97529 14.3267 7.44714 14.3267C3.62134 14.3267 0.5 11.2314 0.5 7.41337C0.5 3.60616 3.6105 0.5 7.44714 0.5C11.2729 0.5 14.3943 3.59538 14.3943 7.41337C14.3943 8.98802 13.8524 10.5087 12.8661 11.7383L16.3451 15.2003ZM2.13647 7.4026C2.13647 10.3146 4.52083 12.6766 7.43624 12.6766C10.3517 12.6766 12.736 10.3146 12.736 7.4026C12.736 4.49058 10.3517 2.1286 7.43624 2.1286C4.50999 2.1286 2.13647 4.50136 2.13647 7.4026Z" fill="currentColor"></path></svg>
+        </div>
+      </form>    
+      <ul class="navigater-links">    
+        <li>
+          <router-link to="/home" active-class="active"><span>首页</span></router-link>
+        </li> 
+        <li>
+          <router-link :to="{
+            path:'/shoppingcart',
+            query: {
+              islogged:islogged
+            }
+          }" active-class="active"><span>购物车</span></router-link>
+        </li>
+        <li v-if="!islogged">
+          <router-link to="/login" active-class="active"><span>登录</span></router-link>
+        </li>
+        <li v-else> 
+          <router-link to="/profile" active-class="active"><span>用户中心</span></router-link>
+        </li>        
+      </ul> 
     </nav>
     
     <main class="main-content">
@@ -19,7 +63,22 @@ import { RouterView,RouterLink } from 'vue-router';
   </div>  
 </template>
 
-<style>
+<style scoped>
+  form {
+    unicode-bidi: isolate;
+  }
+
+  ul {
+    list-style-type: none;
+    unicode-bidi: isolate;
+  }
+
+  .h1-home {
+    text-decoration: none;
+    color: white;
+  }
+  
+
   .navigater {
     display: flex;
     justify-content: space-between;
@@ -27,6 +86,72 @@ import { RouterView,RouterLink } from 'vue-router';
     background: black;
     color: white;
   }
+
+  #nav-searchform {
+    display: flex;
+    align-items: center;
+    padding: 0 48px 0 4px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    line-height: 38px;
+    border: 1px solid var(--line_regular);
+    height: 40px;
+    background-color: var(--graph_bg_regular);
+    opacity: .9;
+    transition: background-color .3s;
+  }
+
+  .nav-search-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 8px;
+    width: 100%;
+    height: 32px;
+    border: 2px solid white;
+    border-radius: 6px;
+  }
+
+  .nav-search-input {
+    flex: 1;
+    overflow: hidden;
+    padding-right: 8px;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 20px;
+    outline: none;
+  }
+
+  .nav-search-btn {
+    position: absolute;
+    top: 3px;
+    right: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    color: var(--text1);
+    line-height: 32px;
+    cursor: pointer;
+    transition: background-color .3s;
+  }
+
+  .navigater-links {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 30px;
+}
 
   .navigater-links a {
     text-align: center;
@@ -44,19 +169,29 @@ import { RouterView,RouterLink } from 'vue-router';
     color: orange;
     font-weight: 900;
     text-shadow: 0 0 1px black;
-    font-family: 微软雅黑;
+  }
+
+  .search-input {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      outline: none;
+  }
+
+  .search-button {
+    border-radius: 20px;
   }
 
   .main-content {
     margin: 0 auto;
     margin-top: 30px;
     width: 90%;
-    height: 400px;
   }
 </style>
 
 <!-- <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import HomePage from './components/HomePage.vue';
 </script>
 
 <template>
@@ -69,19 +204,10 @@ import HelloWorld from './components/HelloWorld.vue'
     </a>
   </div>
   <HelloWorld msg="Hello World" />
+  
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style> -->
+
+</style>
+-->

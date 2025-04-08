@@ -1,5 +1,7 @@
 <script setup>
-import { onMounted } from 'vue';
+
+import { RouterLink } from 'vue-router';
+
 // 模拟数据
 const mockProducts = [
     { product_id: 1, product_name: "商品1", price: 99.99, stock: 10 ,img: null},
@@ -14,32 +16,12 @@ const mockProducts = [
     { product_id: 10, product_name: "商品10", price: 99.99, stock: 10 ,img: null},
     { product_id: 11, product_name: "商品11", price: 99.99, stock: 10, img: null },
     { product_id: 12, product_name: "商品12", price: 99.99, stock: 10 ,img: null},
-];
+];//加入购物车
+function addToCart() {
+  //提示弹窗
 
-function renderProducts() {
-  const container = document.getElementById('productList');
-  //console.log("访问成功！");
-  container.innerHTML = mockProducts.map(product => `
-    <div class="product-card">
-      <div class = "card-text">
-        <h3>${product.product_name}</h3>
-        <p>价格：¥${product.price.toFixed(2)}</p>
-        <p>库存：${product.stock}件</p>
-        <button onclick="addToCart(${product.product_id})">查看详情页</button>
-        <button onclick="addToCart(${product.product_id})">加入购物车</button>
-      </div>
-      <div class = "card-img">
-        <img src="/src/assets/commodity.png" alt="商品图片" width=80px heighth=auto></img>
-      </div>
-    </div>
-  `).join('');
-  
+  //加入逻辑
 }
-
-onMounted(() => {
-  //console.log("挂载完毕");
-  renderProducts();
-})
 </script>
 
 <template>
@@ -48,7 +30,7 @@ onMounted(() => {
       <div class="product-category">
         <h2 >商品分类</h2>
         <ul>
-          <li>服装</li>
+         <li>服装</li>
           <li>食品</li>
           <li>家具</li>
           <li>电子产品</li>
@@ -65,14 +47,28 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="product-grid" id="productList"></div>
+    <div class="product-grid" id="productList">
+      <div v-for="product in mockProducts" class = "product-card">
+        <div class = "card-text">
+          <h3>{{product.product_name}}</h3>
+          <p>价格：{{product.price.toFixed(2)}}</p>
+          <p>库存：${{product.stock}}件</p>
+          <router-link :to="{path:'commodity',query:{product_id:product.product_id}}">
+            <button >查看详情页</button>
+          </router-link>
+          <button @click="addToCart()">加入购物车</button>
+        </div>
+        <div class = "card-img">
+          <img src="/src/assets/commodity.png" alt="商品图片" width=80px heighth=auto></img>
+        </div>
+      </div>
+    </div>
   </div>
- 
 </template>
 
 <style scoped>
   /* 商品卡片 */
-  .product-grid {
+  .product-grid  {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;

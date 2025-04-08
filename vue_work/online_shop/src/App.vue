@@ -1,27 +1,9 @@
 <script setup>
   import { RouterView,RouterLink } from 'vue-router';
-  import { ref, watchEffect, provide } from 'vue';
-  // const islogged = ref(false)
+  import { ref, watchEffect } from 'vue';
+  import { useAuthStore } from './stores/auth';
+  const authStore = useAuthStore()  
 
-  // const checkLoginStatus = () => {
-  //   // console.log('success!');
-  //   islogged.value = !!localStorage.getItem('token')
-  // }
-  const islogged = ref(localStorage.getItem('islogged') === 'true' || false);
-
-  watchEffect(() => {
-    if (islogged.value) {
-      localStorage.setItem('islogged', 'true');
-    } else {
-      localStorage.removeItem('islogged');
-    }
-  });
-
-  provide('login-out', {
-    islogged,
-    login: () => (islogged.value = true),
-    logout: () => (islogged.value = false)
-  });
 </script>
 
 <template>
@@ -42,13 +24,10 @@
         </li> 
         <li>
           <router-link :to="{
-            path:'/shoppingcart',
-            query: {
-              islogged:islogged
-            }
+            path:'/shoppingcart'
           }" active-class="active"><span>购物车</span></router-link>
         </li>
-        <li v-if="!islogged">
+        <li v-if="!authStore.isLogged">
           <router-link to="/login" active-class="active"><span>登录</span></router-link>
         </li>
         <li v-else> 

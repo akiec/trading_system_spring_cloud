@@ -42,6 +42,12 @@ function show() {
     </ul>
     <button @click="add()">确认添加信息</button>
     <button @click="show()">查询信息</button>
+    <router-link :to="{path:'home'}">
+        <button class="button_search">返回主页</button>
+    </router-link>
+    <router-link :to="{path:'profile'}">
+        <button class="button_search">返回个人信息页</button>
+    </router-link>
 </template>
 
 <style scoped>

@@ -58,6 +58,9 @@
                     <input type="text" v-model="user.phone.value"></input>
                 </div>
             </form>
+            <router-link :to="{path:'upload'}">
+                <button class="button_search">上传商品</button>
+            </router-link>
             <div class="auth-btn">
                 <button @click="updateInformation(user.username.value, user.phone.value)">更新信息</button>
                 <button @click="Logout">退出登录</button>

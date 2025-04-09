@@ -5,26 +5,26 @@
 <mapper namespace="com.onlineshop.Mapper.OrderMapper">
     <!--查询某一用户的全部订单信息-->
     <select id="checkOrder" resultType="com.onlineshop.entity.Order">
-        select * from Order
+        select * from Orders
         where userId =#{userId}
     </select>
     <!--创建订单-->
     <insert id="createOrder">
-        insert into Order(orderId,customerId,productId,paymentId,address,status,goodsId,orderTime)
+        insert into Orders(orderId,customerId,productId,paymentId,address,status,goodsId,orderTime)
         values (#{orderId},#{customerId},#{productId},#{paymentId},#{address},#{status},#{goodsId},#{orderTime})
     </insert>
     <!--查询订单具体信息-->
     <select id="getDetails" resultType="com.onlineshop.entity.Order">
-        select * from Order
+        select * from Orders
         where orderId=#{orderId}
     </select>
     <!--删除订单-->
     <delete id="delete">
-        delete from Order
+        delete from Orders
         where orderId=#{orderId}
     </delete>
     <update id="setStatus">
-        update from Order
+        update from Orders
         set status=#{status}
         where orderId=#{orderId}
     </update>

@@ -38,9 +38,10 @@ public class PaymentServiceImpl implements PaymentService {
         }else {
             status=-1;
         }
+        payment.setPaymentStatus(status);
         paymentMapper.updateStatus(payment.getPaymentId(),status);
         //查看是否在购物车中
-
+        orderMapper.setStatus(payment.getOrderId(),payment.getPaymentStatus());
         return Result.success();
     }
 
@@ -63,6 +64,8 @@ public class PaymentServiceImpl implements PaymentService {
             paymentMapper.updateStatus(payment.getPaymentId(),status);
             Order temOrder = orderMapper.getDetails(payment.getOrderId());
             shopCartMapper.delete(temOrder.getGoodsId());
+            payment.setPaymentStatus(status);
+            orderMapper.setStatus(payment.getOrderId(),payment.getPaymentStatus());
         }
         return Result.success();
     }

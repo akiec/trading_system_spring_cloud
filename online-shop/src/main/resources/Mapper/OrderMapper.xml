@@ -23,4 +23,9 @@
         delete from Order
         where orderId=#{orderId}
     </delete>
+    <update id="setStatus">
+        update from Order
+        set status=#{status}
+        where orderId=#{orderId}
+    </update>
 </mapper>

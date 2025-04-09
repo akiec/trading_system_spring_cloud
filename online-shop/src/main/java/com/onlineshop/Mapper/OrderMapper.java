@@ -13,4 +13,6 @@ public interface OrderMapper {
     Order getDetails(Long orderId);
 
     void delete(Long orderId);
+
+    void setStatus(Long orderId,Integer status);
 }

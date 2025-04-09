@@ -5,18 +5,18 @@
 <mapper namespace="com.onlineshop.Mapper.GoodsMapper">
    <!-- 分页查询-->
     <select id="searchByPage" resultType="com.onlineshop.entity.Goods">
-        select * from Gooods
+        select * from Goods
         limit #{begin},#{end}
     </select>
     <!--分类查询-->
     <select id="searchByType" resultType="com.onlineshop.entity.Goods">
-        select * from Gooods
+        select * from Goods
         where type =#{type}
         limit #{begin},#{end}
     </select>
     <!--根据名称查,模糊匹配-->
     <select id="searchByName" resultType="com.onlineshop.entity.Goods">
-        select * from Gooods
+        select * from Goods
         where name like concat(%,#{name},%)
         limit #{begin},#{end}
     </select>

@@ -6,6 +6,7 @@ import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 //此处无商品的增删改功能，该部分功能放入adminController中实现
 //此处为普通用户视角的商品功能
 @RestController

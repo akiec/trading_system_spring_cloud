@@ -6,6 +6,7 @@ import com.onlineshop.entity.Goods;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 //此部分为实现管理员的增删改方面
 @RequestMapping("/admin")

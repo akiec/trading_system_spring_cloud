@@ -7,6 +7,7 @@ import jakarta.annotation.Resource;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/order")
 public class OrderController {

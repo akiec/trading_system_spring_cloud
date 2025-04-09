@@ -14,3 +14,6 @@ spring:
           max-idle: 10
           max-wait: 1
           time-between-eviction-runs: 10s
+mybatis:
+  mapper-locations: classpath:Mapper/*.xml
+  type-aliases-package: com.onlineshop.entity

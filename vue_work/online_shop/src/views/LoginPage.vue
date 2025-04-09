@@ -85,6 +85,12 @@
 </template>
 
 <style scoped>
+    label {
+        width: 100px;
+        display: inline-block;
+        text-align: right;
+    }
+
     #login {
         border: 1px solid black;
         line-height: 70px;
@@ -136,6 +142,7 @@
         line-height: 20px;
         color: #212121;
         margin-top: 10px;
+        text-align: right;
     }
 
     .form-group {

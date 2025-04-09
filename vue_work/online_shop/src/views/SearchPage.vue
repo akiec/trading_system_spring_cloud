@@ -1,0 +1,76 @@
+<script setup>
+//通过query传入content参数作为搜索依据，随后显示对应搜索结果
+
+// 模拟数据
+const mockProducts = [
+    { product_id: 1, product_name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 2, product_name: "商品2", price: 199.99, stock: 5 ,img: null},
+    { product_id: 3, product_name: "商品3", price: 99.99, stock: 10 ,img: "/src/assets/vue.svg"},
+    { product_id: 4, product_name: "商品4", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 5, product_name: "商品5", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 6, product_name: "商品6", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 7, product_name: "商品7", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 8, product_name: "商品8", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 9, product_name: "商品9", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 10, product_name: "商品10", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { product_id: 11, product_name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
+    { product_id: 12, product_name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+];
+//加入购物车
+function addToCart() {
+  //提示弹窗
+  alert("已加入购物车")
+  //加入逻辑
+}
+
+</script>
+
+<template>
+    <h1>这是搜索界面</h1>
+    <h2>搜索信息为{{this.$route.query.content}}</h2>
+
+    <div class="product-grid" id="productList">
+      <div v-for="product in mockProducts" class = "product-card">
+        <div class = "card-text">
+            <h3>{{product.product_name}}</h3>
+            <p>价格：{{product.price.toFixed(2)}}</p>
+            <p>库存：${{product.stock}}件</p>
+            <router-link :to="{path:'commodity',query:{product_id:product.product_id}}">
+                <button >查看详情页</button>
+            </router-link>
+            <button @click="addToCart()">加入购物车</button>
+        </div>
+        <div class = "card-img">
+            <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
+        </div>
+      </div>
+    </div>
+
+</template>
+
+<style scoped>
+.product-card {
+    display: flex;
+    box-shadow: 8px 8px 8px rgba(0,0,0,0.4);
+  }
+  .card-text {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s;
+    align-items: stretch;
+  }
+  .card-img {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 8px 18px 18px rgba(0,0,0,0.3);
+  }
+
+
+</style>

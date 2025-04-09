@@ -26,7 +26,7 @@ CREATE TABLE Address(
     address TEXT comment '收货地址'
 );
 CREATE TABLE Order (
-                             totalPrice DECIMAL(10, 2) comment '总价格',
+                             totalPrice DOUBLE comment '总价格',
                              count INT comment '数量',
                              orderId LONG NOT NULL PRIMARY KEY comment '订单ID',
                              customerId LONG comment '客户ID',
@@ -38,7 +38,7 @@ CREATE TABLE Order (
                              orderTime TIMESTAMP default(current_timestamp) comment '下单时间'
 );
 CREATE TABLE payment_table (
-                               totalMoney DECIMAL(10, 2) comment '总金额',
+                               totalMoney DOUBLE comment '总金额',
                                paymentId LONG  PRIMARY KEY comment '支付ID',
                                orderId LONG comment '订单ID',
                                userId LONG comment '用户ID',
@@ -60,3 +60,4 @@ CREATE TABLE ShopCartGoods(
                               version varchar(50) not null default '1.0.0' comment '版本号',
                               productId LONG comment '厂家信息'
 );
+

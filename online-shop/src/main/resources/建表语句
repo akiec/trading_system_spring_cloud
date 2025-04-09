@@ -25,10 +25,10 @@ CREATE TABLE Address(
     userId LONG NOT NULL comment '用户ID',
     address TEXT comment '收货地址'
 );
-CREATE TABLE Order (
+CREATE TABLE Orders (
                              totalPrice DOUBLE comment '总价格',
                              count INT comment '数量',
-                             orderId LONG NOT NULL PRIMARY KEY comment '订单ID',
+                             orderId LONG NOT NULL NOT NULL comment '订单ID',
                              customerId LONG comment '客户ID',
                              productId LONG comment '厂家ID',
                              paymentId LONG comment '支付ID',
@@ -39,7 +39,7 @@ CREATE TABLE Order (
 );
 CREATE TABLE payment_table (
                                totalMoney DOUBLE comment '总金额',
-                               paymentId LONG  PRIMARY KEY comment '支付ID',
+                               paymentId LONG  NOT NULL comment '支付ID',
                                orderId LONG comment '订单ID',
                                userId LONG comment '用户ID',
                                paymentStatus INT comment '支付状态',

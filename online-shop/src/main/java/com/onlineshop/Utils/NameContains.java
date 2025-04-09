@@ -19,5 +19,7 @@ public class NameContains {
     public static final String ORDER_ID="order:id:";
     //支付id前缀
     public static final String PAYMENT_ID="payment:id:";
+    //商品ID生成
+    public static final String GOODS_ID="goods:name:";
 
 }

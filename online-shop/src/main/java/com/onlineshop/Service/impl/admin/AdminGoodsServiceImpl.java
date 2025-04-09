@@ -4,9 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import com.onlineshop.DTO.Result;
 import com.onlineshop.Mapper.GoodsMapper;
 import com.onlineshop.Service.admin.AdminGoodsService;
+import com.onlineshop.Utils.IdCreater;
 import com.onlineshop.Utils.NameContains;
 import com.onlineshop.entity.Goods;
 import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,13 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
     private GoodsMapper goodsMapper;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private IdCreater idCreater;
     //添加商品
     @Override
     public Result addGoods(Goods goods) {
+        Long id = idCreater.createId(NameContains.GOODS_ID + goods.getName());
+        goods.setGoodsId(id);
         goods.setCreateTime(LocalDateTime.now());
         goods.setUpdateTime(LocalDateTime.now());
         goodsMapper.addGoods(goods);

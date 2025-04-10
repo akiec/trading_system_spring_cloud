@@ -3,11 +3,13 @@
     import { useRouter } from 'vue-router';
     import { useAuthStore } from '../stores/auth';
     import axios from 'axios';
-    const username = ref() 
-    const password = ref() 
-    const phone = ref() 
-    const keyword = ref() 
-    const confirm_password = ref()
+    let user = {
+        username: '',
+        password: '',
+        confirm_password: '',
+        phone: '',
+        code: '',
+    }
     const router = useRouter()
     const authStore = useAuthStore()
 
@@ -21,6 +23,16 @@
         document.getElementById('loginForm').style.display = 'block';
     }
 
+    function getCode() {
+        const url = "http://localhost:8080/user/code"
+        axios.post(url, {}, {params: {phone: user.phone}})
+        .then(function (response) {
+            console.log(response)
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+
     function LoginSubmit() {
         // 写提交的代码
 
@@ -31,7 +43,25 @@
 
     function RegisterSubmit() {
         // 写提交的代码
-
+        if(user.password != user.confirm_password){
+            alert("密码不一致！")
+            console.log(user.password, user.confirm_password)
+            return
+        }
+        const url = "http://localhost:8080/user/loginByPhone"
+        axios.post(url,{
+            username: user.username,
+            password: user.password,
+            phone: user.phone,
+            code: user.code,
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        console.log(user.username, user.phone)
         authStore.login()
         router.push('/profile')
     }
@@ -44,11 +74,11 @@
           <div class="form-box">
             <div class="form-group">
                 <label>账号：</label>
-                <input type="text" id="username" placeholder="请输入账号" required v-model="username">
+                <input type="text" id="username" placeholder="请输入账号" required v-model="user.username">
             </div>
             <div class="form-group">
                 <label>密码：</label>
-                <input type="password" id="password" placeholder="请输入密码" required v-model="password">
+                <input type="password" id="password" placeholder="请输入密码" required v-model="user.password">
             </div>
             <div class="login-btn">
                 <button type="submit" @click="LoginSubmit">登录</button>
@@ -61,25 +91,30 @@
           <h1>用户注册</h1>
           <div class="form-box">
             <div class="form-group">
+                <label>用户名：</label>
+                <input type="text" placeholder="请输入用户名" required v-model="user.username">
+            </div>
+            <div class="form-group">
                 <label>手机号：</label>
-                <input type="text" placeholder="请输入手机号" required pattern="\d{11}" v-model="phone">
+                <input type="text" placeholder="请输入手机号" required pattern="\d{11}" v-model="user.phone">
             </div>
             <div class="form-group">
                 <label>密码：</label>
-                <input type="text" placeholder="请输入密码" required v-model="password">
+                <input type="password" placeholder="请输入密码" required v-model="user.password">
             </div>
             <div class="form-group">
                 <label>确认密码：</label>
-                <input type="text" placeholder="请确认密码" required v-model="confirm_password">
+                <input type="password" placeholder="请确认密码" required v-model="user.confirm_password">
             </div>
             <div class="form-group">
                 <label>验证码：</label>
-                <input type="text" placeholder="请输入验证码" required v-model="keyword">
+                <input type="text" placeholder="请输入验证码" required v-model="user.code">
             </div>
           </div>
           <div class="register-btn">
             <button type="submit" @click="RegisterSubmit">注册</button>
             <button type="button" @click="showLogin">返回登录</button>
+            <button type="button" @click="getCode">获取验证码</button>
           </div>
       </form>
   </div>
@@ -123,21 +158,8 @@
         font-size: 22px;
     }
 
-    #loginForm {                
-        height: 30%;
-        min-height: 300px;
-        line-height: 70px;
-    }
-    
-    #registerForm {
-        height: 50%;
-        min-height: 300px;
-        line-height: 90px;
-    }
-
     .form-box {
         width: 400px;
-        height: 90px;
         font-weight: 400;
         font-size: 20px;
         line-height: 20px;
@@ -160,7 +182,7 @@
     .login-btn {
         display: flex;
         justify-content: space-around;
-        margin-top: 30px;
+        margin-top: 20px;
         width: 400px;
         font-style: normal;
         font-weight: 400;
@@ -172,7 +194,7 @@
     .register-btn {
         display: flex;
         justify-content: space-around;
-        margin-top: 110px;
+        margin-top: 20px;
         width: 400px;
         font-style: normal;
         font-weight: 400;

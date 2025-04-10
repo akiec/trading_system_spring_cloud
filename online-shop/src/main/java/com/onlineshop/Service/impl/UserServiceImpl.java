@@ -58,8 +58,15 @@ public class UserServiceImpl implements UserService {
             //校验完成返回token
             String token = UUID.randomUUID().toString();
             //写入redis
-            Map<String, Object> usermap = BeanUtil.beanToMap(user,new HashMap<>(), CopyOptions.create()
-                    .setIgnoreNullValue(true).setFieldValueEditor((fieldName,fieldValue)->fieldValue.toString()));
+            Map<String, Object> usermap = BeanUtil.beanToMap(user,new HashMap<>(), CopyOptions.create().setIgnoreNullValue(true).
+                    setFieldValueEditor((fieldName,fieldValue)->{
+                        if (fieldValue == null){
+                            fieldValue = "0";
+                        }else {
+                            fieldValue = fieldValue.toString();
+                        }
+                        return fieldValue;
+                    }));
             stringRedisTemplate.opsForHash().putAll(LOGIN_IN+token,usermap);
             stringRedisTemplate.expire("login:token:"+token,30, TimeUnit.MINUTES);
             return Result.success(token);
@@ -78,13 +85,20 @@ public class UserServiceImpl implements UserService {
         }
         //查询用户
         User user = userMapper.queryByPhone(phone);
-        if (user == null) {
+        if (user==null) {
             user = createUserByPhone(phone);
         }
         //返回token
         String token = UUID.randomUUID().toString();
-        Map<String, Object> usermap = BeanUtil.beanToMap(user,new HashMap<>(), CopyOptions.create()
-                .setIgnoreNullValue(true).setFieldValueEditor((fieldName,fieldValue)->fieldValue.toString()));
+        Map<String, Object> usermap = BeanUtil.beanToMap(user,new HashMap<>(), CopyOptions.create().setIgnoreNullValue(true).
+                setFieldValueEditor((fieldName,fieldValue)->{
+                    if (fieldValue == null){
+                        fieldValue = "0";
+                    }else {
+                        fieldValue = fieldValue.toString();
+                    }
+                    return fieldValue;
+                }));
         stringRedisTemplate.opsForHash().putAll(LOGIN_IN+token,usermap);
         stringRedisTemplate.expire("login:token:"+token,30, TimeUnit.MINUTES);
         return Result.success(token);

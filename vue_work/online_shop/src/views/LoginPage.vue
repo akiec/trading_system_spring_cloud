@@ -56,14 +56,14 @@
             code: user.code,
         })
         .then(function (response) {
-            console.log(response);
+            console.log(response)
+            console.log(user.username, user.phone)
+            authStore.login()
+            router.push('/profile')
         })
         .catch(function (error) {
             console.log(error);
-        })
-        console.log(user.username, user.phone)
-        authStore.login()
-        router.push('/profile')
+        })       
     }
 </script>
 

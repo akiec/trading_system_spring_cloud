@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result sendCode(String phone) {
         //核验手机号是否符合规则
-        if (!FormatUtils.isPhoneInvalid(phone)) {
+        if (FormatUtils.isPhoneInvalid(phone)) {
             return Result.error("手机号不符合格式");
         }
         //生成验证码

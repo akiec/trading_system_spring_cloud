@@ -22,4 +22,6 @@ public interface UserService {
     Result updateUser(UserDTO userDTO);
 
     Result changeAddress(UserDTO userDTO);
+
+    Result registerUser(LoginDTO loginDTO);
 }

@@ -11,6 +11,7 @@ import com.onlineshop.Mapper.UserMapper;
 import com.onlineshop.Service.UserService;
 import com.onlineshop.Utils.FormatUtils;
 import com.onlineshop.Utils.IdCreater;
+import com.onlineshop.Utils.NameContains;
 import com.onlineshop.Utils.UserHolder;
 import com.onlineshop.entity.User;
 import jakarta.annotation.Resource;
@@ -124,6 +125,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result changeAddress(UserDTO userDTO) {
         addressMapper.changeAddress(userDTO);
+        return Result.success();
+    }
+    //注册用户
+    @Override
+    public Result registerUser(LoginDTO loginDTO) {
+        User user = new User();
+        Long id = idCreater.createId(USER_ID);
+        user.setUserId(id);
+        user.setIsAdmin(false);
+        //生成随机的账号密码
+        user.setUserName(loginDTO.getUsername());
+        user.setPassWord(loginDTO.getPassword());
+        //创建时间和修改时间
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.createUser(user);
         return Result.success();
     }
 

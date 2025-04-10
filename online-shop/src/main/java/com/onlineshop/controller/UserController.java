@@ -53,4 +53,7 @@ public class UserController {
     public Result changeAddress(@RequestBody UserDTO userDTO) {
         return userService.changeAddress(userDTO);
     }
+    //注册账号密码
+    @PostMapping("/register")
+    public Result registerUser(@RequestBody LoginDTO loginDTO) {return userService.registerUser(loginDTO);}
 }

@@ -130,6 +130,10 @@ public class UserServiceImpl implements UserService {
     //注册用户
     @Override
     public Result registerUser(LoginDTO loginDTO) {
+        User userdata = userMapper.queryByName(loginDTO.getUsername());
+        if (userdata != null) {
+            return Result.error("用户已经存在");
+        }
         User user = new User();
         Long id = idCreater.createId(USER_ID);
         user.setUserId(id);

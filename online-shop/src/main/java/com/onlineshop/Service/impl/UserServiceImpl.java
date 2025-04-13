@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
                 return Result.error("用户名或密码错误");
             }
             //校验完成返回token
-            String token = UUID.randomUUID().toString();
+            String token = user.getUserId().toString();
             //写入redis
             Map<String, Object> usermap = BeanUtil.beanToMap(user,new HashMap<>(), CopyOptions.create().setIgnoreNullValue(true).
                     setFieldValueEditor((fieldName,fieldValue)->{
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
             user = createUserByPhone(phone);
         }
         //返回token
-        String token = UUID.randomUUID().toString();
+        String token = user.getUserId().toString();
         Map<String, Object> usermap = BeanUtil.beanToMap(user,new HashMap<>(), CopyOptions.create().setIgnoreNullValue(true).
                 setFieldValueEditor((fieldName,fieldValue)->{
                     if (fieldValue == null){
@@ -107,15 +107,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result sendCode(String phone) {
         //核验手机号是否符合规则
-<<<<<<< HEAD
+
         if (FormatUtils.isPhoneInvalid(phone)) {
             return Result.error("手机号不符合格式");
         }
-=======
+
 //        if (!FormatUtils.isPhoneInvalid(phone)) {
 //            return Result.error("手机号不符合格式");
 //        }
->>>>>>> 6e59c91bd4e9c48d742a795df11a495be268feac
+
         //生成验证码
         String code = RandomUtil.randomNumbers(6);
         //写入redis

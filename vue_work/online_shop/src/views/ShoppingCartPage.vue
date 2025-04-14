@@ -65,27 +65,133 @@
 
 <style scoped>
 
+
+/* 商品网格容器 */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 商品卡片样式 */
 .product-card {
-    display: flex;
-    box-shadow: 8px 8px 8px rgba(0,0,0,0.4);
-  }
-  .card-text {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    transition: transform 0.3s;
-    align-items: stretch;
-  }
-  .card-img {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    transition: transform 0.3s;
-  }
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  background: white;
+  height: 100%;
+}
 
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 8px 18px 18px rgba(0,0,0,0.3);
-  }
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
 
+/* 卡片内容区域 */
+.card-text {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-img {
+  padding: 16px;
+  text-align: center;
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+.card-img img {
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.product-card:hover .card-img img {
+  transform: scale(1.03);
+}
+
+/* 文字样式 */
+h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 按钮样式 */
+button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:first-of-type {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+button:last-of-type {
+  background-color: #42b983;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  body{
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      padding: 12px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  body{
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .product-card {
+      flex-direction: row;
+    }
+    
+    .card-img {
+      border-top: none;
+      border-left: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      min-width: 100px;
+    }
+    
+    .card-img img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
 </style>

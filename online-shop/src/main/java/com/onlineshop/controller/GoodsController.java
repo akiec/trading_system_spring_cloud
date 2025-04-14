@@ -25,7 +25,7 @@ public class GoodsController {
         return goodsService.details(goodsId);
     }
     //查看某一种类商品分页查询
-    @PostMapping("/type")
+    @PostMapping("/type/{type}")
     public Result type(@PathVariable("type") String type,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
         return goodsService.searchByType(type,page,pageSize);
     }

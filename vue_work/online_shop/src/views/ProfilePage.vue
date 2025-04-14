@@ -1,24 +1,33 @@
 <script setup>
-    import { reactive, toRefs } from 'vue';
+    import { reactive, toRefs, toRaw } from 'vue';
     import { useRouter, RouterLink } from 'vue-router';
     import { useAuthStore } from '../stores/auth';
     import axios from 'axios';
     const router = useRouter()
     const authStore = useAuthStore()
-    const user = toRefs(getUserInformation())
+    const user = getUserInformation()
     const orders = getOrderInformation()
 
     function getUserInformation() {
         // 从数据库获取用户数据
         return reactive({
-            userid : 'uuid1',
+            userid : 201,
             username : 'redsuperhand',
             phone : '18888888888',
         })
     }
 
     function getOrderInformation() {
-        // 从数据库获取订单数据
+        // 从数据库获取订单数据     
+        console.log(toRaw(user).userid)
+        const url = `http://localhost:8080/order/check/${Number(toRaw(user).userid)}`
+        axios.get(url)
+        .then(function (response) {
+            console.log(response)
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
         return [
             {order_id: 'uoid1', product_id: '1', seller_id: 'uuid1'},
             {order_id: 'uoid2', product_id: '2', seller_id: 'uuid2'},
@@ -51,11 +60,11 @@
                 </div>
                 <div class="form-group">
                     <label>用户名：</label>
-                    <input type="text" v-model="user.username.value"></input>
+                    <input id="username-input" type="text" v-model="user.username"></input>
                 </div>
                 <div class="form-group">
                     <label>手机号：</label>
-                    <input type="text" v-model="user.phone.value"></input>
+                    <input id="phone-input" type="text" v-model="user.phone"></input>
                 </div>
             </form>
             <router-link :to="{path:'upload'}">

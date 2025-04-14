@@ -39,7 +39,7 @@ public class UserController {
         return userService.userDetails(userId);
     }
     //用户信息维护
-    @PutMapping("/detail")
+    @PostMapping("/detail")
     public Result updateUser(@RequestBody UserDTO userDTO) {
         return userService.updateUser(userDTO);
     }

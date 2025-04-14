@@ -1,7 +1,60 @@
 <script setup>
 //商品上传页面
 import axios from 'axios';
+
+import { useAuthStore } from '../stores/auth';
+const authStore = useAuthStore()
 function add() {
+    console.log("开始上架");
+    const url = "http://localhost:8080/admin/add";
+    axios.post(url+`/${authStore.currentUserId}` ,{
+        name: document.getElementById("commodity_name").value,
+        description: document.getElementById("commodity_description").value,
+        price:document.getElementById("commodity_price").value,
+        stock:document.getElementById("commodity_stock").value,
+        image:document.getElementById("commodity_image").value,
+        category: document.getElementById("commodity_category").value,
+    })
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+function del(id){
+    console.log("开始下架");
+    const url = "http://localhost:8080/admin/delete";
+    axios.post(url,{
+        goodsId: id     
+    })
+    .then(function (response) {
+        console.log(response);
+        console.log("下架成功")
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+function alter() {
+    console.log("开始上传");
+    const url = "http://localhost:8080/admin/updateGoods";
+    axios.post(url,{
+        name: document.getElementById("commodity_name").value,
+        description: document.getElementById("commodity_description").value,
+        price:document.getElementById("commodity_price").value,
+        stock:document.getElementById("commodity_stock").value,
+        image:document.getElementById("commodity_image").value,
+        category: document.getElementById("commodity_category").value,
+    })
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+function show() {
     console.log("开始上传");
     const url = "http://localhost:8080/admin/add";
     axios.post(url,{
@@ -38,6 +91,7 @@ function add() {
     <router-link :to="{path:'profile'}">
         <button class="button_search">返回个人信息页</button>
     </router-link>
+    
 </template>
 
 <style scoped>

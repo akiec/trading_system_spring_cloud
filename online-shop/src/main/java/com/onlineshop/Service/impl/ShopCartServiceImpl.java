@@ -36,7 +36,7 @@ public class ShopCartServiceImpl implements ShopCartService {
         int end = page * pageSize;
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setGoodsList(shopCartMapper.searchByPage(userId,begin,end));
-        return null;
+        return Result.success(shoppingCart);
     }
     //删除购物车
     @Override

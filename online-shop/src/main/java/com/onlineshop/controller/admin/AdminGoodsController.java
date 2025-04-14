@@ -14,8 +14,8 @@ public class AdminGoodsController {
     @Resource
     private AdminGoodsService goodsService;
     //新增商品
-    @PostMapping("/add")
-    public Result addGoods(@RequestBody Goods goods,@RequestParam Long userId) {
+    @PostMapping("/add/{id}")
+    public Result addGoods(@RequestBody Goods goods,@PathVariable("id") Long userId) {
         return goodsService.addGoods(goods,userId);
     }
     //删除商品

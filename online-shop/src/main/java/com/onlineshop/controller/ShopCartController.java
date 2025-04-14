@@ -34,8 +34,8 @@ public class ShopCartController {
         return shopCartService.delete(goodsId);
     }
     //加购物车
-    @PostMapping("/add")
-    public Result add(@RequestBody Goods goods,@RequestParam Long userId){
+    @PostMapping("/add/{id}")
+    public Result add(@RequestBody Goods goods,@PathVariable("id") Long userId){
         return shopCartService.add(goods,userId);
     }
 }

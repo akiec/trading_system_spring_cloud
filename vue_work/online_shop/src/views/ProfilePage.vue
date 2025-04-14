@@ -9,6 +9,7 @@
         userid: null,
         username: '',
         phone: null,
+        address: ''
     })
     // let orders = [{orderId: 'uoid1', productId: '1', seller_id: 'uuid1'},
     //         {orderId: 'uoid2', productId: '2', seller_id: 'uuid2'},
@@ -21,7 +22,7 @@
         const url = `http://localhost:8080/user/${Number(user.userid)}`
         axios.get(url)
         .then(function (response) {
-            // console.log(response)
+            console.log(response)
             user.username = response.data.data.userName
             user.phone = response.data.data.phone
         })
@@ -53,12 +54,24 @@
         console.log(orders)
     })
 
-    function updateInformation(new_name, new_phone) {
-        user.username = new_name
-        user.phone = new_phone
-        alert('改变成功！')
-        console.log(user.username,user.phone)
-        router.push('/home')
+    function updateInformation() {
+        console.log(user.address)
+        const url = "http://localhost:8080/user/detail"
+        axios.post(url, {
+            userId: user.userid,
+            userName: user.username,
+            isAdmin: false,       
+            phone: user.phone, 
+            token: '',
+            nickName: '',
+            address: user.address,
+        }).then(function (response) {
+            alert('改变成功！')
+            console.log(user.username,user.phone)
+            router.push('/home')
+        }).catch(function (error) {
+            console.log(error)
+        })  
     }
     
     function Logout() {
@@ -84,12 +97,16 @@
                     <label>手机号：</label>
                     <input id="phone-input" type="text" v-model="user.phone"></input>
                 </div>
+                <div class="form-group">
+                    <label>地址：</label>
+                    <input id="address-input" type="text" v-model="user.address"></input>
+                </div>
             </form>
             <router-link :to="{path:'upload'}">
                 <button class="button_search">上传商品</button>
             </router-link>
             <div class="auth-btn">
-                <button @click="updateInformation(user.username.value, user.phone.value)">更新信息</button>
+                <button @click="updateInformation()">更新信息</button>
                 <button @click="Logout">退出登录</button>
             </div>
         </div>

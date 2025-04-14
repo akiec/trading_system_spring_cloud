@@ -16,24 +16,24 @@ public class OrderController {
 
     //下单
     @PostMapping("/createOrder/{userId}/{goodsId}/{count}")
-    public Result createOrder(@PathVariable Long userId, @PathVariable Long goodsId,@PathVariable Integer count){
+    public Result createOrder(@PathVariable String userId, @PathVariable String goodsId,@PathVariable Integer count){
         return orderService.createOrder(userId,goodsId,count);
     }
     //查看某一用户订单
     @GetMapping("/check/{id}")
-    public Result checkOrder(@PathVariable ("id") Long userId){
+    public Result checkOrder(@PathVariable ("id") String userId){
         return orderService.checkOrder(userId);
     }
     //查看某一具体订单信息
     @GetMapping("/details/{id}")
-    public Result details(@PathVariable ("id") Long orderId){
+    public Result details(@PathVariable ("id") String orderId){
         return orderService.details(orderId);
     }
     //修改订单信息
 
     //取消订单or退款？
     @DeleteMapping("/delete/{id}/{status}")
-    public Result deleteOrder(@PathVariable ("id") Long orderId,@PathVariable("status") Integer status ){
+    public Result deleteOrder(@PathVariable ("id") String orderId,@PathVariable("status") Integer status ){
         return orderService.deleteOrder(orderId,status);
     }
 

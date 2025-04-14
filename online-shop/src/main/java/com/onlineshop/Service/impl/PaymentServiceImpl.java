@@ -22,7 +22,7 @@ public class PaymentServiceImpl implements PaymentService {
     private OrderMapper orderMapper;
 
     @Override
-    public Result details(Long paymentId) {
+    public Result details(String paymentId) {
         Payment payment=paymentMapper.getDetailsById(paymentId);
         return Result.success(payment);
     }
@@ -46,7 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Result toPayment(Long userId) {
+    public Result toPayment(String userId) {
         List<Payment> paymentList=paymentMapper.toPayments(userId);
         return Result.success(paymentList, Long.valueOf(paymentList.size()));
     }

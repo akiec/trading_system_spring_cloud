@@ -14,7 +14,7 @@ import java.util.List;
 public class ShoppingCart {
     //用户id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
+    private String userId;
     //商品信息
     private List<Goods> goodsList;
     //订单信息

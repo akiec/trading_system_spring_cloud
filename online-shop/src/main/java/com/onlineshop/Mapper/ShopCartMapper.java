@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface ShopCartMapper {
 
-    List<Goods> searchByPage(Long userId, int begin, int end);
-    void delete(Long goodsId);
+    List<Goods> searchByPage(String userId, int begin, int end);
+    void delete(String goodsId);
 
 
     void add(ShopCartGoods shopCartGoods);

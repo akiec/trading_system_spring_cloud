@@ -27,7 +27,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     //查询具体的商品信息
     //加入缓存
-    public Result details(Long goodsId) {
+    public Result details(String goodsId) {
         //查找缓存中是否存在
         String redisGoods = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
         Goods goods = Goods.fromString(redisGoods);
@@ -75,7 +75,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 //根据厂家查
     @Override
-    public Result searchByroduct(Long productId) {
+    public Result searchByroduct(String productId) {
         List<Goods> goodsList = goodsMapper.searchByProduct(productId);
         return Result.success(goodsList);
     }

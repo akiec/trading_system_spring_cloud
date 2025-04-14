@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface GoodsMapper {
 
-    Goods details(Long goodsId);
+    Goods details(String goodsId);
 
     List<Goods> searchByPage(int begin, int end);
 
@@ -25,5 +25,5 @@ public interface GoodsMapper {
 
     Boolean putOrder(Goods goods,String newVersion);
 
-    List<Goods> searchByProduct(Long productId);
+    List<Goods> searchByProduct(String productId);
 }

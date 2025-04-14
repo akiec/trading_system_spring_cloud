@@ -17,7 +17,7 @@ public class PaymentController {
     PaymentService paymentService;
     //查看支付信息
     @GetMapping("/details/{id}")
-    public Result details(@PathVariable ("id") Long paymentId) {
+    public Result details(@PathVariable ("id") String paymentId) {
         return paymentService.details(paymentId);
     }
     //支付

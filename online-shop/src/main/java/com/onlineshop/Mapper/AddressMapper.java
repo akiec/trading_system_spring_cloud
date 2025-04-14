@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AddressMapper {
 
-    String searchByUserId(Long userId);
+    String searchByUserId(String userId);
 
     void changeAddress(UserDTO userDTO);
 }

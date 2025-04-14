@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 
 public interface GoodsService {
-    Result details(Long goodsId);
+    Result details(String goodsId);
 
     Result searchByPage(int page,int pageSize);
 
@@ -14,5 +14,5 @@ public interface GoodsService {
 
     Result searchByName(String name, int page, int pageSize);
 
-    Result searchByroduct(Long productId);
+    Result searchByroduct(String productId);
 }

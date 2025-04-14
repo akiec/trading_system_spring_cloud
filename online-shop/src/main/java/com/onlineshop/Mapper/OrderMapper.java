@@ -7,16 +7,16 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 @Mapper
 public interface OrderMapper {
-    List<Order> checkOrder(Long userId);
+    List<Order> checkOrder(String userId);
 
     void createOrder(Order order);
 
-    Order getDetails(Long orderId);
+    Order getDetails(String orderId);
 
-    void delete(Long orderId);
+    void delete(String orderId);
 
-    void setStatus(Long orderId,Integer status);
+    void setStatus(String orderId,Integer status);
 
     @Select("select * from Orders where customerId =#{userId}")
-    Order selectByUserID(Long userId);
+    Order selectByUserID(String userId);
 }

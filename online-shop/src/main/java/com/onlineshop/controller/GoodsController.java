@@ -21,7 +21,7 @@ public class GoodsController {
     }
     //查看详细信息
     @PostMapping("/details/{id}")
-    public Result details(@PathVariable ("id") Long goodsId){
+    public Result details(@PathVariable ("id") String goodsId){
         return goodsService.details(goodsId);
     }
     //查看某一种类商品分页查询
@@ -36,7 +36,7 @@ public class GoodsController {
     }
     //根据厂家检索商品
     @PostMapping("/search/product/{id}")
-    public Result searchByProduct(@PathVariable("id") Long productId){
+    public Result searchByProduct(@PathVariable("id") String productId){
         return goodsService.searchByroduct(productId);
 
     }

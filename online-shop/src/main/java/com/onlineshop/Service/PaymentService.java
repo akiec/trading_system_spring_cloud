@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface PaymentService {
 
-    Result details(Long paymentId);
+    Result details(String paymentId);
 
     Result payOrder(Payment payment);
 
-    Result toPayment(Long userId);
+    Result toPayment(String userId);
 
     Result PayShopCart(List<Payment> payments);
 }

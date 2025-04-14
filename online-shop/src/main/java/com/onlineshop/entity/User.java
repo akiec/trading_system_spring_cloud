@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class User {
     //用户id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
+    private String userId;
     //用户名
     private String userName;
     //密码

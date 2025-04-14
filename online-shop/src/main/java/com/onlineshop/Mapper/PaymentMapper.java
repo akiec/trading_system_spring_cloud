@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface PaymentMapper {
     void createPayment(Payment payment);
-    void deleteByOrderId(Long orderId);
-    Payment getDetailsById(Long paymentId);
-    void updateStatus(Long paymentId, Integer status);
-    List<Payment> toPayments(Long userId);
+    void deleteByOrderId(String orderId);
+    Payment getDetailsById(String paymentId);
+    void updateStatus(String paymentId, Integer status);
+    List<Payment> toPayments(String userId);
 }

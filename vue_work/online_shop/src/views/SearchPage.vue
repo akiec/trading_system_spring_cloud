@@ -55,6 +55,7 @@ async function searchGoods() {
     response = await axios.post(url+'/goods', {
       params: { search: content }
     })
+
     return response.data.data
     
   } catch (error) {

@@ -1,41 +1,53 @@
 <script setup>
-    import { reactive, toRefs, toRaw } from 'vue';
+    import { reactive, toRaw, onBeforeMount } from 'vue';
     import { useRouter, RouterLink } from 'vue-router';
     import { useAuthStore } from '../stores/auth';
     import axios from 'axios';
     const router = useRouter()
     const authStore = useAuthStore()
-    const user = getUserInformation()
-    const orders = getOrderInformation()
+    const user = reactive({
+        userid: null,
+        username: '',
+        phone: null,
+    })
+    let orders = []
 
     function getUserInformation() {
         // 从数据库获取用户数据
-        const userid = authStore.currentUserId
-
-        return reactive({
-            userid : Number(userid),
-            username : 'redsuperhand',
-            phone : '18888888888',
+        user.userid = authStore.currentUserId
+        const url = `http://localhost:8080/user/${Number(user.userid)}`
+        axios.get(url)
+        .then(function (response) {
+            // console.log(response)
+            user.username = response.data.data.userName
+            user.phone = response.data.data.phone
+        })
+        .catch(function (error) {
+            console.log(error)
         })
     }
 
     function getOrderInformation() {
         // 从数据库获取订单数据     
         console.log(toRaw(user).userid)
-        const url = `http://localhost:8080/order/check/${Number(201)}`
+        const url = `http://localhost:8080/order/check/${Number(toRaw(user).userid)}`
         axios.get(url)
         .then(function (response) {
-            console.log(response)
+            orders = response.data.data
+            console.log(orders)
         })
         .catch(function (error) {
             console.log(error)
         })
-        return [
-            {order_id: 'uoid1', product_id: '1', seller_id: 'uuid1'},
-            {order_id: 'uoid2', product_id: '2', seller_id: 'uuid2'},
-            {order_id: 'uoid3', product_id: '3', seller_id: 'uuid3'},
-        ]
+        // orders.unshift({order_id: 'uoid1', product_id: '1', seller_id: 'uuid1'},
+        //     {order_id: 'uoid2', product_id: '2', seller_id: 'uuid2'},
+        //     {order_id: 'uoid3', product_id: '3', seller_id: 'uuid3'})
     }
+
+    onBeforeMount(() => {
+        getUserInformation()
+        getOrderInformation()
+    })
 
     function updateInformation(new_name, new_phone) {
         user.username = new_name

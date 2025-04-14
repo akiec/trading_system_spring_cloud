@@ -2,6 +2,7 @@ package com.onlineshop.Service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.google.gson.Gson;
 import com.onlineshop.DTO.Result;
 import com.onlineshop.Mapper.*;
 import com.onlineshop.Service.OrderService;
@@ -44,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public Result createOrder(Long userId, Long goodsId,Integer count) {
         //前面具体页面使用了redis查询，所以一定存在
         String redisData = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
-        Goods goods = JSONUtil.toBean(redisData, Order.class, true);
+        Goods goods = Goods.fromString(redisData);
         if (goods.getStock() < 1) {
             return Result.error("商品库存不足");
         }

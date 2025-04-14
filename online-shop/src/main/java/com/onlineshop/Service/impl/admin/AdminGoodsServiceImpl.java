@@ -24,11 +24,12 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
     private IdCreater idCreater;
     //添加商品
     @Override
-    public Result addGoods(Goods goods) {
+    public Result addGoods(Goods goods,Long userId) {
         Long id = idCreater.createId(NameContains.GOODS_ID + goods.getName());
         goods.setGoodsId(id);
         goods.setCreateTime(LocalDateTime.now());
         goods.setUpdateTime(LocalDateTime.now());
+        goods.setProductId(userId);
         goodsMapper.addGoods(goods);
         return Result.success();
     }

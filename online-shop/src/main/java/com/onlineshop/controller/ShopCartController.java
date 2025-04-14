@@ -4,11 +4,12 @@ import com.onlineshop.DTO.Result;
 import com.onlineshop.Service.ShopCartService;
 import com.onlineshop.entity.Goods;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/shopCart")
@@ -17,8 +18,9 @@ public class ShopCartController {
     private ShopCartService shopCartService;
     //查看购物车信息
     //分页查询吧
-    @PostMapping("")
-    public Result searchByPage(@RequestParam Long userId,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
+    @PostMapping("/{userId}")
+    public Result searchByPage(@PathVariable("userId") Long userId,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
+        log.info("接受到参数userId"+userId);
         return shopCartService.searchByPage(userId,page,pageSize);
     }
     //结算订单(多个或一个)

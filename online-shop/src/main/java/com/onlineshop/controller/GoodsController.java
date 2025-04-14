@@ -34,7 +34,12 @@ public class GoodsController {
     public Result name(@PathVariable("name") String name,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
         return goodsService.searchByName(name,page,pageSize);
     }
+    //根据厂家检索商品
+    @PostMapping("/search/product")
+    public Result searchByProduct(@RequestParam Long productId){
+        return goodsService.searchByroduct(productId);
 
+    }
 
 
 }

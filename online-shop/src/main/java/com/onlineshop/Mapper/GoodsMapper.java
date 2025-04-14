@@ -19,7 +19,7 @@ public interface GoodsMapper {
 
     void addGoods(Goods goods);
 
-    void delete(Long goodsId);
+    void delete(String goodsId);
 
     void updateGoods(Goods goods);
 

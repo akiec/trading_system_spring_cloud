@@ -1,5 +1,7 @@
 package com.onlineshop.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class User {
     //用户id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
     //用户名
     private String userName;

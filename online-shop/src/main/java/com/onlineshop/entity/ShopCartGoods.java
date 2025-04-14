@@ -1,5 +1,7 @@
 package com.onlineshop.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ShopCartGoods {
     //商品ID
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long goodsId;
     //商品名称
     private String name;
@@ -34,7 +37,9 @@ public class ShopCartGoods {
     //版本号
     private String version;
     //商户ID
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long productId;
     //用户id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 }

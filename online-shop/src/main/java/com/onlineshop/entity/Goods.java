@@ -1,6 +1,8 @@
 package com.onlineshop.entity;
 
 import cn.hutool.json.JSONObject;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class Goods {
     //商品ID
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long goodsId;
     //商品名称
     private String name;
@@ -35,6 +38,7 @@ public class Goods {
     //版本号
     private String version;
     //商户ID
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long productId;
     public static Goods fromString(String str) {
         Goods goods = new Goods();

@@ -63,19 +63,19 @@ CREATE TABLE ShopCartGoods(
 );
 
 
-alter table goods modify column goodsId bigint unsigned not null;
-alter table user modify column userId bigint unsigned not null;
-alter table goods modify column productId bigint unsigned;
-alter table orders modify column orderId bigint unsigned not null;
-alter table orders modify column customerId bigint unsigned;
-alter table orders modify column productId bigint unsigned;
-alter table orders modify column paymentId bigint unsigned;
-alter table orders modify column goodsId bigint unsigned;
-alter table payment_table modify column orderId bigint unsigned;
-alter table payment_table modify column paymentId bigint unsigned not null;
-alter table payment_table modify column userId bigint unsigned;
-alter table payment_table modify column productId bigint unsigned;
-alter table shopcartgoods modify column goodsId bigint unsigned not null;
-alter table shopcartgoods modify column productId bigint unsigned;
-alter table shopcartgoods modify column userId bigint unsigned;
+alter table goods modify column goodsId string not null;
+alter table user modify column userId string not null;
+alter table goods modify column productId string;
+alter table orders modify column orderId string not null;
+alter table orders modify column customerId string;
+alter table orders modify column productId string;
+alter table orders modify column paymentId string;
+alter table orders modify column goodsId string;
+alter table payment_table modify column orderId string;
+alter table payment_table modify column paymentId string not null;
+alter table payment_table modify column userId string;
+alter table payment_table modify column productId string;
+alter table shopcartgoods modify column goodsId string not null;
+alter table shopcartgoods modify column productId string;
+alter table shopcartgoods modify column userId string;
 

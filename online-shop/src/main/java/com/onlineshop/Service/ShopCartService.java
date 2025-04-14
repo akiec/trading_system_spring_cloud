@@ -11,4 +11,6 @@ public interface ShopCartService {
     Result delete(Long goodsId);
 
     Result summary(Long userId, List<Goods> goodsList);
+
+    Result add(Goods goods,Long userId);
 }

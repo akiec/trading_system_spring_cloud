@@ -48,6 +48,7 @@ CREATE TABLE payment_table (
                                updateTime TIMESTAMP default(current_timestamp) COMMENT '更新时间'
 );
 CREATE TABLE ShopCartGoods(
+                              userId bigInt,
                               goodsId LONG not null COMMENT '商品ID',
                               name VARCHAR(50) COMMENT '商品名称',
                               description TEXT COMMENT '商品描述',

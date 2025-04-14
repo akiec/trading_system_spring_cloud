@@ -10,4 +10,5 @@ public interface ShopCartMapper {
     List<Goods> searchByPage(Long userId, int begin, int end);
     void delete(Long goodsId);
 
+    void add(Goods goods,Long userId);
 }

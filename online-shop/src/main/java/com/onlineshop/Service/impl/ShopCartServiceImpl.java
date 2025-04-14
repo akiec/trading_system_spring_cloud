@@ -71,4 +71,12 @@ public class ShopCartServiceImpl implements ShopCartService {
         }
         return Result.success(paymentList, (long) paymentList.size());
     }
+
+    @Override
+    public Result add(Goods goods,Long userId) {
+        goods.setCreateTime(LocalDateTime.now());
+        goods.setUpdateTime(LocalDateTime.now());
+        shopCartMapper.add(goods,userId);
+        return Result.success();
+    }
 }

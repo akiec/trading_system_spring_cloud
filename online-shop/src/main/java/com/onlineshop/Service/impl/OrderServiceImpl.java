@@ -45,8 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public Result createOrder(Long userId, Long goodsId,Integer count) {
         //前面具体页面使用了redis查询，所以一定存在
         String redisData = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
-        Gson json =new Gson();
-        Goods goods = json.fromJson(redisData, Goods.class);
+        Goods goods = Goods.fromString(redisData);
         if (goods.getStock() < 1) {
             return Result.error("商品库存不足");
         }
@@ -58,9 +57,7 @@ public class OrderServiceImpl implements OrderService {
         if(isSuccess){
             //更新redis缓存
             Goods newGoods = goodsMapper.details(goodsId);
-            Gson  json2 =new Gson();
-            String jsonString = json2.toJson(newGoods);
-            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, jsonString);
+            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newGoods.toString());
             //生成订单id
             Long orderId = idCreater.createId(NameContains.ORDER_ID + goodsId);
             //生成支付id

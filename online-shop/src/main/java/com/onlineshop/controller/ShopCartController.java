@@ -17,8 +17,8 @@ public class ShopCartController {
     private ShopCartService shopCartService;
     //查看购物车信息
     //分页查询吧
-    @PostMapping("")
-    public Result searchByPage(@RequestParam Long userId,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
+    @PostMapping("/{userId}")
+    public Result searchByPage(@PathVariable("userId") Long userId,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
         return shopCartService.searchByPage(userId,page,pageSize);
     }
     //结算订单(多个或一个)

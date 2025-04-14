@@ -33,14 +33,11 @@ public class GoodsServiceImpl implements GoodsService {
         //不存在查找并写入
         if(StrUtil.isBlank(redisGoods)){
             Goods goods = goodsMapper.details(goodsId);
-            Gson json =new Gson();
-            String jsonString = json.toJson(goods);
-            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, jsonString);
+            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, goods.toString());
             return Result.success(goods);
         }
         //存在直接返回
-        Gson json =new Gson();
-        Goods goods = json.fromJson(redisGoods, Goods.class);
+        Goods goods = Goods.fromString(redisGoods);
         return Result.success(goods);
     }
     @Override

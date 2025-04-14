@@ -56,8 +56,7 @@
     })
 
     function updateInformation() {
-        console.log(user.address)
-        json = {
+        const json = {
             userId: user.userid,
             userName: user.username,
             isAdmin: false,       
@@ -66,15 +65,35 @@
             nickName: '',
             address: user.address,
         }
-        const address_url = "http://localhost:8080/user/address"
+        
         const update_url = "http://localhost:8080/user/detail"
         axios.post(update_url, json).then(function (response) {
-            alert('改变成功！')
+            alert('信息更新成功！')
             console.log(user.username,user.phone)
             router.push('/home')
         }).catch(function (error) {
             console.log(error)
         })  
+    }
+
+    function changeAddress() {
+        console.log(user.address)
+        const address_url = "http://localhost:8080/user/address"
+        const json = {
+            userId: user.userid,
+            userName: user.username,
+            isAdmin: true,       
+            phone: user.phone, 
+            token: '',
+            nickName: '',
+            address: user.address,
+        }
+        axios.post(address_url, json).then(function (response) {
+            alert("地址修改成功")
+            console.log(response)
+        }).catch(function (error) {
+            console.log(error)
+        })
     }
     
     function Logout() {
@@ -111,6 +130,7 @@
             <div class="auth-btn">
                 <button @click="updateInformation()">更新信息</button>
                 <button @click="Logout">退出登录</button>
+                <button @click="changeAddress">更新地址</button>
             </div>
         </div>
         <div class="orders">

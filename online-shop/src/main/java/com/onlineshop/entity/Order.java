@@ -18,23 +18,23 @@ public class Order {
     private int count;
     //订单id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long orderId;
+    private String orderId;
     //客户id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long customerId;
+    private String customerId;
     //商户id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long productId;
+    private String productId;
     //支付链接id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long paymentId;
+    private String paymentId;
     //客户地址
     private String address;
     //订单状态
     private Integer status;
     //商品id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long goodsId;
+    private String goodsId;
     //下单时间
     private LocalDateTime orderTime;
 }

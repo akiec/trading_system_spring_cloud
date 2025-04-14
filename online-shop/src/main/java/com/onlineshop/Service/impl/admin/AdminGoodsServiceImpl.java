@@ -24,9 +24,9 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
     private IdCreater idCreater;
     //添加商品
     @Override
-    public Result addGoods(Goods goods,Long userId) {
+    public Result addGoods(Goods goods,String userId) {
         Long id = idCreater.createId(NameContains.GOODS_ID + goods.getName());
-        goods.setGoodsId(id);
+        goods.setGoodsId(id.toString());
         goods.setCreateTime(LocalDateTime.now());
         goods.setUpdateTime(LocalDateTime.now());
         goods.setProductId(userId);
@@ -35,7 +35,7 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
     }
     //删除商品
     @Override
-    public Result delete(Long goodsId) {
+    public Result delete(String goodsId) {
         //查询Redis中是否存在
         String s = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
         if(!StrUtil.isBlank(s)) {

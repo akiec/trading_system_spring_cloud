@@ -10,6 +10,6 @@ public interface UserMapper {
     User queryByName(String username);
     User queryByPhone(String phone);
     void createUser(User user);
-    User queryByID(Long userId);
+    User queryByID(String userId);
     void updateUser(User user);
 }

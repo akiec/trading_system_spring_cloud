@@ -6,11 +6,11 @@ import com.onlineshop.entity.Goods;
 import java.util.List;
 
 public interface ShopCartService {
-    Result searchByPage(Long userId, int page, int pageSize);
+    Result searchByPage(String userId, int page, int pageSize);
 
-    Result delete(Long goodsId);
+    Result delete(String goodsId);
 
-    Result summary(Long userId, List<Goods> goodsList);
+    Result summary(String userId, List<Goods> goodsList);
 
-    Result add(Goods goods,Long userId);
+    Result add(Goods goods,String userId);
 }

@@ -1,6 +1,6 @@
 <script setup>
 //通过query传入content参数作为搜索依据，随后显示对应搜索结果
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 // 模拟数据
@@ -41,7 +41,7 @@ function search() {
 async function searchGoods() {
   const url = "http://localhost:8080"
   try {
-    console.log(url+`/goods/search/${(content)}`)
+    console.log(url+`/goods/search/${content}`)
     // 1. 首先尝试名称搜索
     
     let response = await axios.post(url + `/goods/search/${String(content)}`)
@@ -67,10 +67,20 @@ async function searchGoods() {
 const Products = ref([])
 const route = useRoute()
 const content = route.query.content
-console.log(content)//输入的搜索信息
-onMounted( async() => {
-  Products.value = await searchGoods();
-})
+// console.log(content)//输入的搜索信息
+// onMounted( async() => {
+//   Products.value = await searchGoods();
+// })
+watch(
+  () => route.query.content,
+  async (newContent) => {
+    if (newContent) {
+      Products.value = await searchGoods(newContent)
+    }
+  },
+  { immediate: true } // 立即执行一次以处理初始参数
+)
+
 </script>
 
 <template>

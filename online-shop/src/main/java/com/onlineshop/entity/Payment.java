@@ -16,18 +16,18 @@ public class Payment {
     private double totalMoney;
     //支付id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long paymentId;
+    private String paymentId;
     //订单id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long orderId;
+    private String orderId;
     //用户id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
+    private String userId;
     //支付状态（0->未支付，1->支付成功，-1->支付失败）
     private Integer paymentStatus;
     //商户id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long productId;
+    private String productId;
     //创建时间
     LocalDateTime createTime;
     //修改时间

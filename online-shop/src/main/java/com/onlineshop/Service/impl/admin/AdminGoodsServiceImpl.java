@@ -31,7 +31,7 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
         goods.setUpdateTime(LocalDateTime.now());
         goods.setProductId(userId);
         goodsMapper.addGoods(goods);
-        return Result.success();
+        return Result.success(goods.getGoodsId());
     }
     //删除商品
     @Override

@@ -15,8 +15,8 @@ public class AdminGoodsController {
     private AdminGoodsService goodsService;
     //新增商品
     @PostMapping("/add")
-    public Result addGoods(@RequestBody Goods goods) {
-        return goodsService.addGoods(goods);
+    public Result addGoods(@RequestBody Goods goods,@RequestParam Long userId) {
+        return goodsService.addGoods(goods,userId);
     }
     //删除商品
     @DeleteMapping("/delete/{id}")

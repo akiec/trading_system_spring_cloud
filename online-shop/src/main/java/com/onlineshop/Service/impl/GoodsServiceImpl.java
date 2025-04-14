@@ -10,9 +10,11 @@ import com.onlineshop.Service.GoodsService;
 import com.onlineshop.Utils.NameContains;
 import com.onlineshop.entity.Goods;
 import jakarta.annotation.Resource;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
-
+import com.google.gson.*;
 import java.util.List;
 
 @Service
@@ -31,11 +33,14 @@ public class GoodsServiceImpl implements GoodsService {
         //不存在查找并写入
         if(StrUtil.isBlank(redisGoods)){
             Goods goods = goodsMapper.details(goodsId);
-            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, goods.toString());
+            Gson json =new Gson();
+            String jsonString = json.toJson(goods);
+            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, jsonString);
             return Result.success(goods);
         }
         //存在直接返回
-        Goods goods = JSONUtil.toBean(redisGoods, Goods.class);
+        Gson json =new Gson();
+        Goods goods = json.fromJson(redisGoods, Goods.class);
         return Result.success(goods);
     }
     @Override
@@ -69,5 +74,11 @@ public class GoodsServiceImpl implements GoodsService {
         //查询
         List<Goods> goodsList = goodsMapper.searchByName(name,begin,end);
         return Result.success(goodsList, (long) pageSize);
+    }
+//根据厂家查
+    @Override
+    public Result searchByroduct(Long productId) {
+        List<Goods> goodsList = goodsMapper.searchByProduct(productId);
+        return Result.success(goodsList);
     }
 }

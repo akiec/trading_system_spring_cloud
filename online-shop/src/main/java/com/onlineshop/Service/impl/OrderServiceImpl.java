@@ -2,6 +2,7 @@ package com.onlineshop.Service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.google.gson.Gson;
 import com.onlineshop.DTO.Result;
 import com.onlineshop.Mapper.*;
 import com.onlineshop.Service.OrderService;
@@ -44,7 +45,8 @@ public class OrderServiceImpl implements OrderService {
     public Result createOrder(Long userId, Long goodsId,Integer count) {
         //前面具体页面使用了redis查询，所以一定存在
         String redisData = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
-        Goods goods = JSONUtil.toBean(redisData, Order.class, true);
+        Gson json =new Gson();
+        Goods goods = json.fromJson(redisData, Goods.class);
         if (goods.getStock() < 1) {
             return Result.error("商品库存不足");
         }
@@ -56,7 +58,9 @@ public class OrderServiceImpl implements OrderService {
         if(isSuccess){
             //更新redis缓存
             Goods newGoods = goodsMapper.details(goodsId);
-            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newGoods.toString());
+            Gson  json2 =new Gson();
+            String jsonString = json2.toJson(newGoods);
+            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, jsonString);
             //生成订单id
             Long orderId = idCreater.createId(NameContains.ORDER_ID + goodsId);
             //生成支付id

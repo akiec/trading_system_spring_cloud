@@ -13,4 +13,6 @@ public interface GoodsService {
     Result searchByType(String type, int page, int pageSize);
 
     Result searchByName(String name, int page, int pageSize);
+
+    Result searchByroduct(Long productId);
 }

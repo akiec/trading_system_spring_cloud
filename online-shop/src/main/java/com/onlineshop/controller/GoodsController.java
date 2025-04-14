@@ -35,8 +35,8 @@ public class GoodsController {
         return goodsService.searchByName(name,page,pageSize);
     }
     //根据厂家检索商品
-    @PostMapping("/search/product")
-    public Result searchByProduct(@RequestParam Long productId){
+    @PostMapping("/search/product/{id}")
+    public Result searchByProduct(@PathVariable("id") Long productId){
         return goodsService.searchByroduct(productId);
 
     }

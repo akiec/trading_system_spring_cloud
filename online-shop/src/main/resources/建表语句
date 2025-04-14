@@ -29,7 +29,7 @@ CREATE TABLE Orders (
                              totalPrice DOUBLE comment '总价格',
                              count INT comment '数量',
                              orderId LONG NOT NULL NOT NULL comment '订单ID',
-                             customerId LONG comment '客户ID',
+                             customerId unsigned big int comment '客户ID',
                              productId LONG comment '厂家ID',
                              paymentId LONG comment '支付ID',
                              address TEXT comment '收货地址',

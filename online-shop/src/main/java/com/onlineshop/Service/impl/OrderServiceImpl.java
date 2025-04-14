@@ -12,6 +12,7 @@ import com.onlineshop.entity.Goods;
 import com.onlineshop.entity.Order;
 import com.onlineshop.entity.Payment;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 //可选择利用线程池和消息队列进行轮询下单
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -37,7 +39,10 @@ public class OrderServiceImpl implements OrderService {
     //查看用户的订单信息
     @Override
     public Result checkOrder(Long userId) {
+
+        Order temorder = orderMapper.selectByUserID(userId);
         List<Order> orderList = orderMapper.checkOrder(userId);
+
         return Result.success(orderList, (long) orderList.size());
     }
     //创建订单

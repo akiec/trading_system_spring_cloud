@@ -3,15 +3,19 @@
         <img src="../assets/commodity.png">
         <form class="order-content">
             <h1>订单编号：{{ order }}</h1>
-            <h1 id="product_id" @click="searchProduct(product)">产品编号：{{ product }}</h1>
-            <h1>卖家编号：{{ seller }}</h1>
+            <h1 id="goods_id" @click="searchProduct(goods)">产品编号：{{ goods }}</h1>
+            <h1>卖家编号：{{ product }}</h1>
+            <h1>商品数量：{{ count }}</h1>
+            <h1>交易总额：{{ totalPrice }}</h1>
+            <h1>收货地址：{{ address }}</h1>
+            <h1>状态码：{{ status }}</h1>
         </form>
     </div>
 </template>
 
 <script setup>
     import { useRouter } from 'vue-router';
-    defineProps(['order', 'product', 'seller'])
+    defineProps(['order', 'goods', 'product', 'count', 'totalPrice', 'address', 'status'])
     const router = useRouter()
     function searchProduct(product) {
         console.log(product)
@@ -43,11 +47,11 @@
         line-height: 100px;
     }
 
-    #product_id {
+    #goods_id {
         font-style: italic;
     }
 
-    #product_id:hover {
+    #goods_id:hover {
         color: orange;
         text-decoration: underline;
     }

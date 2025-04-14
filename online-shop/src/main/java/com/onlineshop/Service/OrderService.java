@@ -3,11 +3,11 @@ package com.onlineshop.Service;
 import com.onlineshop.DTO.Result;
 
 public interface OrderService {
-    Result checkOrder(Long userId);
+    Result checkOrder(String userId);
 
-    Result createOrder(Long userId, Long goodsId,Integer count);
+    Result createOrder(String userId, String goodsId,Integer count);
 
-    Result deleteOrder(Long orderId,Integer status);
+    Result deleteOrder(String orderId,Integer status);
 
-    Result details(Long orderId);
+    Result details(String orderId);
 }

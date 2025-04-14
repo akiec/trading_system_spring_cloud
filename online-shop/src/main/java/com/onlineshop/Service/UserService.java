@@ -17,7 +17,7 @@ public interface UserService {
 
     Result sendCode(String phone);
 
-    Result userDetails(Long userId);
+    Result userDetails(String userId);
 
     Result updateUser(UserDTO userDTO);
 

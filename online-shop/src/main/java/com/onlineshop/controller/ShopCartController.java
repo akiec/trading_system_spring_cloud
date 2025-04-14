@@ -19,23 +19,23 @@ public class ShopCartController {
     //查看购物车信息
     //分页查询吧
     @PostMapping("/{userId}")
-    public Result searchByPage(@PathVariable("userId") Long userId,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
+    public Result searchByPage(@PathVariable("userId") String userId,@RequestParam(value = "page",defaultValue = "1") int page, @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
         log.info("接受到参数userId"+userId);
         return shopCartService.searchByPage(userId,page,pageSize);
     }
     //结算订单(多个或一个)
     @PostMapping("/summary/{id}")
-    public Result summary(@PathVariable("id") Long userId, @RequestParam List<Goods> goodsList){
+    public Result summary(@PathVariable("id") String userId, @RequestParam List<Goods> goodsList){
         return shopCartService.summary(userId,goodsList);
     }
     //删除某一商品
     @DeleteMapping("/delete/{goodsId}")
-    public Result delete(@PathVariable("goodsId") Long goodsId){
+    public Result delete(@PathVariable("goodsId") String goodsId){
         return shopCartService.delete(goodsId);
     }
     //加购物车
     @PostMapping("/add/{id}")
-    public Result add(@RequestBody Goods goods,@PathVariable("id") Long userId){
+    public Result add(@RequestBody Goods goods,@PathVariable("id") String userId){
         return shopCartService.add(goods,userId);
     }
 }

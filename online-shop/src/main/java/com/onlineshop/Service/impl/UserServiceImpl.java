@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
     }
     //查询用户信息
     @Override
-    public Result userDetails(Long userId) {
+    public Result userDetails(String userId) {
         User user = userMapper.queryByID(userId);
         UserDTO userDTO = UserDTOCopy(user);;
         return Result.success(userDTO);
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
             return Result.error("用户已经存在");
         }
         User user = new User();
-        Long id = idCreater.createId(USER_ID);
+        String id = idCreater.createId(USER_ID).toString();
         user.setUserId(id);
         user.setIsAdmin(false);
         //生成随机的账号密码
@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
     private User createUserByPhone(String phone) {
         User user = new User();
         user.setPhone(phone);
-        Long id = idCreater.createId(USER_ID);
+        String id = idCreater.createId(USER_ID).toString();
         user.setUserId(id);
         user.setIsAdmin(false);
         //生成随机的账号密码

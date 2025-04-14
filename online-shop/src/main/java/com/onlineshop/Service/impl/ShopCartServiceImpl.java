@@ -31,7 +31,7 @@ public class ShopCartServiceImpl implements ShopCartService {
     private PaymentMapper paymentMapper;
     //查看购物车商品
     @Override
-    public Result searchByPage(Long userId, int page, int pageSize) {
+    public Result searchByPage(String userId, int page, int pageSize) {
         int begin = (page - 1) * pageSize;
         int end = page * pageSize;
         ShoppingCart shoppingCart = new ShoppingCart();
@@ -40,22 +40,22 @@ public class ShopCartServiceImpl implements ShopCartService {
     }
     //删除购物车
     @Override
-    public Result delete(Long goodsId) {
+    public Result delete(String goodsId) {
         shopCartMapper.delete(goodsId);
         return null;
     }
     //结算
     @Override
-    public Result summary(Long userId, List<Goods> goodsList) {
+    public Result summary(String userId, List<Goods> goodsList) {
         List<Payment> paymentList = new ArrayList<>(goodsList.size());
         for (Goods goods : goodsList) {
             if(goods.getStock()<=0){
                 return Result.error(goods.getName()+"库存不足");
             }
             //生成订单id
-            Long orderId = idCreater.createId(NameContains.ORDER_ID + goods.getGoodsId());
+            String orderId = idCreater.createId(NameContains.ORDER_ID + goods.getGoodsId()).toString();
             //生成支付id
-            Long paymentId = idCreater.createId(NameContains.PAYMENT_ID + orderId);
+            String paymentId = idCreater.createId(NameContains.PAYMENT_ID + orderId).toString();
             //查找地址，地址维护表查询
             String address = addressMapper.searchByUserId(userId);
             //生成新的订单
@@ -70,7 +70,7 @@ public class ShopCartServiceImpl implements ShopCartService {
     }
 
     @Override
-    public Result add(Goods goods,Long userId) {
+    public Result add(Goods goods,String userId) {
         goods.setCreateTime(LocalDateTime.now());
         goods.setUpdateTime(LocalDateTime.now());
         ShopCartGoods shopCartGoods = new ShopCartGoods(goods.getGoodsId(),goods.getName(),goods.getDescription(),goods.getPrice(),goods.getStock(),goods.getImage(),goods.getCategory(),goods.getCreateTime(),goods.getUpdateTime(),goods.getVersion(),goods.getProductId(),userId);

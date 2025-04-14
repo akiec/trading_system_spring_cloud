@@ -17,7 +17,7 @@ import java.util.Map;
 public class ShopCartGoods {
     //商品ID
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long goodsId;
+    private String goodsId;
     //商品名称
     private String name;
     //商品描述
@@ -38,8 +38,8 @@ public class ShopCartGoods {
     private String version;
     //商户ID
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long productId;
+    private String productId;
     //用户id
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
+    private String userId;
 }

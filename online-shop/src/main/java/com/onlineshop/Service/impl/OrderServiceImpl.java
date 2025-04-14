@@ -38,16 +38,15 @@ public class OrderServiceImpl implements OrderService {
 
     //查看用户的订单信息
     @Override
-    public Result checkOrder(Long userId) {
+    public Result checkOrder(String userId) {
 
-        Order temorder = orderMapper.selectByUserID(userId);
         List<Order> orderList = orderMapper.checkOrder(userId);
 
         return Result.success(orderList, (long) orderList.size());
     }
     //创建订单
     @Override
-    public Result createOrder(Long userId, Long goodsId,Integer count) {
+    public Result createOrder(String userId, String goodsId,Integer count) {
         //前面具体页面使用了redis查询，所以一定存在
         String redisData = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
         Goods goods = Goods.fromString(redisData);
@@ -64,9 +63,9 @@ public class OrderServiceImpl implements OrderService {
             Goods newGoods = goodsMapper.details(goodsId);
             stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newGoods.toString());
             //生成订单id
-            Long orderId = idCreater.createId(NameContains.ORDER_ID + goodsId);
+            String orderId = idCreater.createId(NameContains.ORDER_ID + goodsId).toString();
             //生成支付id
-            Long paymentId = idCreater.createId(NameContains.PAYMENT_ID + orderId);
+            String paymentId = idCreater.createId(NameContains.PAYMENT_ID + orderId).toString();
             //查找地址，地址维护表查询
             String address = addressMapper.searchByUserId(userId);
             //生成新的订单
@@ -83,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
     }
     //删除订单
     @Override
-    public Result deleteOrder(Long orderId, Integer status) {
+    public Result deleteOrder(String orderId, Integer status) {
         //判断是否已经支付
         if(status>0){
             //删除订单
@@ -97,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
     }
     //查看具体订单信息
     @Override
-    public Result details(Long orderId) {
+    public Result details(String orderId) {
         return Result.success(orderMapper.getDetails(orderId));
     }
 

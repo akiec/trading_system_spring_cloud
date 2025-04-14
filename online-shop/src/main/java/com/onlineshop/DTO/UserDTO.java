@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
+    private String userId;
     private String userName;
     private Boolean isAdmin;
     private String token;

@@ -35,7 +35,7 @@ public class UserController {
     }
     //查看用户信息
     @GetMapping ("/{id}")
-    public Result userDetails(@PathVariable ("id") Long userId) {
+    public Result userDetails(@PathVariable ("id") String userId) {
         return userService.userDetails(userId);
     }
     //用户信息维护
@@ -45,7 +45,7 @@ public class UserController {
     }
     //待支付信息查看
     @GetMapping("/toPayment/{id}")
-    public Result toPayment(@PathVariable("id") Long userId) {
+    public Result toPayment(@PathVariable("id") String userId) {
         return paymentService.toPayment(userId);
     }
     //修改用户收货

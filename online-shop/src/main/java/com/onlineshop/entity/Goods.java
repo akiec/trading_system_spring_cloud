@@ -18,7 +18,7 @@ import java.util.Map;
 public class Goods {
     //商品ID
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long goodsId;
+    private String goodsId;
     //商品名称
     private String name;
     //商品描述
@@ -39,7 +39,7 @@ public class Goods {
     private String version;
     //商户ID
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long productId;
+    private String productId;
     public static Goods fromString(String str) {
         Goods goods = new Goods();
         Map<String, String> paramMap = new HashMap<>();
@@ -52,7 +52,7 @@ public class Goods {
         }
 
         if (paramMap.containsKey("goodsId")) {
-            goods.goodsId = Long.parseLong(paramMap.get("goodsId"));
+            goods.goodsId = paramMap.get("goodsId");
         }
         if (paramMap.containsKey("name")) {
             goods.name = paramMap.get("name");

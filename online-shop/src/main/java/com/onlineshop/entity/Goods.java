@@ -1,5 +1,6 @@
 package com.onlineshop.entity;
 
+import cn.hutool.json.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,4 +33,20 @@ public class Goods {
     private String version;
     //商户ID
     private Long productId;
+    public String toString(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("goodsId", goodsId);
+        jsonObject.put("name", name);
+        jsonObject.put("description", description);
+        jsonObject.put("price", price);
+        jsonObject.put("stock", stock);
+        jsonObject.put("image", image);
+        jsonObject.put("category", category);
+        jsonObject.put("createTime", createTime.toString());
+        jsonObject.put("updateTime", updateTime.toString());
+        jsonObject.put("version", version);
+        jsonObject.put("productId", productId);
+        return jsonObject.toString();
+    }
+
 }

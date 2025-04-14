@@ -6,7 +6,7 @@
     <!--查询某一用户的全部订单信息-->
     <select id="checkOrder" resultType="com.onlineshop.entity.Order">
         select * from Orders
-        where customerId =#{userId}
+        where customerId=#{userId}
     </select>
     <!--创建订单-->
     <insert id="createOrder">

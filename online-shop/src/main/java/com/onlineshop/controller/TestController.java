@@ -10,7 +10,7 @@ public class TestController {
     public String post(){
         return "post请求";
     }
-    @GetMapping("/get")
+    @GetMapping("/get/{id}")
     public String get(){
         return "get请求";
     }

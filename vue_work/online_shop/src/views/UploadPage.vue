@@ -19,16 +19,7 @@ function add() {
         console.log(error);
     });
 }
-function show() {
-    console.log("开始查询");
-    const url = "http://localhost:8080/goods"    
-    axios.post(url).then(function (response) {// 成功处理
-        console.log(response);
-    }).catch(function (error) {// 错误处理
-        console.log(error);
-    }).finally(function () {// 总是执行
-    });
-}
+
 </script>
 
 <template>
@@ -41,7 +32,6 @@ function show() {
         <p>商品种类:</p><input name="" id="commodity_category"></input>
     </ul>
     <button @click="add()">确认添加信息</button>
-    <button @click="show()">查询信息</button>
     <router-link :to="{path:'home'}">
         <button class="button_search">返回主页</button>
     </router-link>

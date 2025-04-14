@@ -6,10 +6,7 @@ import com.onlineshop.Mapper.*;
 import com.onlineshop.Service.ShopCartService;
 import com.onlineshop.Utils.IdCreater;
 import com.onlineshop.Utils.NameContains;
-import com.onlineshop.entity.Goods;
-import com.onlineshop.entity.Order;
-import com.onlineshop.entity.Payment;
-import com.onlineshop.entity.ShoppingCart;
+import com.onlineshop.entity.*;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -76,7 +73,8 @@ public class ShopCartServiceImpl implements ShopCartService {
     public Result add(Goods goods,Long userId) {
         goods.setCreateTime(LocalDateTime.now());
         goods.setUpdateTime(LocalDateTime.now());
-        shopCartMapper.add(goods,userId);
+        ShopCartGoods shopCartGoods = new ShopCartGoods(goods.getGoodsId(),goods.getName(),goods.getDescription(),goods.getPrice(),goods.getStock(),goods.getImage(),goods.getCategory(),goods.getCreateTime(),goods.getUpdateTime(),goods.getVersion(),goods.getProductId(),userId);
+        shopCartMapper.add(shopCartGoods);
         return Result.success();
     }
 }

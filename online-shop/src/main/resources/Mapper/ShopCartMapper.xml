@@ -11,9 +11,8 @@
         delete from ShopCartGoods
         where goodsId=#{goodsId}
     </delete>
-    <insert id="add">
-        insert into ShopCartGoods
-        (userId,goodsId,name,description,price,stock,image,category,createTime,updateTime,version,productId)
-        values (#{userId},#{goodsId},#{name},#{description},#{price},#{stock},#{image},#{category},#{createTime},#{updateTime},#{version},#{productId})
-    </insert>
+<insert id="add">
+    insert into ShopCartGoods(goodsId,name,description,price,stock,image,category,createTime,updateTime,productId,version,userId)
+    values (#{goodsId},#{name},#{description},#{price},#{stock},#{image},#{category},#{createTime},#{updateTime},#{productId},#{version},#{userId})
+</insert>
 </mapper>

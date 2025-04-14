@@ -1,5 +1,5 @@
 CREATE TABLE Goods (
-                       goodsId LONG not null COMMENT '商品ID',
+                       goodsId bigint unsinged not null COMMENT '商品ID',
                        name VARCHAR(50) COMMENT '商品名称',
                        description TEXT COMMENT '商品描述',
                        price DOUBLE COMMENT '商品价格',
@@ -9,10 +9,10 @@ CREATE TABLE Goods (
                        createTime TIMESTAMP default(current_timestamp) COMMENT '创建时间',
                        updateTime TIMESTAMP default(current_timestamp) COMMENT '更新时间',
                        version varchar(50) not null default '1.0.0' comment '版本号',
-                       productId LONG comment '厂家信息'
+                       productId bigint unsinged comment '厂家信息'
 );
 CREATE TABLE User(
-                    userId LONG NOT NULL comment '用户ID',
+                    userId bigint unsinged NOT NULL comment '用户ID',
                     userName varchar(50) comment '用户名称',
                     password varchar(50) comment '用户密码',
                     isAdmin bool comment '是否为管理员',
@@ -28,28 +28,28 @@ CREATE TABLE Address(
 CREATE TABLE Orders (
                              totalPrice DOUBLE comment '总价格',
                              count INT comment '数量',
-                             orderId LONG NOT NULL NOT NULL comment '订单ID',
-                             customerId LONG comment '客户ID',
-                             productId LONG comment '厂家ID',
-                             paymentId LONG comment '支付ID',
+                             orderId bigint unsinged NOT NULL NOT NULL comment '订单ID',
+                             customerId bigint unsinged comment '客户ID',
+                             productId bigint unsinged comment '厂家ID',
+                             paymentId bigint unsinged comment '支付ID',
                              address TEXT comment '收货地址',
                              status INT comment '状态码',
-                             goodsId LONG comment '商品ID',
+                             goodsId bigint unsinged comment '商品ID',
                              orderTime TIMESTAMP default(current_timestamp) comment '下单时间'
 );
 CREATE TABLE payment_table (
                                totalMoney DOUBLE comment '总金额',
-                               paymentId LONG  NOT NULL comment '支付ID',
-                               orderId LONG comment '订单ID',
-                               userId LONG comment '用户ID',
+                               paymentId bigint unsinged  NOT NULL comment '支付ID',
+                               orderId bigint unsinged comment '订单ID',
+                               userId bigint unsinged comment '用户ID',
                                paymentStatus INT comment '支付状态',
-                               productId LONG comment '厂家ID',
+                               productId bigint unsinged comment '厂家ID',
                                createTime TIMESTAMP default(current_timestamp) COMMENT '创建时间',
                                updateTime TIMESTAMP default(current_timestamp) COMMENT '更新时间'
 );
 CREATE TABLE ShopCartGoods(
                               userId bigInt,
-                              goodsId LONG not null COMMENT '商品ID',
+                              goodsId bigint unsinged not null COMMENT '商品ID',
                               name VARCHAR(50) COMMENT '商品名称',
                               description TEXT COMMENT '商品描述',
                               price DOUBLE COMMENT '商品价格',
@@ -59,6 +59,23 @@ CREATE TABLE ShopCartGoods(
                               createTime TIMESTAMP default(current_timestamp) COMMENT '创建时间',
                               updateTime TIMESTAMP default(current_timestamp) COMMENT '更新时间',
                               version varchar(50) not null default '1.0.0' comment '版本号',
-                              productId LONG comment '厂家信息'
+                              productId bigint unsinged comment '厂家信息'
 );
+
+
+alter table goods modify column goodsId bigint unsigned not null;
+alter table user modify column userId bigint unsigned not null;
+alter table goods modify column productId bigint unsigned;
+alter table orders modify column orderId bigint unsigned not null;
+alter table orders modify column customerId bigint unsigned;
+alter table orders modify column productId bigint unsigned;
+alter table orders modify column paymentId bigint unsigned;
+alter table orders modify column goodsId bigint unsigned;
+alter table payment_table modify column orderId bigint unsigned;
+alter table payment_table modify column paymentId bigint unsigned not null;
+alter table payment_table modify column userId bigint unsigned;
+alter table payment_table modify column productId bigint unsigned;
+alter table shopcartgoods modify column goodsId bigint unsigned not null;
+alter table shopcartgoods modify column productId bigint unsigned;
+alter table shopcartgoods modify column userId bigint unsigned;
 

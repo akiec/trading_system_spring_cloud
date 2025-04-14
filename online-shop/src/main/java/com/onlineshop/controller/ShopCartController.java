@@ -24,8 +24,8 @@ public class ShopCartController {
         return shopCartService.searchByPage(userId,page,pageSize);
     }
     //结算订单(多个或一个)
-    @PostMapping("/summary")
-    public Result summary(@RequestParam Long userId, @RequestParam List<Goods> goodsList){
+    @PostMapping("/summary/{id}")
+    public Result summary(@PathVariable("id") Long userId, @RequestParam List<Goods> goodsList){
         return shopCartService.summary(userId,goodsList);
     }
     //删除某一商品

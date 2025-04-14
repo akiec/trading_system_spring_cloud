@@ -1,8 +1,9 @@
 <script setup>
-
 import { RouterLink } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import { useAuthStore } from '../stores/auth';
 import axios from 'axios';
+const authStore = useAuthStore()
 // 模拟数据
 const mockProducts = [
     { goodsId: 1, name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
@@ -17,11 +18,47 @@ const mockProducts = [
     { goodsId: 10, name: "商品10", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
     { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-];//加入购物车
-function addToCart() {
-  //提示弹窗
-  alert("已加入购物车")
-  //加入逻辑
+];
+async function getProductById(goodsId) {
+    const url = "http://localhost:8080"
+  console.log(url + `/goods/details/${(goodsId)}`)
+  try {
+      let response = await axios.post(url + `/goods/details/${(goodsId)}`)
+    console.log("搜索成功")
+    return response
+  } catch (error) {
+    console.error('失败:', error)
+  }
+}
+//加入购物车
+function addToCart(goodsId) {
+  //登录校验
+  if(!authStore.isLogged){
+    alert("未登录，将跳转至登录界面!")
+    router.push('/login')
+  }  
+  const userid = authStore.currentUserId
+  if (addGoods(goodsId,userid)) {
+    //提示弹窗
+    alert("已加入购物车")
+  } else {
+    console.log("加入失败")
+  }
+}
+async function addGoods(goodsId,userid) {
+  const url = "http://localhost:8080"
+  const Goods = await getProductById(goodsId)
+  console.log("查询成果")
+  console.log(Goods)
+  try {
+    let response = await axios.post(url + `/shopCart/add${(userid)}`, Goods.data.data)
+    console.log(response)
+    console.log("加入成功")  
+    return true  
+  } catch (error) {
+    console.error('加入失败:', error)
+    return false
+  }
 }
 async function searchGoods() {
   const url = "http://localhost:8080"
@@ -75,11 +112,11 @@ onMounted( async() => {
         <div class = "card-text">
           <h3>{{product.name}}</h3>
           <p>价格：{{product.price}}</p>
-          <p>库存：${{product.stock}}件</p>
+          <p>库存：{{product.stock}}件</p>
           <router-link :to="{path:'commodity',query:{product_id:product.goodsId}}">
             <button >查看详情页</button>
           </router-link>
-          <button @click="addToCart()">加入购物车</button>
+          <button @click="addToCart(product.goodsId)">加入购物车</button>
         </div>
         <div class = "card-img">
           <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>

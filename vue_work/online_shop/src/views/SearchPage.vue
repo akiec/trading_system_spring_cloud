@@ -21,7 +21,7 @@ const mockProducts = [
 //加入购物车
 function addToCart() {
   //提示弹窗
-  alert("已加入购物车")
+  alert("已加入购物车");
   //加入逻辑
 }
 function search() {

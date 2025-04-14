@@ -1,64 +1,86 @@
 <script setup>
-    import { useAuthStore } from '../stores/auth';
-    import { onMounted } from 'vue';
-    import { useRouter } from 'vue-router';
-    const router = useRouter()
-    // 模拟数据
-    const mockProducts = [
-        { product_id: 1, product_name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 2, product_name: "商品2", price: 199.99, stock: 5 ,img: null},
-        { product_id: 3, product_name: "商品3", price: 99.99, stock: 10 ,img: "/src/assets/vue.svg"},
-        { product_id: 4, product_name: "商品4", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 5, product_name: "商品5", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 6, product_name: "商品6", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 7, product_name: "商品7", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 8, product_name: "商品8", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 9, product_name: "商品9", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 10, product_name: "商品10", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-        { product_id: 11, product_name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
-        { product_id: 12, product_name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
-    ];
-    const authStore = useAuthStore()
+import { useAuthStore } from '../stores/auth';
+import { ref,onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+const router = useRouter()
+const authStore = useAuthStore()
+const Products = ref([])
+let goodsList = []
+// 模拟数据
+const mockProducts = [
+    { goodsId: 1, name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 2, name: "商品2", price: 199.99, stock: 5 ,img: null},
+    { goodsId: 3, name: "商品3", price: 99.99, stock: 10 ,img: "/src/assets/vue.svg"},
+    { goodsId: 4, name: "商品4", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 5, name: "商品5", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 6, name: "商品6", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 7, name: "商品7", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 8, name: "商品8", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 9, name: "商品9", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 10, name: "商品10", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+    { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
+    { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
+];
+async function searchGoods() {
+  const url = "http://localhost:8080"
+  const id = authStore.currentUserId
+  try {
+    console.log(url + `/shopCart/${id}`)
+    let response = await axios.post(url + `/shopCart/${id}`)
+    console.log(response.data.data.goodsList)
+    return response.data.data.goodsList
+  } catch (error) {
+    console.error('搜索失败:', error)
+    return mockProducts
+  }
+}
+function buy() {//商品结算函数
+    
+}
+function selected(id) {//选择该商品函数
+  let index = goodsList.indexOf(id)
+  if (index==-1) {
+    goodsList.push(id);//不存在则加入
+    //控件样式变化
+  } else {
+    goodsList.splice(index, 1);//存在则删除
+    //控件样式变化
+  }
+  console.log(goodsList)
+}
+function remove() {//移除购物车
 
-    onMounted(() => {//弹窗登录警告函数
-        if(!authStore.isLogged){
-            alert("未登录，将跳转至登录界面!")
-            router.push('/login')
-        }  
-    }) 
-    function buy() {//商品结算函数
-        
-    }
-    function selected() {//选择该商品函数
-        
-    }
+}
+onMounted( async() => {//弹窗登录警告函数
+    if(!authStore.isLogged){
+        alert("未登录，将跳转至登录界面!")
+        router.push('/login')
+  }  
+  Products.value = await searchGoods();
+}) 
 </script>
 
 <template>
-    <div v-if="!authStore.isLogged">
-        <!--todo 
-        调用弹窗警告函数，跳转登录页面
-        -->
-    </div>
-
     <div class="product-grid" id="productList">
-      <div v-for="product in mockProducts" class = "product-card">
+      <div v-for="product in Products" class = "product-card">
         <div class = "card-text">
-            <button @click="selected()">选择该商品</button>
-            <h3>{{product.product_name}}</h3>
-            <p>价格：{{product.price.toFixed(2)}}</p>
-            <p>库存：${{product.stock}}件</p>
-            <router-link :to="{path:'commodity',query:{product_id:product.product_id}}">
+            <button @click="selected(product.goodsId)">选择该商品</button>
+            <h3>{{product.name}}</h3>
+            <p>价格：{{product.price}}</p>
+            <p>库存：{{product.stock}}件</p>
+            <router-link :to="{path:'commodity',query:{product_id:product.goodsId}}">
                 <button >查看详情页</button>
             </router-link>
             <button @click="buy()">单独结算</button>
+            <button @click="remove()">移出购物车</button>
         </div>
         <div class = "card-img">
             <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
         </div>
       </div>
     </div>
-    <button @click="buy()">结算</button>
+    <button @click="buy()">结算所选的商品</button>
 
 
 </template>

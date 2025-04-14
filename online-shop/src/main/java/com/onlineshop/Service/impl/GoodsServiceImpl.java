@@ -35,7 +35,6 @@ public class GoodsServiceImpl implements GoodsService {
         if(goods.getName()==null){
             Goods newgoods = goodsMapper.details(goodsId);
             stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newgoods.toString());
-            return Result.success(goods);
             return Result.success(newgoods);
         }
         //存在直接返回

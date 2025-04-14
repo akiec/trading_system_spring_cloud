@@ -50,7 +50,7 @@
         .then(function (response) {
             console.log(response)
             if(response.data.success){
-                authStore.login()
+                authStore.login(response.data.data)
                 router.push('/profile')
             }
             else{
@@ -122,11 +122,11 @@
           <div class="form-box">
             <div class="form-group">
                 <label>账号：</label>
-                <input type="text" id="username" placeholder="请输入账号" required v-model="user.username">
+                <input type="text" id="login-username" placeholder="请输入账号" required v-model="user.username">
             </div>
             <div class="form-group">
                 <label>密码：</label>
-                <input type="password" id="password" placeholder="请输入密码" required v-model="user.password">
+                <input type="password" id="login-password" placeholder="请输入密码" required v-model="user.password">
             </div>
             <div class="login-btn">
                 <button type="submit" @click="LoginSubmit">登录</button>
@@ -141,11 +141,11 @@
           <div class="form-box">
             <div class="form-group">
                 <label>手机号：</label>
-                <input type="text" placeholder="请输入手机号" required pattern="\d{11}" v-model="user.phone">
+                <input id="loginbyphone-phone" type="text" placeholder="请输入手机号" required pattern="\d{11}" v-model="user.phone">
             </div>
             <div class="form-group">
                 <label>验证码：</label>
-                <input type="text" placeholder="请输入验证码" required v-model="user.code">
+                <input id="loginbyphone-code" type="text" placeholder="请输入验证码" required v-model="user.code">
             </div>
           </div>
           <div class="loginbyphone-btn">
@@ -161,15 +161,15 @@
           <div class="form-box">
             <div class="form-group">
                 <label>用户名：</label>
-                <input type="text" placeholder="请输入用户名" required v-model="user.username">
+                <input id="register-username" type="text" placeholder="请输入用户名" required v-model="user.username">
             </div>
             <div class="form-group">
                 <label>密码：</label>
-                <input type="password" placeholder="请输入密码" required v-model="user.password">
+                <input id="register-password" type="password" placeholder="请输入密码" required v-model="user.password">
             </div>
             <div class="form-group">
                 <label>确认密码：</label>
-                <input type="password" placeholder="请确认密码" required v-model="user.confirm_password">
+                <input id="register-confirm-password" type="password" placeholder="请确认密码" required v-model="user.confirm_password">
             </div>
           </div>
           <div class="register-btn">

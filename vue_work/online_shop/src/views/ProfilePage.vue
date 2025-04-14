@@ -10,8 +10,10 @@
 
     function getUserInformation() {
         // 从数据库获取用户数据
+        const userid = authStore.currentUserId
+
         return reactive({
-            userid : 201,
+            userid : Number(userid),
             username : 'redsuperhand',
             phone : '18888888888',
         })
@@ -20,7 +22,7 @@
     function getOrderInformation() {
         // 从数据库获取订单数据     
         console.log(toRaw(user).userid)
-        const url = `http://localhost:8080/order/check/${Number(toRaw(user).userid)}`
+        const url = `http://localhost:8080/order/check/${Number(201)}`
         axios.get(url)
         .then(function (response) {
             console.log(response)

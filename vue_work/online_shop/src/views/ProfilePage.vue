@@ -1,5 +1,5 @@
 <script setup>
-    import { reactive, toRaw, onBeforeMount } from 'vue';
+    import { reactive, ref, toRaw, onBeforeMount } from 'vue';
     import { useRouter, RouterLink } from 'vue-router';
     import { useAuthStore } from '../stores/auth';
     import axios from 'axios';
@@ -10,7 +10,10 @@
         username: '',
         phone: null,
     })
-    let orders = []
+    // let orders = [{orderId: 'uoid1', productId: '1', seller_id: 'uuid1'},
+    //         {orderId: 'uoid2', productId: '2', seller_id: 'uuid2'},
+    //         {orderId: 'uoid3', productId: '3', seller_id: 'uuid3'}]
+    let orders = reactive([])
 
     function getUserInformation() {
         // 从数据库获取用户数据
@@ -27,26 +30,27 @@
         })
     }
 
-    function getOrderInformation() {
+    async function getOrderInformation() {
         // 从数据库获取订单数据     
         console.log(toRaw(user).userid)
         const url = `http://localhost:8080/order/check/${Number(toRaw(user).userid)}`
-        axios.get(url)
-        .then(function (response) {
-            orders = response.data.data
-            console.log(orders)
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
+        let response = await axios.get(url)
+        for(let i = 0;i < response.data.total;i++){
+            orders.unshift(response.data.data[i])
+            // console.log(response.data.data[i])
+        }
+
         // orders.unshift({order_id: 'uoid1', product_id: '1', seller_id: 'uuid1'},
         //     {order_id: 'uoid2', product_id: '2', seller_id: 'uuid2'},
         //     {order_id: 'uoid3', product_id: '3', seller_id: 'uuid3'})
+        // console.log(orders)
     }
 
     onBeforeMount(() => {
         getUserInformation()
         getOrderInformation()
+        // orders = toRaw(orders)
+        console.log(orders)
     })
 
     function updateInformation(new_name, new_phone) {
@@ -91,15 +95,15 @@
         </div>
         <div class="orders">
             <ul class="nav-order">
-                <li v-for="order in orders" :key="order.order_id" class="nav-order-tip">
+                <li v-for="order in orders" :key="order.orderId" class="nav-order-tip">
                     <router-link :to="{
                         path:'/order',
                         query:{
-                            order: order.order_id,
-                            product: order.product_id,
+                            order: order.orderId,
+                            product: order.productId,
                             seller: order.seller_id
                         }
-                    }">{{ order.order_id }}</router-link>
+                    }">{{ order.orderId }}</router-link>
                 </li>
             </ul>
             <main class="order-content">

@@ -25,6 +25,7 @@
             console.log(response)
             user.username = response.data.data.userName
             user.phone = response.data.data.phone
+            user.address = response.data.data.address
         })
         .catch(function (error) {
             console.log(error)
@@ -56,8 +57,7 @@
 
     function updateInformation() {
         console.log(user.address)
-        const url = "http://localhost:8080/user/detail"
-        axios.post(url, {
+        json = {
             userId: user.userid,
             userName: user.username,
             isAdmin: false,       
@@ -65,7 +65,10 @@
             token: '',
             nickName: '',
             address: user.address,
-        }).then(function (response) {
+        }
+        const address_url = "http://localhost:8080/user/address"
+        const update_url = "http://localhost:8080/user/detail"
+        axios.post(update_url, json).then(function (response) {
             alert('改变成功！')
             console.log(user.username,user.phone)
             router.push('/home')

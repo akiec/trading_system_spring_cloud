@@ -48,8 +48,9 @@
             password: user.password,
         })
         .then(function (response) {
-            console.log(response)
+            // console.log(response)
             if(response.data.success){
+                alert("登录成功")
                 authStore.login(response.data.data)
                 router.push('/profile')
             }
@@ -74,7 +75,7 @@
         .then(function (response) {
             console.log(response)
             if(response.data.success){
-                authStore.login()
+                authStore.login(response.data.data)
                 router.push('/profile')
             }
             else{
@@ -101,7 +102,7 @@
         .then(function (response) {
             console.log(response)
             if(response.data.success){
-                authStore.login()
+                authStore.login(response.data.data)
                 router.push('/profile')
             }
             else{

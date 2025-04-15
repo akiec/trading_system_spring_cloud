@@ -169,7 +169,7 @@
         
         <div class="action-buttons">
           <button class="btn secondary" @click="showUpdateDialog = true">更新信息</button>
-          <router-link to="/upload" class="btn primary">
+          <router-link :to="{path:'upload',query:{page:1}}" class="btn primary">
             上传商品
           </router-link>
           <button class="btn warning" @click="changeAddress">更新地址</button>

@@ -40,8 +40,10 @@ async function searchGoods() {
 async function buy(id) {//商品结算函数
   const url = "http://localhost:8080"
   try {
-    console.log(url + `/shopCart/${id}`)
-    let response = await axios.post(url + `/shopCart/summary/${id}`)
+    console.log(url + `/shopCart/summary/${authStore.currentUserId}`)
+    let response = await axios.post(url + `/shopCart/summary/${authStore.currentUserId}`, {
+      
+    })
     console.log(response)
   } catch (error) {
     console.error('结算失败:', error)
@@ -98,7 +100,7 @@ onMounted( async() => {
     <div class="product-grid" id="productList">
       <div v-for="product in Products" class = "product-card">
         <div class = "card-text">
-            <button @click="selected(product.goodsId)">选择该商品</button>
+            <input type="checkbox" v-model="product.selected" @click="selected(product.goodsId)">
             <h3>{{product.name}}</h3>
             <p>价格：{{product.price}}</p>
             <p>库存：{{product.stock}}件</p>

@@ -113,7 +113,7 @@ onMounted( async() => {
             <button @click="remove(product.goodsId)">移出购物车</button>
         </div>
         <div class = "card-img">
-            <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
+            <img :src="product.image" alt="商品图片" width="80px" height="auto"></img>
         </div>
       </div>
     </div>
@@ -122,134 +122,196 @@ onMounted( async() => {
 </template>
 
 <style scoped>
-
-
 /* 商品网格容器 */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
   padding: 20px;
-  max-width: 1200px;
   margin: 0 auto;
+  max-width: 1200px;
 }
 
 /* 商品卡片样式 */
 .product-card {
   display: flex;
   flex-direction: column;
+  background-color: #fff;
   border-radius: 12px;
-  overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  background: white;
-  height: 100%;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 /* 卡片内容区域 */
 .card-text {
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  gap: 12px;
 }
 
+.card-text h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.card-text p {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* 价格特殊样式 */
+.card-text p:contains("价格") {
+  color: #e74c3c;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* 图片区域 */
 .card-img {
-  padding: 16px;
-  text-align: center;
-  background: #f9f9f9;
-  border-top: 1px solid #eee;
+  order: -1; /* 图片在上方 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
 }
 
 .card-img img {
-  border-radius: 8px;
-  object-fit: cover;
-  transition: transform 0.3s;
+  max-width: 100%;
+  height: 120px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
-.product-card:hover .card-img img {
-  transform: scale(1.03);
+.card-img img:hover {
+  transform: scale(1.05);
 }
 
-/* 文字样式 */
-h3 {
-  margin: 0 0 8px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
+/* 复选框样式 */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+  accent-color: #3498db;
 }
 
-p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #666;
-}
-
-/* 按钮样式 */
+/* 按钮基础样式 */
 button {
-  margin-top: 12px;
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
-button:first-of-type {
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-button:last-of-type {
-  background-color: #42b983;
+/* 查看详情按钮 */
+.card-text a button {
+  background-color: #3498db;
   color: white;
 }
 
-button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.card-text a button:hover {
+  background-color: #2980b9;
+}
+
+/* 单独结算按钮 */
+.card-text button:nth-of-type(2) {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.card-text button:nth-of-type(2):hover {
+  background-color: #27ae60;
+}
+
+/* 移出购物车按钮 */
+.card-text button:nth-of-type(3) {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.card-text button:nth-of-type(3):hover {
+  background-color: #c0392b;
+}
+
+/* 数量输入框 */
+input[type="number"] {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 70px;
+  margin: 5px 0;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* 底部结算区域 */
+.product-grid + p {
+  text-align: center;
+  font-size: 1.3rem;
+  margin: 30px 0 15px;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.product-grid + p + button {
+  display: block;
+  margin: 0 auto 40px;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.product-grid + p + button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(230, 126, 34, 0.3);
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  body{
-    .product-grid {
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-      padding: 12px;
-    }
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .card-img {
+    height: 150px;
+  }
+  
+  .card-text {
+    padding: 15px;
   }
 }
 
-@media (max-width: 480px) {
-  body{
-    .product-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .product-card {
-      flex-direction: row;
-    }
-    
-    .card-img {
-      border-top: none;
-      border-left: 1px solid #eee;
-      display: flex;
-      align-items: center;
-      min-width: 100px;
-    }
-    
-    .card-img img {
-      width: 100%;
-      height: auto;
-    }
-  }
+/* 标签样式 */
+label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 5px;
+  display: block;
 }
 </style>

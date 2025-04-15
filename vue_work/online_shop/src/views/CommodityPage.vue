@@ -10,6 +10,7 @@ const router = useRouter()
 const goodsId = route.query.product_id
 const selectedNumber = ref(0)
 let product = ref([])
+const defaultImage = "/src/assets/vue.svg"
 //根据商品id调数据库查询商品其余详细信息
 async function getProductById() {
     const url = "http://localhost:8080"
@@ -62,14 +63,18 @@ function buy() {
 onMounted(async () => {
     product.value = await getProductById()
     console.log(product)
+ //   loadImage(product.value.image,"img")
 })
 
+const handleImageError = (event) => {
+  event.target.src = defaultImage; // 替换为备用图片
+};
 </script>
 
 <template>
     <div class="main">
         <div class="view"> 
-            <img src="/src/assets/commodity.png" alt="商品图片" width=120px heighth=auto></img>
+            <img :src="product.image" alt="商品图片" width=360px heighth=auto id="img" @error="handleImageError($event, product)"></img>
         </div>
         <div class="content">
             <div class="detail">

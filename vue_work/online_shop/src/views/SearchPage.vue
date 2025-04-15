@@ -76,7 +76,7 @@ watch(
       console.log(currentPage>=TotalPage)
     }
   }
-) 
+)
 </script>
 
 <template>

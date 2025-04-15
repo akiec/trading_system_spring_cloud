@@ -127,8 +127,8 @@
                     <input id="address-input" type="text" v-model="user.address"></input>
                 </div>
             </form>
-            <router-link :to="{path:'upload'}">
-                <button class="button_search">上传商品</button>
+            <router-link :to="{ path: 'upload', query: { page: 1 } }">
+                <button class="button_search" >上传商品</button>
             </router-link>
             <div class="auth-btn">
                 <button @click="updateInformation()">更新信息</button>

@@ -18,19 +18,6 @@ const mockProducts = [
     { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
 ];
-function search() {
-  console.log("开始查询");
-  const url = "http://localhost:8080/goods"    
-  axios.post(url).then(function (response) {// 成功处理
-    console.log(response.data.data);
-    Products.value = response.data.data;
-    console.log("查询成功");
-  }).catch(function (error) {// 错误处理
-    Products.value = mockProducts;
-    console.log(error);
-  }).finally(function () {// 总是执行
-  });
-}
 
 async function searchGoods() {
   const url = "http://localhost:8080"
@@ -47,7 +34,7 @@ async function searchGoods() {
     console.log("类别检索无结果")
     // 3. 最后尝试全部检索
     response = await axios.post(url + '/goods', {
-      search: content, page: currentPage.value
+      search: content
     })
 
     return response.data.data
@@ -61,13 +48,19 @@ async function searchGoods() {
 const Products = ref([])
 const route = useRoute()
 const content = route.query.content
-let TotalPage = ref(10)
+const pageSize = 10
+let TotalPage = ref(1)
 let currentPage = ref(route.query.page)
 console.log(Number(currentPage.value)+1)
 console.log(content)//输入的搜索信息
 
 onMounted( async() => {
   Products.value = await searchGoods();
+  TotalPage = Products.value.length / 10
+  console.log(Products.value)
+  console.log(Products.value.length)
+  console.log(TotalPage)
+  console.log(currentPage>=TotalPage-1)
 })
 
 watch(() => route.query.page, (newPage) => {
@@ -80,16 +73,15 @@ watch(
       Products.value = await searchGoods(newContent)
       TotalPage = Products.value.length / 10
       console.log(TotalPage)
-      console.log(currentPage>=TotalPage-1)
+      console.log(currentPage>=TotalPage)
     }
   }
-)
-
+) 
 </script>
 
 <template>
     <div class="product-grid" id="productList">
-      <div v-for="product in Products" class = "product-card">
+      <div v-for="product in Products.slice(pageSize*(currentPage-1),pageSize*currentPage)" class = "product-card">
         <div class = "card-text">
             <h3>{{product.name}}</h3>
             <p>价格：{{product.price}}</p>
@@ -103,41 +95,45 @@ watch(
         </div>
       </div>
     </div>
-    <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)-1}}">
-        <button :disabled="currentPage==1">上一页</button>
-    </router-link>
-    <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)+1}}">
-        <button :disabled="currentPage>=TotalPage-1">下一页</button>
-    </router-link>
-
+    <div class="pages">
+      <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)-1}}">
+          <button :disabled="currentPage==1">上一页</button>
+      </router-link>
+      <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)+1}}">
+          <button :disabled="currentPage>=TotalPage">下一页</button>
+      </router-link>
+    </div>
 </template>
 
 <style scoped>
-/*
-.product-card {
-    display: flex;
-    box-shadow: 8px 8px 8px rgba(0,0,0,0.4);
-  }
-  .card-text {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    transition: transform 0.3s;
-    align-items: stretch;
-  }
-  .card-img {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    transition: transform 0.3s;
-  }
+.pages {
+  display: flex;
+  justify-content: center;  /* 水平居中 */
+  align-items: center;      /* 垂直居中 */
+  gap: 15px;               /* 按钮间距 */
+  margin: 20px 0;          /* 上下边距 */
+}
 
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 8px 18px 18px rgba(0,0,0,0.3);
-  }
-*/
+.pages button {
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
 
+.pages button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.pages button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 /* 商品网格容器 */
 .product-grid {
   display: grid;
@@ -230,7 +226,6 @@ button:hover {
   opacity: 0.9;
   transform: translateY(-1px);
 }
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   body{
@@ -266,4 +261,6 @@ button:hover {
     }
   }
 }
+
+
 </style>

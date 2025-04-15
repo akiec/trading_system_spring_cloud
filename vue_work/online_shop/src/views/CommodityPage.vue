@@ -3,21 +3,22 @@ import axios from 'axios';
 import { useRoute,useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { onMounted } from 'vue';
+import { ref } from 'vue';
 const authStore = useAuthStore()
 const route = useRoute()
 const router = useRouter()
 const goodsId = route.query.product_id
-const product = ref([])
 const selectedNumber = ref(0)
+let product = ref([])
 //根据商品id调数据库查询商品其余详细信息
 async function getProductById() {
     const url = "http://localhost:8080"
   console.log(url + `/goods/details/${(goodsId)}`)
   try {
       let response = await axios.post(url + `/goods/details/${(goodsId)}`)
-    console.log("搜索成功")
-    console.log(response)
-    return response
+      console.log("搜索成功")
+      console.log(response.data.data)
+    return response.data.data
   } catch (error) {
     console.error('失败:', error)
   }
@@ -46,7 +47,7 @@ async function addGoods(userid) {
   console.log(Goods)
   try {
     
-    let response = await axios.post(url + `/shopCart/add/${(userid)}`, Goods.data.data)
+    let response = await axios.post(url + `/shopCart/add/${(userid)}`, Goods)
       return true;
     
   } catch (error) {
@@ -59,8 +60,8 @@ function buy() {
     
 }
 onMounted(async () => {
-  let product = await getProductById().data.data
-  console.log(product)
+    product.value = await getProductById()
+    console.log(product)
 })
 
 </script>
@@ -72,7 +73,7 @@ onMounted(async () => {
         </div>
         <div class="content">
             <div class="detail">
-                <p>商品名称:{{product.name}}</p>
+                <p>商品名称:{{ product.name }}</p>
                 <p>商品详细信息:{{ product.description }}</p>
                 <p>商品价格:{{ product.price }}</p>
                 <p>库存:{{ product.stock }}</p>

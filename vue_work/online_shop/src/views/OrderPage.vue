@@ -1,16 +1,43 @@
 <template>
     <div class="page">
-        <img src="../assets/commodity.png">
-        <form class="order-content">
-            <h1>订单编号：{{ order }}</h1>
-            <h1 id="goods_id" @click="searchProduct(goods)">产品编号：{{ goods }}</h1>
-            <h1>卖家编号：{{ product }}</h1>
-            <h1>商品数量：{{ count }}</h1>
-            <h1>交易总额：{{ totalPrice }}</h1>
-            <h1>收货地址：{{ address }}</h1>
-            <h1>状态码：{{ status }}</h1>
-        </form>
-        <button @click="cancelOrder" class="cancel-btn">取消订单</button>
+        <div class="product-visual">
+            <img src="../assets/commodity.png" class="product-image">
+        </div>
+        
+        <div class="order-details">
+            <div class="order-header">
+                <h1 class="order-number">订单详情 #{{ order }}</h1>
+                <span class="status-badge" :class="statusClass">{{ statusText }}</span>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>产品编号</label>
+                    <p class="clickable" @click="searchProduct(goods)">{{ goods }}</p>
+                </div>
+                <div class="detail-item">
+                    <label>卖家编号</label>
+                    <p>{{ product }}</p>
+                </div>
+                <div class="detail-item">
+                    <label>商品数量</label>
+                    <p>{{ count }} 件</p>
+                </div>
+                <div class="detail-item">
+                    <label>交易总额</label>
+                    <p class="price">¥{{ totalPrice }}</p>
+                </div>
+                <div class="detail-item full-width">
+                    <label>收货地址</label>
+                    <p class="address">{{ address }}</p>
+                </div>
+            </div>
+
+            <button @click="cancelOrder" class="action-button cancel-btn">
+                <span class="button-text">取消订单</span>
+                <span class="button-icon">×</span>
+            </button>
+        </div>
     </div>
 </template>
 
@@ -50,31 +77,163 @@
 </script>
 
 <style scoped>
-    img {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 1rem;
-        transition: transform 0.3s;
-        width: 30%;
-    }
+.page {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+.product-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.product-image:hover {
+    transform: scale(1.02);
+}
+
+.order-details {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+}
+
+.order-number {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+/* 根据状态设置不同颜色 */
+.status-badge[data-status="0"] { background: #4CAF50; color: white; } /* 已完成 */
+.status-badge[data-status="1"] { background: #2196F3; color: white; } /* 进行中 */
+.status-badge[data-status="2"] { background: #f44336; color: white; } /* 已取消 */
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.detail-item {
+    background: #f8f9fa;
+    padding: 1.2rem;
+    border-radius: 0.5rem;
+}
+
+.detail-item label {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+}
+
+.detail-item p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.price {
+    color: #e74c3c;
+    font-size: 1.3rem !important;
+}
+
+.address {
+    line-height: 1.6;
+}
+
+.clickable {
+    cursor: pointer;
+    color: #3498db !important;
+    transition: color 0.2s;
+}
+
+.clickable:hover {
+    color: #2980b9 !important;
+    text-decoration: underline;
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(255, 82, 82, 0.3);
+}
+
+.button-icon {
+    margin-left: 0.8rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
     .page {
-        display: flex;
-        justify-content: left;
+        grid-template-columns: 1fr;
+        padding: 1rem;
     }
-
-    .order-content {
-        padding: 20px;
-        line-height: 100px;
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
     }
-
-    #goods_id {
-        font-style: italic;
+    
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
-
-    #goods_id:hover {
-        color: orange;
-        text-decoration: underline;
+    
+    .status-badge {
+        margin-top: 1rem;
     }
-
+}
 </style>

@@ -1,6 +1,6 @@
 <script setup>
 //通过query传入content参数作为搜索依据，随后显示对应搜索结果
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, watchEffect, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 // 模拟数据
@@ -65,28 +65,29 @@ let TotalPage = ref(10)
 let currentPage = ref(route.query.page)
 console.log(Number(currentPage.value)+1)
 console.log(content)//输入的搜索信息
-/*
+
 onMounted( async() => {
   Products.value = await searchGoods();
 })
-*/
-watch(() => route.query.page, (newPage) => {
-  currentPage = newPage
-});
+
 watch(
-  () => route.query.content,
-  async (newContent) => {
-    if (newContent) {
-      Products.value = await searchGoods(newContent)
-      TotalPage = Products.value.length / 10
-      console.log(TotalPage)
-      console.log(currentPage>=TotalPage-1)
+  () => ({
+    content: route.query.content,
+    page: route.query.page || 0
+  }),
+  async (newValue, oldValue) => {
+    try {
+      if (newValue.content != oldValue.content) { 
+        Products.value = await searchGoods()
+      }
+      if (newValue.page != oldValue.page) {
+        currentPage.value = Number(page) || 0
+      }
+    } catch (error) {
+      console.error('搜索失败:', error)
     }
-  },
-  { immediate: true } // 立即执行一次以处理初始参数
+  }
 )
-
-
 
 </script>
 

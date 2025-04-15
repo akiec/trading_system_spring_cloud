@@ -25,7 +25,20 @@
             console.log(response)
             user.username = response.data.data.userName
             user.phone = response.data.data.phone
-            user.address = response.data.data.address
+            user.nickname = response.data.data.nickName
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+
+    }
+
+    function getUserAddress() {
+        const url = `http://localhost:8080/user/getAddress/${user.userid}`
+        axios.get(url)
+        .then(function (response) {
+            // console.log(response)
+            user.address = response.data.data
         })
         .catch(function (error) {
             console.log(error)
@@ -41,16 +54,13 @@
             orders.unshift(response.data.data[i])
             // console.log(response.data.data[i])
         }
-
-        // orders.unshift({order_id: 'uoid1', product_id: '1', seller_id: 'uuid1'},
-        //     {order_id: 'uoid2', product_id: '2', seller_id: 'uuid2'},
-        //     {order_id: 'uoid3', product_id: '3', seller_id: 'uuid3'})
-        console.log(orders)
+        // console.log(orders)
     }
 
     onBeforeMount(() => {
         getUserInformation()
         getOrderInformation()
+        getUserAddress()
         // orders = toRaw(orders)
         console.log(orders)
     })
@@ -58,11 +68,10 @@
     function updateInformation() {
         const json = {
             userId: user.userid,
-            userName: user.username,
             isAdmin: false,       
             phone: user.phone, 
             token: '',
-            nickName: '',
+            nickName: user.nickname,
             address: user.address,
         }
         
@@ -77,15 +86,9 @@
     }
 
     function changeAddress() {
-        console.log(user.address)
+        // console.log(user.address)
         const address_url = "http://localhost:8080/user/address"
         const json = {
-            userId: user.userid,
-            userName: user.username,
-            isAdmin: true,       
-            phone: user.phone, 
-            token: '',
-            nickName: '',
             address: user.address,
         }
         axios.post(address_url, json).then(function (response) {
@@ -112,8 +115,8 @@
                     <span>{{ user.userid }}</span>
                 </div>
                 <div class="form-group">
-                    <label>用户名：</label>
-                    <input id="username-input" type="text" v-model="user.username"></input>
+                    <label>昵称：</label>
+                    <input id="username-input" type="text" v-model="user.nickname"></input>
                 </div>
                 <div class="form-group">
                     <label>手机号：</label>

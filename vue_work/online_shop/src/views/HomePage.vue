@@ -1,9 +1,7 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink} from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { useAuthStore } from '../stores/auth';
 import axios from 'axios';
-const authStore = useAuthStore()
 // 模拟数据
 const mockProducts = [
     { goodsId: 1, name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
@@ -19,47 +17,6 @@ const mockProducts = [
     { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
 ];
-async function getProductById(goodsId) {
-    const url = "http://localhost:8080"
-  console.log(url + `/goods/details/${(goodsId)}`)
-  try {
-      let response = await axios.post(url + `/goods/details/${(goodsId)}`)
-    console.log("搜索成功")
-    return response
-  } catch (error) {
-    console.error('失败:', error)
-  }
-}
-//加入购物车
-function addToCart(goodsId) {
-  //登录校验
-  if(!authStore.isLogged){
-    alert("未登录，将跳转至登录界面!")
-    router.push('/login')
-  }  
-  const userid = authStore.currentUserId
-  if (addGoods(goodsId,userid)) {
-    //提示弹窗
-    alert("已加入购物车")
-  } else {
-    console.log("加入失败")
-  }
-}
-async function addGoods(goodsId,userid) {
-  const url = "http://localhost:8080"
-  const Goods = await getProductById(goodsId)
-  console.log("查询成果")
-  console.log(Goods)
-  try {
-    let response = await axios.post(url + `/shopCart/add${(userid)}`, Goods.data.data)
-    console.log(response)
-    console.log("加入成功")  
-    return true  
-  } catch (error) {
-    console.error('加入失败:', error)
-    return false
-  }
-}
 async function searchGoods() {
   const url = "http://localhost:8080"
   try {
@@ -83,16 +40,16 @@ onMounted( async() => {
     <div class = "product-recommend">
       <div class="product-category">
         <h2 class="search_sheet">商品分类</h2>
-          <router-link :to="{path:'search',query:{content:'服装'}}">
+          <router-link :to="{path:'search',query:{content:'服装',page:1}}">
             <button class="button_search">服装</button>
           </router-link>
-          <router-link :to="{path:'search',query:{content:'食品'}}">
+          <router-link :to="{path:'search',query:{content:'食品',page:1}}">
             <button class="button_search">食品</button>
           </router-link>
-          <router-link :to="{path:'search',query:{content:'家具'}}">
+          <router-link :to="{path:'search',query:{content:'家具',page:1}}">
             <button class="button_search">家具</button>
           </router-link>
-          <router-link :to="{path:'search',query:{content:'电子产品'}}">
+          <router-link :to="{path:'search',query:{content:'电子产品',page:1}}">
             <button class="button_search">电子产品</button>
           </router-link>
       </div>
@@ -100,9 +57,9 @@ onMounted( async() => {
         <h2>热门推荐</h2>
         <div class="slide">
           <ul class="list">
-            <li class="item">轮播图1</li>
-            <li class="item">轮播图2</li>
-            <li class="item">轮播图3</li>
+            <li class="item"><img src="/src/assets/vue.svg" alt=""></li>
+            <li class="item"><img src="/src/assets/vue.svg" alt=""></li>
+            <li class="item"><img src="/src/assets/vue.svg" alt=""></li>
           </ul>
         </div>
       </div>
@@ -116,7 +73,6 @@ onMounted( async() => {
           <router-link :to="{path:'commodity',query:{product_id:product.goodsId}}">
             <button >查看详情页</button>
           </router-link>
-          <button @click="addToCart(product.goodsId)">加入购物车</button>
         </div>
         <div class = "card-img">
           <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
@@ -127,40 +83,185 @@ onMounted( async() => {
 </template>
 
 <style scoped>
-  /* 商品卡片 */
-  .product-grid  {
+/* 基础样式 */
+.page {
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 商品推荐区域 */
+.product-recommend {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-  }
-  .product-recommend {
+    grid-template-columns: 250px 1fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .product-recommend {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 商品分类区域 */
+.product-category {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.product-category h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f1f1f1;
+    position: relative;
+}
+
+.product-category h2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+}
+
+/* 分类按钮样式 */
+.button_search {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    background: #f8f9fa;
+    border: none;
+    border-radius: 8px;
+    color: #2c3e50;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.button_search:hover {
+    background: linear-gradient(90deg, #f1f8ff, #e6f0ff);
+    color: #3498db;
+    transform: translateX(5px);
+    box-shadow: 0 5px 10px rgba(52, 152, 219, 0.2);
+}
+
+/* 热门推荐区域 */
+.popular {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.popular h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f1f1f1;
+    position: relative;
+}
+
+.popular h2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #e74c3c, #f39c12);
+}
+
+/* 轮播图区域 */
+.slide {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    height: 300px;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+.list {
     display: flex;
-    justify-content: space-around;
-    background-color:rgb(255, 236, 209);
-  }
-  .product-category {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    transition: transform 0.5s ease;
+}
+
+.item {
+    min-width: 100%;
+    height: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    border: 1px solid #ddd;
-  }
-  .popular {
-    display: flex;
-    border: 1px solid #ddd;
-    flex-direction: column;
-  }
-  .slide {
-    display: flex;
-    flex-direction: column;
-  }
-  .button_search {
-    padding: 10px;
-    border-radius: 10px 10px 10px 10px;
-  }
-  
-  /*
-*/
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.item:nth-child(1) {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.item:nth-child(2) {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+
+.item:nth-child(3) {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+/* 动画效果 */
+@keyframes slide {
+    0% { transform: translateX(0); }
+    30% { transform: translateX(0); }
+    33% { transform: translateX(-100%); }
+    63% { transform: translateX(-100%); }
+    66% { transform: translateX(-200%); }
+    97% { transform: translateX(-200%); }
+    100% { transform: translateX(0); }
+}
+
+.slide .list {
+    animation: slide 12s infinite;
+}
+
+/* 悬停时暂停动画 */
+.slide:hover .list {
+    animation-play-state: paused;
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+    .slide {
+        height: 200px;
+    }
+    
+    .item {
+        font-size: 1.5rem;
+    }
+}
 
 /* 商品网格容器 */
 .product-grid {

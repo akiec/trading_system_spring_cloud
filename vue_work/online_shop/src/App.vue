@@ -9,7 +9,7 @@
   function submitSearch(search_text) {
     //跳转到搜索界面
     console.log(search_text)
-    router.push({path:'\search', query:{content: search_text}})
+    router.push({path:'\search', query:{content: search_text,page:1}})
   }
 
 </script>

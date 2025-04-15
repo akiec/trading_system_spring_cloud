@@ -14,16 +14,12 @@
     // let orders = [{orderId: 'uoid1', productId: '1', seller_id: 'uuid1'},
     //         {orderId: 'uoid2', productId: '2', seller_id: 'uuid2'},
     //         {orderId: 'uoid3', productId: '3', seller_id: 'uuid3'}]
-    let orders = reactive([
-        {orderId: 'uoid1', goodsId: '1', productId: 'upid1', count: 2, totalPrice: 593.99, address: '大连市金州区', status: 1},
-        {orderId: 'uoid2', goodsId: '2', productId: 'upid2', count: 3, totalPrice: 5.99, address: '晋中市太谷区', status: 1},
-        {orderId: 'uoid3', goodsId: '3', productId: 'upid3', count: 5, totalPrice: 93.99, address: '北京市海淀区', status: 2}
-    ])
+    let orders = reactive([])
 
     function getUserInformation() {
         // 从数据库获取用户数据
         user.userid = authStore.currentUserId
-        const url = `http://localhost:8080/user/${Number(user.userid)}`
+        const url = `http://localhost:8080/user/${user.userid}`
         axios.get(url)
         .then(function (response) {
             console.log(response)
@@ -38,8 +34,8 @@
 
     async function getOrderInformation() {
         // 从数据库获取订单数据     
-        console.log(toRaw(user).userid)
-        const url = `http://localhost:8080/order/check/${Number(toRaw(user).userid)}`
+        // console.log(toRaw(user).userid)
+        const url = `http://localhost:8080/order/check/${toRaw(user).userid}`
         let response = await axios.get(url)
         for(let i = 0;i < response.data.total;i++){
             orders.unshift(response.data.data[i])

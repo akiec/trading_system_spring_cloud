@@ -7,6 +7,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 const Products = ref([])
 let goodsList = []
+let count =ref(0)
 // 模拟数据
 const mockProducts = [
     { goodsId: 1, name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
@@ -22,6 +23,7 @@ const mockProducts = [
     { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
 ];
+
 async function searchGoods() {
   const url = "http://localhost:8080"
   const id = authStore.currentUserId
@@ -35,8 +37,17 @@ async function searchGoods() {
     return mockProducts
   }
 }
-function buy() {//商品结算函数
-    
+async function buy(id) {//商品结算函数
+  const url = "http://localhost:8080"
+  try {
+    console.log(url + `/shopCart/summary/${authStore.currentUserId}`)
+    let response = await axios.post(url + `/shopCart/summary/${authStore.currentUserId}`, {
+      
+    })
+    console.log(response)
+  } catch (error) {
+    console.error('结算失败:', error)
+  }
 }
 function selected(id) {//选择该商品函数
   let index = goodsList.indexOf(id)
@@ -48,12 +59,36 @@ function selected(id) {//选择该商品函数
     //控件样式变化
   }
   console.log(goodsList)
+  summary()
 }
-function remove() {//移除购物车
-
+async function remove(id) {//移除购物车
+  const url = "http://localhost:8080"
+  try {
+    console.log(url + `/shopCart/${id}`)
+    let response = await axios.delete(url + `/shopCart/delete/${id}`)
+    console.log(response)
+  } catch (error) {
+    console.error('删除失败:', error)
+  }
 }
-onMounted( async() => {//弹窗登录警告函数
-    if(!authStore.isLogged){
+async function summary() {//计算当前选中的商品的总价值
+  let total = 0;
+  for (let id of goodsList) {
+    const url = "http://localhost:8080"
+    try {
+      console.log(url + `/goods/details/${id}`)
+      let response = await axios.post(url + `/goods/details/${id}`)
+      console.log(response)
+      total+=response.data.data.price
+    } catch (error) {
+      console.error('删除失败:', error)
+    }
+  }
+  console.log(total)
+  count.value = total;
+}
+onMounted( async() => {
+    if(!authStore.isLogged){//弹窗登录警告函数
         alert("未登录，将跳转至登录界面!")
         router.push('/login')
   }  
@@ -65,21 +100,22 @@ onMounted( async() => {//弹窗登录警告函数
     <div class="product-grid" id="productList">
       <div v-for="product in Products" class = "product-card">
         <div class = "card-text">
-            <button @click="selected(product.goodsId)">选择该商品</button>
+            <input type="checkbox" v-model="product.selected" @click="selected(product.goodsId)">
             <h3>{{product.name}}</h3>
             <p>价格：{{product.price}}</p>
             <p>库存：{{product.stock}}件</p>
             <router-link :to="{path:'commodity',query:{product_id:product.goodsId}}">
                 <button >查看详情页</button>
             </router-link>
-            <button @click="buy()">单独结算</button>
-            <button @click="remove()">移出购物车</button>
+            <button @click="buy(product.goodsId)">单独结算</button>
+            <button @click="remove(product.goodsId)">移出购物车</button>
         </div>
         <div class = "card-img">
             <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
         </div>
       </div>
     </div>
+    <p>所选商品总价为{{ count }}</p>
     <button @click="buy()">结算所选的商品</button>
 
 

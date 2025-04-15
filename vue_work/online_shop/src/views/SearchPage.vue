@@ -1,6 +1,6 @@
 <script setup>
 //通过query传入content参数作为搜索依据，随后显示对应搜索结果
-import { ref, onMounted, watchEffect, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 // 模拟数据
@@ -18,12 +18,6 @@ const mockProducts = [
     { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
 ];
-//加入购物车
-function addToCart() {
-  //提示弹窗
-  alert("已加入购物车");
-  //加入逻辑
-}
 function search() {
   console.log("开始查询");
   const url = "http://localhost:8080/goods"    
@@ -52,8 +46,8 @@ async function searchGoods() {
     if (response.data.data.length > 0) return response.data.data
     console.log("类别检索无结果")
     // 3. 最后尝试全部检索
-    response = await axios.post(url+'/goods', {
-      params: { search: content }
+    response = await axios.post(url + '/goods', {
+      search: content, page: currentPage.value
     })
 
     return response.data.data
@@ -67,19 +61,26 @@ async function searchGoods() {
 const Products = ref([])
 const route = useRoute()
 const content = route.query.content
-// console.log(content)//输入的搜索信息
-// onMounted( async() => {
-//   Products.value = await searchGoods();
-// })
+const currentPage = ref(route.query.page)
+console.log(Number(currentPage.value)+1)
+console.log(content)//输入的搜索信息
+/*
+onMounted( async() => {
+  Products.value = await searchGoods();
+})
+*/
 watch(
-  () => route.query.content,
-  async (newContent) => {
+  () => [route.query.content,route.query.page],
+  async ([newContent,newPage]) => {
     if (newContent) {
       Products.value = await searchGoods(newContent)
+      currentPage = newPage
     }
   },
   { immediate: true } // 立即执行一次以处理初始参数
 )
+
+
 
 </script>
 
@@ -93,13 +94,18 @@ watch(
             <router-link :to="{path:'commodity',query:{product_id:product.goodsId}}">
                 <button >查看详情页</button>
             </router-link>
-            <button @click="addToCart()">加入购物车</button>
         </div>
         <div class = "card-img">
             <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
         </div>
       </div>
     </div>
+    <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)-1}}">
+        <button >上一页</button>
+    </router-link>
+    <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)+1}}">
+        <button >下一页</button>
+    </router-link>
 
 </template>
 

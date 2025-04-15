@@ -11,6 +11,7 @@ const goodsId = route.query.product_id
 const selectedNumber = ref(0)
 let product = ref([])
 const defaultImage = "/src/assets/vue.svg"
+const userid = authStore.currentUserId
 //根据商品id调数据库查询商品其余详细信息
 async function getProductById() {
     const url = "http://localhost:8080"
@@ -56,9 +57,19 @@ async function addGoods(userid) {
       return false;
   }
 }
-//立即购买
+// 跳转支付界面
 function buy() {
-    
+    // console.log(goodsId)
+    router.push({
+        path: '/payment',
+        query: {
+            userId: String(userid),
+            paymentList: [{
+                goodsId: goodsId,
+                count: selectedNumber.value
+            }]
+        }
+    })
 }
 onMounted(async () => {
     product.value = await getProductById()

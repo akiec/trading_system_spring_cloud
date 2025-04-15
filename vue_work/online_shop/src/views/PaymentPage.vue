@@ -124,7 +124,7 @@ async function createOrders() {
       // 参数预处理
       const goodsId = String(item.goodsId)
       const count = Math.max(Number(item.count) || 0, 0)
-      console.log(goodsId)
+      console.log(count)
       // 生成请求配置
       return axios.post(`http://localhost:8080/order/createOrder/${props.userId}/${goodsId}/${count}`)
     })
@@ -179,7 +179,7 @@ async function createOrders() {
       console.log('失败详情:', result.failedOrders)
     } else {
       alert('所有订单创建成功！')
-      router.push('/order-success')
+      router.push('/profile')
     }
   } else {
     alert(result.message)

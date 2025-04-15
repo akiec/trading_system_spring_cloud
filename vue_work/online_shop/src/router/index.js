@@ -27,17 +27,15 @@ const router = createRouter({
         },
         {
             path:'/profile',
-            component:ProfilePage,
-            children: [
-                {
-                    name: 'Order',
-                    path: '/order',
-                    component: OrderPage,
-                    props(route) {
-                        return route.query
-                    }
-                }
-            ]
+            component:ProfilePage
+        },
+        {
+            name: 'Order',
+            path: '/order',
+            component: OrderPage,
+            props(route) {
+                return route.query
+            }
         },
         {
             path: '/commodity',

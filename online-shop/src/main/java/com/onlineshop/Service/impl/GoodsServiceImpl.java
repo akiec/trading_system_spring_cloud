@@ -37,7 +37,7 @@ public class GoodsServiceImpl implements GoodsService {
             return Result.success(newgoods);
         }
         //存在直接返回
-        Goods goods = Goods.fromString(redisGoods);
+        Goods goods = JSONUtil.toBean(redisGoods, Goods.class);
         return Result.success(goods);
     }
     @Override

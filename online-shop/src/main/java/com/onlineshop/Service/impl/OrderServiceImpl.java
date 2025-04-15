@@ -49,7 +49,17 @@ public class OrderServiceImpl implements OrderService {
     public Result createOrder(String userId, String goodsId,Integer count) {
         //前面具体页面使用了redis查询，所以一定存在
         String redisData = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
-        Goods goods = JSONUtil.toBean(redisData, Goods.class);
+        Goods goods =new Goods();
+        if (StrUtil.isBlank(redisData)) {
+
+       /* goods = goodsMapper.details(goodsId);
+            log.info("查数据库"+goods.toString());*/
+            Goods details = goodsMapper.details(goodsId);
+            log.info("dnasuiodhnas"+details.toString());
+        }else {
+            log.info("查数据库"+redisData);
+            goods = JSONUtil.toBean(redisData, Goods.class);
+        }
         if (goods.getStock() < 1) {
             return Result.error("商品库存不足");
         }
@@ -57,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
         //乐观锁解决超卖
         Long version = idCreater.createId(NameContains.VERSION_NAME + goodsId);
         String newVersion = version.toString();
-        Boolean isSuccess=goodsMapper.putOrder(goods,newVersion);
+        Boolean isSuccess=goodsMapper.putOrder(goods.getGoodsId(),goods.getStock(),goods.getVersion(),newVersion);
         if(isSuccess){
             //更新redis缓存
             Goods newGoods = goodsMapper.details(goodsId);

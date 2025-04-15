@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useRoute,useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import { onMounted } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { ref } from 'vue';
 const authStore = useAuthStore()
 const route = useRoute()
@@ -10,6 +10,8 @@ const router = useRouter()
 const goodsId = route.query.product_id
 const selectedNumber = ref(0)
 let product = ref([])
+const defaultImage = "/src/assets/vue.svg"
+const userid = authStore.currentUserId
 //根据商品id调数据库查询商品其余详细信息
 async function getProductById() {
     const url = "http://localhost:8080"
@@ -55,21 +57,38 @@ async function addGoods(userid) {
       return false;
   }
 }
-//立即购买
+// 跳转支付界面
 function buy() {
-    
+    const paymentList = reactive([{
+        goodsId: goodsId,
+        goodsName: product.value.name,
+        price: product.value.price,
+        count: selectedNumber.value
+    }])
+    router.push({
+        path: '/payment',
+        query: {
+            userId: String(userid),
+            paymentList: JSON.stringify(paymentList)
+        }
+    })
+    // console.log(paymentList)
 }
 onMounted(async () => {
     product.value = await getProductById()
     console.log(product)
+ //   loadImage(product.value.image,"img")
 })
 
+const handleImageError = (event) => {
+  event.target.src = defaultImage; // 替换为备用图片
+};
 </script>
 
 <template>
     <div class="main">
         <div class="view"> 
-            <img src="/src/assets/commodity.png" alt="商品图片" width=120px heighth=auto></img>
+            <img :src="product.image" alt="商品图片" width=360px heighth=auto id="img" @error="handleImageError($event, product)"></img>
         </div>
         <div class="content">
             <div class="detail">

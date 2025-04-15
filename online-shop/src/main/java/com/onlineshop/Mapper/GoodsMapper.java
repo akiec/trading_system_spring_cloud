@@ -23,7 +23,7 @@ public interface GoodsMapper {
 
     void updateGoods(Goods goods);
 
-    Boolean putOrder(Goods goods,String newVersion);
+    Boolean putOrder(String goodsId,Integer stock,String version,String newVersion);
 
     List<Goods> searchByProduct(String productId);
 }

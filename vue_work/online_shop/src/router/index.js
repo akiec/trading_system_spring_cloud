@@ -8,6 +8,7 @@ import CommodityPage from '../views/CommodityPage.vue'
 import OrderPage from '../views/OrderPage.vue'
 import SearchPage from '../views/SearchPage.vue'
 import UploadPage from '../views/UploadPage.vue'
+import PaymentPage from '../views/PaymentPage.vue'
 
 const router = createRouter({
     history:createWebHashHistory(),
@@ -48,6 +49,24 @@ const router = createRouter({
         {
             path: '/upload',
             component:UploadPage
+        },
+        {
+            path: '/payment',
+            name: 'Payment',
+            component:PaymentPage,
+            props(route) {
+                try {
+                    return {
+                      paymentList: route.query.paymentList 
+                        ? JSON.parse(route.query.paymentList)
+                        : [],
+                      userId: route.query.userId
+                    }
+                  } catch (e) {
+                    console.error('参数解析失败', e);
+                    return { paymentList: [], userId: null };
+                  }
+                }
         },
         {
             path:'/',

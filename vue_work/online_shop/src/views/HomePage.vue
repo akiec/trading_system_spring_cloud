@@ -57,9 +57,9 @@ onMounted( async() => {
         <h2>热门推荐</h2>
         <div class="slide">
           <ul class="list">
-            <li class="item"><img src="/src/assets/vue.svg" alt=""></li>
-            <li class="item"><img src="/src/assets/vue.svg" alt=""></li>
-            <li class="item"><img src="/src/assets/vue.svg" alt=""></li>
+            <li class="item"><img src="/src/assets/commodity.png" width="120px" height="auto" alt="图片1"></li>
+            <li class="item"><img src="/src/assets/乐事.png" alt="图片2"></li>
+            <li class="item"><img src="/src/assets/魔芋爽.jfif" alt="图片3"></li>
           </ul>
         </div>
       </div>
@@ -75,7 +75,7 @@ onMounted( async() => {
           </router-link>
         </div>
         <div class = "card-img">
-          <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
+          <img :src="product.image" :alt="product.image" width="80px" height="auto"></img>
         </div>
       </div>
     </div>

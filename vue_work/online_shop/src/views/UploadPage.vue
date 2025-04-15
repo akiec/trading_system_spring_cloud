@@ -157,6 +157,7 @@ async function saveProduct() {
       goodsId: newId,
       selected: false
     })
+    TotalPage = products.value.length / pageSize
   }
   closeDialog()
 }
@@ -176,8 +177,9 @@ function executeDelete() {
     products.value = products.value.filter(p => !deleteIds.value.includes(p.goodsId))
     showDeleteConfirm.value = false
     for (let id of deleteIds._rawValue) {
-        console.log(id)
-        del(id)
+      console.log(id)
+      del(id)
+      TotalPage = products.value.length / pageSize
     }
 }
 //分页
@@ -185,10 +187,30 @@ const pageSize = 5
 let TotalPage = ref(1)
 let currentPage = ref(route.query.page)
 
-
 watch(() => route.query.page, (newPage) => {//页面更新
   currentPage = newPage
-});
+}); 
+//图片文件处理
+const handleFileUpload = async (event) => {
+  const file = event.target.files[0];
+  console.log(file)
+  console.log(file.name.split('.').pop())
+  if (!file) return;
+  const formData = new FormData()
+  formData.append('image',file)
+  const url = "http://localhost:8080/upload";
+  try {
+  let response = await axios.post(url,formData)
+    console.log(response);
+    console.log("上架完成");
+    console.log(response.data.data)
+    currentProduct.value.image = response.data.data 
+  }    
+  catch(error) {
+    console.log(error);
+  };
+};
+
 
 </script>
 
@@ -229,7 +251,7 @@ watch(() => route.query.page, (newPage) => {//页面更新
             <td>{{ product.stock }}</td>
             <td>{{ product.category }}</td>
             <td>{{ product.description}}</td>
-            <td>{{ product.image}}</td>
+            <td><img :src="product.image" :alt="product.image" width=120px heighth=auto></td>
             <td>
               <button @click="editProduct(product)">编辑</button>
               <button @click="confirmDelete(product.goodsId)">删除</button>
@@ -273,7 +295,9 @@ watch(() => route.query.page, (newPage) => {//页面更新
           </div>
           <div class="form-group">
             <label>图片</label>
-            <input  v-model="currentProduct.image" min="0" required>
+            <div>
+              <input type="file" @change=" handleFileUpload" />
+            </div>
           </div>
           <div class="form-group">
             <label>分类</label>

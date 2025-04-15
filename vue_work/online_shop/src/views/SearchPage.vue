@@ -47,7 +47,7 @@ async function searchGoods() {
 
 const Products = ref([])
 const route = useRoute()
-const content = route.query.content
+let content = route.query.content
 const pageSize = 10
 let TotalPage = ref(1)
 let currentPage = ref(route.query.page)
@@ -70,7 +70,9 @@ watch(
   () => route.query.content,
   async (newContent) => {
     if (newContent) {
-      Products.value = await searchGoods(newContent)
+      console.log(newContent)
+      content = newContent
+      Products.value = await searchGoods()
       TotalPage = Products.value.length / 10
       console.log(TotalPage)
       console.log(currentPage>=TotalPage)
@@ -91,7 +93,7 @@ watch(
             </router-link>
         </div>
         <div class = "card-img">
-            <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
+            <img :src="product.image" alt="商品图片" width="80px" height="auto"></img>
         </div>
       </div>
     </div>

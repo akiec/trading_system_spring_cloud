@@ -22,7 +22,7 @@
     <update id="updateStatus">
         update Payment
         set
-        <if test="status!=null">status=#{status}</if>
+        <if test="status!=null">paymentstatus=#{status}</if>
         where paymentId=#{paymentId}
     </update>
     <!--分页查询待支付-->

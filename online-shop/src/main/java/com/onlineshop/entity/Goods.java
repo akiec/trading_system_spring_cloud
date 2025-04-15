@@ -38,6 +38,21 @@ public class Goods {
     private String version;
     //商户ID
     private String productId;
+    public String toString() {
+        return "Goods{" +
+                "goodsId='" + goodsId + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", image='" + image + '\'' +
+                ", category='" + category + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", version='" + version + '\'' +
+                ", productId='" + productId + '\'' +
+                '}';
+    }
     public static Goods fromString(String str) {
         // 提取goodsId
         int start = str.indexOf("goodsId='") + "goodsId='".length();

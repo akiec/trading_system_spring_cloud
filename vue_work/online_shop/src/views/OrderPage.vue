@@ -5,11 +5,6 @@
         </div>
         
         <div class="order-details">
-            <div class="order-header">
-                <h1 class="order-number">订单详情 #{{ order }}</h1>
-                <span class="status-badge" :class="statusClass">{{ statusText }}</span>
-            </div>
-
             <div class="detail-grid">
                 <div class="detail-item">
                     <label>产品编号</label>
@@ -45,6 +40,7 @@
     import { useRouter } from 'vue-router';
     import axios from 'axios';
     import { reactive } from 'vue';
+    
     const order_info = defineProps(['order', 'goods', 'product', 'count', 'totalPrice', 'address', 'status', 'customer'])
     const router = useRouter()
     function searchProduct(product) {

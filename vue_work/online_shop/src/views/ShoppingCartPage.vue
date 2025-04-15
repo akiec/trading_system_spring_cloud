@@ -1,12 +1,12 @@
 <script setup>
 import { useAuthStore } from '../stores/auth';
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 const router = useRouter()
 const authStore = useAuthStore()
-const Products = ref([])
-const selectedNumber = ref(0)
+let Products = ref([])
+let selectedNumbers = ref([])
 let goodsList = []
 let count =ref(0)
 // 模拟数据
@@ -38,26 +38,70 @@ async function searchGoods() {
     return mockProducts
   }
 }
-async function buy(id) {//商品结算函数
-  console.log(goodsList)
-  const url = "http://localhost:8080"
+function singleBuy(goodsId, goodsName, price, count) {//商品结算函数
+  const userid = authStore.currentUserId
+  let paymentList = reactive([{
+    goodsId: goodsId,
+    goodsName: goodsName,
+    price: price,
+    count: count
+  }])
   try {
-    console.log(url + `/shopCart/summary/${authStore.currentUserId}`)
-    let response = await axios.post(url + `/shopCart/summary/${authStore.currentUserId}`, {
-      
+    router.push({
+        path: '/payment',
+        query: {
+            userId: String(userid),
+            paymentList: JSON.stringify(paymentList)
+        }
     })
-    console.log(response)
   } catch (error) {
-    console.error('结算失败:', error)
+    console.error('跳转失败:', error)
   }
 }
+
+function summaryBuy() {
+  const userid = authStore.currentUserId;
+
+  // 构建支付列表
+  const paymentList = Products.value
+    .map((product, index) => {
+      if (product.selected && selectedNumbers.value[index] > 0) {
+        return {
+          goodsId: product.goodsId,
+          goodsName: product.name,
+          price: product.price,
+          count: selectedNumbers.value[index]
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
+
+  if (!paymentList.length) {
+    alert("请选择商品并填写数量！");
+    return;
+  }
+
+  try {
+    router.push({
+      path: '/payment',
+      query: {
+        userId: String(userid),
+        paymentList: JSON.stringify(paymentList)
+      }
+    });
+  } catch (error) {
+    console.error('跳转失败:', error);
+  }
+}
+
 function selected(id) {//选择该商品函数
-  let index = goodsList.indexOf(id)
-  if (index==-1) {
+  let indexid = goodsList.indexOf(id)
+  if (indexid==-1) {
     goodsList.push(id);//不存在则加入
     //控件样式变化
   } else {
-    goodsList.splice(index, 1);//存在则删除
+    goodsList.splice(indexid, 1);//存在则删除
     //控件样式变化
   }
   // console.log(goodsList)
@@ -73,20 +117,22 @@ async function remove(id) {//移除购物车
     console.error('删除失败:', error)
   }
 }
-async function summary() {//计算当前选中的商品的总价值
+async function summary() {
   let total = 0;
-  for (let id of goodsList) {
-    const url = "http://localhost:8080"
-    try {
-      // console.log(url + `/goods/details/${id}`)
-      let response = await axios.post(url + `/goods/details/${id}`)
-      // console.log(response)
-      total+=response.data.data.price
-    } catch (error) {
-      console.error('删除失败:', error)
+  for (let i = 0; i < Products.value.length; i++) {
+    const product = Products.value[i];
+    // console.log(product)
+    if (product.selected) { // 仅计算选中的商品
+      const id = product.goodsId;
+      const quantity = selectedNumbers.value[i]; // 获取对应数量
+      try {
+        const response = await axios.post(`http://localhost:8080/goods/details/${id}`);
+        total += response.data.data.price * quantity; // 单价 * 数量
+      } catch (error) {
+        console.error('获取商品详情失败:', error);
+      }
     }
   }
-  // console.log(total)
   count.value = total;
 }
 onMounted( async() => {
@@ -95,12 +141,13 @@ onMounted( async() => {
         router.push('/login')
   }  
   Products.value = await searchGoods();
+  selectedNumbers = Products.value.map(() => 0);
 }) 
 </script>
 
 <template>
     <div class="product-grid" id="productList">
-      <div v-for="product in Products" class = "product-card">
+      <div v-for="(product, index) in Products" class = "product-card">
         <div class = "card-text">
             <input type="checkbox" v-model="product.selected" @click="selected(product.goodsId, product.name, product.price)">
             <h3>{{product.name}}</h3>
@@ -110,8 +157,8 @@ onMounted( async() => {
                 <button >查看详情页</button>
             </router-link>
             <label>购买数量</label>
-            <input type="number" v-model.number="selectedNumber" min="0" required>
-            <button @click="buy(product.goodsId)">单独结算</button>
+            <input type="number" v-model.number="selectedNumbers[index]" min="0" required>
+            <button @click="singleBuy(product.goodsId, product.goodsName, product.price, selectedNumbers[index])">单独结算</button>
             <button @click="remove(product.goodsId)">移出购物车</button>
         </div>
         <div class = "card-img">
@@ -120,7 +167,7 @@ onMounted( async() => {
       </div>
     </div>
     <p>所选商品总价为{{ count }}</p>
-    <button @click="buy()">结算所选的商品</button>
+    <button @click="summaryBuy()">结算所选的商品</button>
 </template>
 
 <style scoped>

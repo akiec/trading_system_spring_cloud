@@ -157,6 +157,7 @@ async function saveProduct() {
       goodsId: newId,
       selected: false
     })
+    TotalPage = products.value.length / pageSize
   }
   closeDialog()
 }
@@ -176,8 +177,9 @@ function executeDelete() {
     products.value = products.value.filter(p => !deleteIds.value.includes(p.goodsId))
     showDeleteConfirm.value = false
     for (let id of deleteIds._rawValue) {
-        console.log(id)
-        del(id)
+      console.log(id)
+      del(id)
+      TotalPage = products.value.length / pageSize
     }
 }
 //分页

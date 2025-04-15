@@ -24,4 +24,6 @@ public interface UserService {
     Result changeAddress(UserDTO userDTO);
 
     Result registerUser(LoginDTO loginDTO);
+
+    Result getAddress(String userId);
 }

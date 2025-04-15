@@ -56,4 +56,6 @@ public class UserController {
     //注册账号密码
     @PostMapping("/register")
     public Result registerUser(@RequestBody LoginDTO loginDTO) {return userService.registerUser(loginDTO);}
+    @GetMapping("/getAddress/{userId}")
+    public Result getAddress(@PathVariable("userId") String userId) {return userService.getAddress(userId);}
 }

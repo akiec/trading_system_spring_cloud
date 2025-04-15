@@ -38,7 +38,6 @@ public class Goods {
     //版本号
     private String version;
     //商户ID
-    @JsonSerialize(using = ToStringSerializer.class)
     private String productId;
     public static Goods fromString(String str) {
         Goods goods = new Goods();
@@ -84,7 +83,7 @@ public class Goods {
             goods.version = paramMap.get("version");
         }
         if (paramMap.containsKey("productId")) {
-            goods.productId = String.valueOf(paramMap.get("productId"));
+            goods.productId = paramMap.get("productId");
         }
 
         return goods;

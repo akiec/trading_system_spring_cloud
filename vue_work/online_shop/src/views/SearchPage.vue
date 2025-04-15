@@ -18,12 +18,6 @@ const mockProducts = [
     { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
 ];
-//加入购物车
-function addToCart() {
-  //提示弹窗
-  alert("已加入购物车");
-  //加入逻辑
-}
 function search() {
   console.log("开始查询");
   const url = "http://localhost:8080/goods"    
@@ -106,7 +100,6 @@ watch(
             <router-link :to="{path:'commodity',query:{product_id:product.goodsId}}">
                 <button >查看详情页</button>
             </router-link>
-            <button @click="addToCart()">加入购物车</button>
         </div>
         <div class = "card-img">
             <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>

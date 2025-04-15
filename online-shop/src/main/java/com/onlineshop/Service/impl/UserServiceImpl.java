@@ -168,6 +168,12 @@ public class UserServiceImpl implements UserService {
         return Result.success();
     }
 
+    @Override
+    public Result getAddress(String userId) {
+        String address = addressMapper.searchByUserId(userId);
+        return Result.success(address);
+    }
+
     //实体复制DTO
     private UserDTO UserDTOCopy(User user) {
         UserDTO userDTO = new UserDTO();

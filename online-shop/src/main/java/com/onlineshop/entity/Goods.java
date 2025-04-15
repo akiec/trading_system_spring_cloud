@@ -38,7 +38,7 @@ public class Goods {
     private String version;
     //商户ID
     private String productId;
-    public String toString() {
+    public String toJsonString() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("goodsId", goodsId);
         jsonObject.put("name", name);

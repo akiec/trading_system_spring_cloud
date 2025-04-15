@@ -52,7 +52,8 @@ public class AdminGoodsServiceImpl implements AdminGoodsService {
         //查找Redis中是否存在
         String s = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goods.getGoodsId());
         if(!StrUtil.isBlank(s)) {
-            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goods.getGoodsId(), goods.toString());
+            stringRedisTemplate.delete(NameContains.Goods_NAME + goods.getGoodsId());
+            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goods.getGoodsId(), goods.toJsonString());
         }
         return Result.success();
     }

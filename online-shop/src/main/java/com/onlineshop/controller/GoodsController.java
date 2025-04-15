@@ -40,6 +40,4 @@ public class GoodsController {
         return goodsService.searchByroduct(productId);
 
     }
-
-
 }

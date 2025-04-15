@@ -32,7 +32,7 @@ public class GoodsServiceImpl implements GoodsService {
         String redisGoods = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
         Goods goods = Goods.fromString(redisGoods);
         //不存在查找并写入
-        if(goods.getName()==null){
+        if(goods.getGoodsId().isEmpty()){
             Goods newgoods = goodsMapper.details(goodsId);
             stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newgoods.toString());
             return Result.success(newgoods);

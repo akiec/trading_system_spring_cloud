@@ -189,7 +189,7 @@ async function createOrders() {
   onMounted(() => {
     getUserInformation()
     getUserAddress()
-    console.log(user)
+    // console.log(user)
   })
 </script>
   

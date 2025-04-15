@@ -10,8 +10,8 @@
     </select>
     <!--创建订单-->
     <insert id="createOrder">
-        insert into Orders(orderId,customerId,productId,paymentId,address,status,goodsId,orderTime)
-        values (#{orderId},#{customerId},#{productId},#{paymentId},#{address},#{status},#{goodsId},#{orderTime})
+        insert into Orders(orderId,customerId,productId,paymentId,address,status,goodsId,orderTime,count,totalPrice)
+        values (#{orderId},#{customerId},#{productId},#{paymentId},#{address},#{status},#{goodsId},#{orderTime},#{count},#{totalPrice})
     </insert>
     <!--查询订单具体信息-->
     <select id="getDetails" resultType="com.onlineshop.entity.Order">

@@ -76,7 +76,7 @@ watch(
       console.log(currentPage>=TotalPage)
     }
   }
-)
+) 
 </script>
 
 <template>
@@ -91,7 +91,7 @@ watch(
             </router-link>
         </div>
         <div class = "card-img">
-            <img src="/src/assets/commodity.png" alt="商品图片" width="80px" height="auto"></img>
+            <img :src="product.image" alt="商品图片" width="80px" height="auto"></img>
         </div>
       </div>
     </div>

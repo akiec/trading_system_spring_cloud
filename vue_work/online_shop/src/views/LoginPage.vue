@@ -55,8 +55,7 @@
                 router.push('/profile')
             }
             else{
-                alert(response.data.errormessage)
-                return
+                console.log(response.data.errormessage)
             }
         })
         .catch(function (error) {
@@ -79,8 +78,7 @@
                 router.push('/profile')
             }
             else{
-                alert(response.data.errormessage)
-                return
+                console.log(response.data.errormessage)
             }
         })
         .catch(function (error) {
@@ -106,8 +104,7 @@
                 router.push('/profile')
             }
             else{
-                alert(response.data.errormessage)
-                return
+                console.log(response.data.errormessage)
             }
         })
         .catch(function (error) {
@@ -221,7 +218,6 @@
     }
 
     .form-box {
-        width: 400px;
         font-weight: 400;
         font-size: 20px;
         line-height: 20px;
@@ -245,7 +241,6 @@
         display: flex;
         justify-content: space-around;
         margin-top: 20px;
-        width: 400px;
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
@@ -257,7 +252,17 @@
         display: flex;
         justify-content: space-around;
         margin-top: 20px;
-        width: 400px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    .loginbyphone-btn {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
         font-style: normal;
         font-weight: 400;
         font-size: 14px;

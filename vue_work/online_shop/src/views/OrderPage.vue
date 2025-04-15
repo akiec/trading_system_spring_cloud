@@ -10,12 +10,15 @@
             <h1>收货地址：{{ address }}</h1>
             <h1>状态码：{{ status }}</h1>
         </form>
+        <button @click="cancelOrder" class="cancel-btn">取消订单</button>
     </div>
 </template>
 
 <script setup>
     import { useRouter } from 'vue-router';
-    defineProps(['order', 'goods', 'product', 'count', 'totalPrice', 'address', 'status'])
+    import axios from 'axios';
+    import { reactive } from 'vue';
+    const order_info = defineProps(['order', 'goods', 'product', 'count', 'totalPrice', 'address', 'status', 'customer'])
     const router = useRouter()
     function searchProduct(product) {
         console.log(product)
@@ -24,6 +27,24 @@
             query: {
                 product_id: product
             }
+        })
+    }
+    function cancelOrder() {
+        const url = `http://localhost:8080/order/delete/${String(order_info.order)}/${Number(order_info.status)}`
+        // console.log(order_info)
+        axios.delete(url,{
+            goodsId: order_info.goods,
+            count: order_info.count,
+            id: order_info.order,
+            status: order_info.status,
+            userId: order_info.customer
+        }).then((response) => {
+            console.log(response)
+            router.push({
+                path: '/home'
+            })
+        }).catch((error) => {
+            console.log(error)
         })
     }
 </script>
@@ -55,4 +76,5 @@
         color: orange;
         text-decoration: underline;
     }
+
 </style>

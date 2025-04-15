@@ -148,7 +148,8 @@
                             count: order.count,
                             totalPrice: order.totalPrice,
                             address: order.address,
-                            status: order.status
+                            status: order.status,
+                            customer: order.customerId
                         }
                     }">{{ order.orderId }}</router-link>
                 </li>

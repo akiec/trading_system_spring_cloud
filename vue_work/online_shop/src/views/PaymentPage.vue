@@ -50,16 +50,8 @@
   import { ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   
-  const props = defineProps({
-    userId: {
-        type: String
-    },
-    paymentList: {
-      type: Array,
-      required: true
-    }
-  })
-  
+  const props = defineProps(['userId', 'paymentList'])
+  console.log(props.paymentList)
   const router = useRouter()
   
   // 模拟商品数据（实际应从接口获取）

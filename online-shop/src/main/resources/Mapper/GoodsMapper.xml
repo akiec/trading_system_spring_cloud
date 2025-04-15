@@ -31,7 +31,7 @@
     <!--删除商品-->
     <delete id="delete">
         delete from Goods
-        where goodId=#{goodId}
+        where goodsId=#{goodsId}
     </delete>
    <!-- 更新商品信息-->
     <update id="updateGoods">

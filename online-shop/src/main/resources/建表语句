@@ -63,19 +63,19 @@ CREATE TABLE ShopCartGoods(
 );
 
 
-alter table goods modify column goodsId string not null;
-alter table user modify column userId string not null;
-alter table goods modify column productId string;
-alter table orders modify column orderId string not null;
-alter table orders modify column customerId string;
-alter table orders modify column productId string;
-alter table orders modify column paymentId string;
-alter table orders modify column goodsId string;
-alter table payment_table modify column orderId string;
-alter table payment_table modify column paymentId string not null;
-alter table payment_table modify column userId string;
-alter table payment_table modify column productId string;
-alter table shopcartgoods modify column goodsId string not null;
-alter table shopcartgoods modify column productId string;
-alter table shopcartgoods modify column userId string;
+alter table goods modify column goodsId varchar(60) not null;
+alter table user modify column userId varchar(60) not null;
+alter table goods modify column productId varchar(60);
+alter table orders modify column orderId varchar(60) not null;
+alter table orders modify column customerId varchar(60);
+alter table orders modify column productId varchar(60);
+alter table orders modify column paymentId varchar(60);
+alter table orders modify column goodsId varchar(60);
+alter table payment_table modify column orderId varchar(60);
+alter table payment_table modify column paymentId varchar(60) not null;
+alter table payment_table modify column userId varchar(60);
+alter table payment_table modify column productId varchar(60);
+alter table shopcartgoods modify column goodsId varchar(60) not null;
+alter table shopcartgoods modify column productId varchar(60);
+alter table shopcartgoods modify column userId varchar(60);
 

@@ -5,45 +5,41 @@ import axios from 'axios';
 // 模拟数据
 const products=ref([])
 const mockProducts = [
-    { goodsId: 1, name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png" , status: true, selected: false },
-    { goodsId: 2, name: "商品2", price: 199.99, stock: 5 ,img: null , status: true, selected: false },
-    { goodsId: 3, name: "商品3", price: 99.99, stock: 10 ,img: "/src/assets/vue.svg", status: true, selected: false },
-    { goodsId: 4, name: "商品4", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
-    { goodsId: 5, name: "商品5", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
-    { goodsId: 6, name: "商品6", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
-    { goodsId: 7, name: "商品7", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
-    { goodsId: 8, name: "商品8", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
-    { goodsId: 9, name: "商品9", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
-    { goodsId: 10, name: "商品10", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
-    { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" , status: true, selected: false },
-    { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", status: true, selected: false },
+    { goodsId: 1, name: "商品1", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png" , selected: false },
+    { goodsId: 2, name: "商品2", price: 199.99, stock: 5 ,img: null , selected: false },
+    { goodsId: 3, name: "商品3", price: 99.99, stock: 10 ,img: "/src/assets/vue.svg", selected: false },
+    { goodsId: 4, name: "商品4", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
+    { goodsId: 5, name: "商品5", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
+    { goodsId: 6, name: "商品6", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
+    { goodsId: 7, name: "商品7", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
+    { goodsId: 8, name: "商品8", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
+    { goodsId: 9, name: "商品9", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
+    { goodsId: 10, name: "商品10", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
+    { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" , selected: false },
+    { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png", selected: false },
 ];
 import { useAuthStore } from '../stores/auth';
 const authStore = useAuthStore()
-function add(product) {
+async function add(product) {
+    product.productId = authStore.currentUserId
+    product.version = 1.0
     console.log("开始上架");
-    const url = "http://localhost:8080/admin/add";
-    axios.post(url + `/${authStore.currentUserId}`, {
-        product,
-        productId: authStore.currentUserId,
-        version:1.0
-    })
-    .then(function (response) {
-        console.log(response);
-        console.log("上架完成");
-        console.log(response.data.data)
-        return response.data.data;
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+  const url = "http://localhost:8080/admin/add";
+  try {
+  let response = await axios.post(url + `/${authStore.currentUserId}`,product)
+    console.log(response);
+    console.log("上架完成");
+    console.log(response.data.data)
+    return response.data.data;
+  }    
+  catch(error) {
+    console.log(error);
+  };
 }
 function del(id){
     console.log("开始下架");
-    const url = "http://localhost:8080/admin/delete";
-    axios.post(url,{
-        goodsId: id     
-    })
+    const url = `http://localhost:8080/admin/delete/${id}`;
+    axios.delete(url)
     .then(function (response) {
         console.log(response);
         console.log("下架成功")
@@ -54,7 +50,7 @@ function del(id){
 }
 function alter(product) {
     console.log("开始修改");
-    const url = "http://localhost:8080/admin/updateGoods";
+    const url = "http://localhost:8080/admin/update";
     axios.post(url,product)
     .then(function (response) {
         console.log(response);
@@ -147,6 +143,8 @@ async function saveProduct() {
   } else {
     // 添加新商品
     const newId = await add(currentProduct.value)
+    console.log("新id")
+    console.log(newId)
     products.value.push({
       ...currentProduct.value,
       goodsId: newId,
@@ -203,7 +201,8 @@ function executeDelete() {
             <th>价格</th>
             <th>库存</th>
             <th>分类</th>
-            <th>上架状态</th>
+            <th>描述</th>
+            <th>图片</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -215,11 +214,8 @@ function executeDelete() {
             <td>¥{{ product.price}}</td>
             <td>{{ product.stock }}</td>
             <td>{{ product.category }}</td>
-            <td>
-              <span :class="['status', product.status ? 'active' : 'inactive']">
-                {{ product.status ? '已上架' : '已下架' }}
-              </span>
-            </td>
+            <td>{{ product.description}}</td>
+            <td>{{ product.image}}</td>
             <td>
               <button @click="editProduct(product)">编辑</button>
               <button @click="confirmDelete(product.goodsId)">删除</button>
@@ -247,6 +243,14 @@ function executeDelete() {
             <input type="number" v-model.number="currentProduct.stock" min="0" required>
           </div>
           <div class="form-group">
+            <label>描述</label>
+            <input  v-model="currentProduct.description" min="0" required>
+          </div>
+          <div class="form-group">
+            <label>图片</label>
+            <input  v-model="currentProduct.image" min="0" required>
+          </div>
+          <div class="form-group">
             <label>分类</label>
             <select v-model="currentProduct.category" required>
               <option value="电子产品">电子产品</option>
@@ -254,13 +258,6 @@ function executeDelete() {
               <option value="食品">食品</option>
               <option value="家居">家居</option>
             </select>
-          </div>
-          <div class="form-group">
-            <label>上架状态</label>
-            <label class="switch">
-              <input type="checkbox" v-model="currentProduct.status">
-              <span class="slider round"></span>
-            </label>
           </div>
           <div class="dialog-buttons">
             <button type="button" @click="closeDialog">取消</button>

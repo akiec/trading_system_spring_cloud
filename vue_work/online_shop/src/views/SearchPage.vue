@@ -70,21 +70,17 @@ onMounted( async() => {
   Products.value = await searchGoods();
 })
 
+watch(() => route.query.page, (newPage) => {
+  currentPage = newPage
+});
 watch(
-  () => ({
-    content: route.query.content,
-    page: route.query.page || 0
-  }),
-  async (newValue, oldValue) => {
-    try {
-      if (newValue.content != oldValue.content) { 
-        Products.value = await searchGoods()
-      }
-      if (newValue.page != oldValue.page) {
-        currentPage.value = Number(page) || 0
-      }
-    } catch (error) {
-      console.error('搜索失败:', error)
+  () => route.query.content,
+  async (newContent) => {
+    if (newContent) {
+      Products.value = await searchGoods(newContent)
+      TotalPage = Products.value.length / 10
+      console.log(TotalPage)
+      console.log(currentPage>=TotalPage-1)
     }
   }
 )

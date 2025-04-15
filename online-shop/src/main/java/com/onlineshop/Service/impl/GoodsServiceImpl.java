@@ -10,13 +10,14 @@ import com.onlineshop.Service.GoodsService;
 import com.onlineshop.Utils.NameContains;
 import com.onlineshop.entity.Goods;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 import com.google.gson.*;
 import java.util.List;
-
+@Slf4j
 @Service
 public class GoodsServiceImpl implements GoodsService {
     @Resource
@@ -30,6 +31,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Result details(String goodsId) {
         //查找缓存中是否存在
         String redisGoods = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
+        log.info(redisGoods);
         Goods goods = Goods.fromString(redisGoods);
         //不存在查找并写入
         if(goods.getName()==null){

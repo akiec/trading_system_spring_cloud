@@ -83,16 +83,16 @@ onMounted( async() => {
     <div class = "product-recommend">
       <div class="product-category">
         <h2 class="search_sheet">商品分类</h2>
-          <router-link :to="{path:'search',query:{content:'服装'}}">
+          <router-link :to="{path:'search',query:{content:'服装',page:1}}">
             <button class="button_search">服装</button>
           </router-link>
-          <router-link :to="{path:'search',query:{content:'食品'}}">
+          <router-link :to="{path:'search',query:{content:'食品',page:1}}">
             <button class="button_search">食品</button>
           </router-link>
-          <router-link :to="{path:'search',query:{content:'家具'}}">
+          <router-link :to="{path:'search',query:{content:'家具',page:1}}">
             <button class="button_search">家具</button>
           </router-link>
-          <router-link :to="{path:'search',query:{content:'电子产品'}}">
+          <router-link :to="{path:'search',query:{content:'电子产品',page:1}}">
             <button class="button_search">电子产品</button>
           </router-link>
       </div>

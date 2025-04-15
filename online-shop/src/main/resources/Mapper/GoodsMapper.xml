@@ -36,7 +36,15 @@
    <!-- 更新商品信息-->
     <update id="updateGoods">
         update Goods
-        set name=#{name},description=#{description},price=#{price},stock=#{stock},image=#{image},category=#{category},createTime=#{createTime},updateTime=#{updateTime}
+        set
+        <if test="name!=null and name!='' "> name=#{name},</if>
+        <if test="description!=null and description!= '' ">description=#{description},</if>
+        <if test="price!=null">price=#{price},</if>
+        <if test="stock!=null">stock=#{stock},</if>
+        <if test="image!=null and image!=''">image=#{image},</if>
+        <if test="category!=null and category!=''">category=#{category},</if>
+        <if test="createTime!=null"> createTime=#{createTime},</if>
+        <if test="updateTime!=null">updateTime=#{updateTime}</if>
         where goodsId=#{goodsId}
     </update>
     
@@ -51,7 +59,9 @@
     <!--下单减少库存-->
     <update id="putOrder" parameterType="boolean">
         update Goods
-        set stock=#{stock-1},version=#{newVersion}
+        set
+        <if test="stock!=null">stock=#{stock-1},</if>
+        <if test="version!=null and version!=''"> version=#{newVersion}</if>
         where goodsId=#{goodsId} and version=#{version}
     </update>
     <!--根据厂家查商品-->

@@ -21,7 +21,8 @@
     <!--更新状态-->
     <update id="updateStatus">
         update Payment
-        set status=#{status}
+        set
+        <if test="status!=null">status=#{status}</if>
         where paymentId=#{paymentId}
     </update>
     <!--分页查询待支付-->

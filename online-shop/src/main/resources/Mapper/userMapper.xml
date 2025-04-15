@@ -26,7 +26,10 @@
     <!--更新用户信息-->
     <update id="updateUser">
         update User
-        set phone =#{phone},nickName=#{nickName},updateTime=#{updateTime}
+        set
+        <if test="phone!=null and phone!=''">phone =#{phone},</if>
+        <if test="nickName!=null and nickName!=''"> nickName=#{nickName},</if>
+        <if test="updateTime!=null">updateTime=#{updateTime}</if>
         where userId =#{userId}
     </update>
 

@@ -25,7 +25,8 @@
     </delete>
     <update id="setStatus">
         update from Orders
-        set status=#{status}
+        set
+        <if test="status!=null">status=#{status}</if>
         where orderId=#{orderId}
     </update>
 

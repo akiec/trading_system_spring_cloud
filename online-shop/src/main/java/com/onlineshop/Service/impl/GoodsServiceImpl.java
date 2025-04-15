@@ -33,6 +33,9 @@ public class GoodsServiceImpl implements GoodsService {
         //不存在查找并写入
         if(StrUtil.isBlank(redisGoods)){
             Goods newgoods = goodsMapper.details(goodsId);
+            if(newgoods==null){
+                return Result.error("数据不存在");
+            }
             stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newgoods.toJsonString());
             return Result.success(newgoods);
         }

@@ -10,7 +10,8 @@
     </select>
     <update id="changeAddress">
         update Address
-        set address=#{address}
+        set
+        <if test="address!=null and address!=''">address=#{address}</if>
         where userId=#{userId}
     </update>
 </mapper>

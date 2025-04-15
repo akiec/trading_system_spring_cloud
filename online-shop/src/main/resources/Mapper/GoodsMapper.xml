@@ -57,7 +57,7 @@
     <update id="putOrder" parameterType="boolean">
         update Goods
         set
-        <if test="stock!=null">stock=#{stock-1},</if>
+        <if test="stock!=null">stock=#{stock},</if>
         <if test="version!=null and version!=''"> version=#{newVersion}</if>
         where goodsId=#{goodsId} and version=#{version}
     </update>

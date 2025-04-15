@@ -53,5 +53,18 @@ public class Goods {
         jsonObject.put("productId", productId);
         return jsonObject.toString();
     }
+    public void copy(Goods goods){
+        this.goodsId = goods.getGoodsId();
+        this.name = goods.getName();
+        this.description = goods.getDescription();
+        this.price = goods.getPrice();
+        this.stock = goods.getStock();
+        this.image = goods.getImage();
+        this.category = goods.getCategory();
+        this.createTime = goods.getCreateTime();
+        this.updateTime = goods.getUpdateTime();
+        this.version = goods.getVersion();
+        this.productId = goods.getProductId();
+    }
 
 }

@@ -55,10 +55,12 @@ public class OrderServiceImpl implements OrderService {
        /* goods = goodsMapper.details(goodsId);
             log.info("查数据库"+goods.toString());*/
             Goods details = goodsMapper.details(goodsId);
-            log.info("dnasuiodhnas"+details.toString());
+            goods.copy(details);
+            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, goods.toJsonString());
+        log.info("dnasuiodhnas"+goods.toString());
         }else {
-            log.info("查数据库"+redisData);
-            goods = JSONUtil.toBean(redisData, Goods.class);
+            Goods newGoods = JSONUtil.toBean(redisData, Goods.class);
+            goods.copy(newGoods);
         }
         if (goods.getStock() < 1) {
             return Result.error("商品库存不足");
@@ -67,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         //乐观锁解决超卖
         Long version = idCreater.createId(NameContains.VERSION_NAME + goodsId);
         String newVersion = version.toString();
-        Boolean isSuccess=goodsMapper.putOrder(goods.getGoodsId(),goods.getStock(),goods.getVersion(),newVersion);
+        Boolean isSuccess=goodsMapper.putOrder(goods.getGoodsId(),goods.getStock()-1,goods.getVersion(),newVersion);
         if(isSuccess){
             //更新redis缓存
             Goods newGoods = goodsMapper.details(goodsId);

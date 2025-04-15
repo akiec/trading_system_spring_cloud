@@ -1,7 +1,9 @@
 <script setup>
 //商品上传页面
-import { ref,onMounted,computed } from 'vue';
+import { ref,onMounted,computed,watch } from 'vue';
 import axios from 'axios';
+import { useRoute } from 'vue-router';
+const route = useRoute()
 // 模拟数据
 const products=ref([])
 const mockProducts = [
@@ -72,7 +74,12 @@ async function show() {
   }
 }
 onMounted(async () => {
-    products.value = await show();
+  products.value = await show();
+  TotalPage = products.value.length / pageSize
+  console.log(products.value)
+  console.log(products.value.length)
+  console.log(TotalPage)
+  console.log(currentPage>=TotalPage-1)
 })
 
 
@@ -173,8 +180,15 @@ function executeDelete() {
         del(id)
     }
 }
+//分页
+const pageSize = 5
+let TotalPage = ref(1)
+let currentPage = ref(route.query.page)
 
 
+watch(() => route.query.page, (newPage) => {//页面更新
+  currentPage = newPage
+});
 
 </script>
 
@@ -207,7 +221,7 @@ function executeDelete() {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in products" :key="product.goodsId">
+          <tr v-for="product in products.slice((currentPage-1)*pageSize,currentPage*pageSize)" :key="product.goodsId">
             <td><input type="checkbox" v-model="product.selected"></td>
             <td>{{ product.goodsId }}</td>
             <td>{{ product.name }}</td>
@@ -225,6 +239,17 @@ function executeDelete() {
       </table>
     </div>
     
+    <!-- 上一页/下一页选单 -->
+    <div class="pages">
+      <router-link :to="{path:'upload',query:{page:Number(currentPage)-1}}">
+          <button :disabled="currentPage==1">上一页</button>
+      </router-link>
+      <router-link :to="{path:'upload',query:{page:Number(currentPage)+1}}">
+          <button :disabled="currentPage>=TotalPage">下一页</button>
+      </router-link>
+    </div>
+
+
     <!-- 新增/编辑对话框 -->
     <div class="dialog-overlay" v-if="showAddDialog || showEditDialog">
       <div class="dialog">
@@ -487,5 +512,34 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(26px);
+}
+
+.pages {
+  display: flex;
+  justify-content: center;  /* 水平居中 */
+  align-items: center;      /* 垂直居中 */
+  gap: 15px;               /* 按钮间距 */
+  margin: 20px 0;          /* 上下边距 */
+}
+
+.pages button {
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+
+.pages button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.pages button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 </style>

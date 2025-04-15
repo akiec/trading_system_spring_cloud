@@ -107,6 +107,8 @@ onMounted( async() => {
             <router-link :to="{path:'commodity',query:{product_id:product.goodsId}}">
                 <button >查看详情页</button>
             </router-link>
+            <label>购买数量</label>
+            <input type="number" v-model.number="selectedNumber" min="0" required>
             <button @click="buy(product.goodsId)">单独结算</button>
             <button @click="remove(product.goodsId)">移出购物车</button>
         </div>
@@ -117,8 +119,6 @@ onMounted( async() => {
     </div>
     <p>所选商品总价为{{ count }}</p>
     <button @click="buy()">结算所选的商品</button>
-
-
 </template>
 
 <style scoped>

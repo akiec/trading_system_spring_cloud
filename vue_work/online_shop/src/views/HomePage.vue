@@ -17,6 +17,7 @@ const mockProducts = [
     { goodsId: 11, name: "商品11", price: 99.99, stock: 10, img: "/src/assets/commodity.png" },
     { goodsId: 12, name: "商品12", price: 99.99, stock: 10 ,img: "/src/assets/commodity.png"},
 ];
+const Products = ref([])
 async function searchGoods() {
   const url = "http://localhost:8080"
   try {
@@ -28,7 +29,6 @@ async function searchGoods() {
     return mockProducts
   }
 }
-const Products = ref([])
 onMounted( async() => {
   Products.value = await searchGoods();
 })

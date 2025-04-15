@@ -30,15 +30,14 @@ public class GoodsServiceImpl implements GoodsService {
     public Result details(String goodsId) {
         //查找缓存中是否存在
         String redisGoods = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
-        Goods goods = Goods.fromString(redisGoods);
         //不存在查找并写入
-        if(goods.getGoodsId().isEmpty()){
+        if(StrUtil.isBlank(redisGoods)){
             Goods newgoods = goodsMapper.details(goodsId);
             stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newgoods.toString());
             return Result.success(newgoods);
         }
         //存在直接返回
-
+        Goods goods = Goods.fromString(redisGoods);
         return Result.success(goods);
     }
     @Override

@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     public Result createOrder(String userId, String goodsId,Integer count) {
         //前面具体页面使用了redis查询，所以一定存在
         String redisData = stringRedisTemplate.opsForValue().get(NameContains.Goods_NAME + goodsId);
-        Goods goods = Goods.fromString(redisData);
+        Goods goods = JSONUtil.toBean(redisData, Goods.class);
         if (goods.getStock() < 1) {
             return Result.error("商品库存不足");
         }

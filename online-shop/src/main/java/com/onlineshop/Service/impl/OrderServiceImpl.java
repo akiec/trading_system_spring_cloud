@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         if(isSuccess){
             //更新redis缓存
             Goods newGoods = goodsMapper.details(goodsId);
-            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newGoods.toString());
+            stringRedisTemplate.opsForValue().set(NameContains.Goods_NAME + goodsId, newGoods.toJsonString());
             //生成订单id
             String orderId = idCreater.createId(NameContains.ORDER_ID + goodsId).toString();
             //生成支付id

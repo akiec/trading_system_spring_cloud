@@ -17,7 +17,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class Goods {
     //商品ID
-    @JsonSerialize(using = ToStringSerializer.class)
     private String goodsId;
     //商品名称
     private String name;
@@ -40,53 +39,61 @@ public class Goods {
     //商户ID
     private String productId;
     public static Goods fromString(String str) {
-        Goods goods = new Goods();
-        Map<String, String> paramMap = new HashMap<>();
-        String[] pairs = str.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            if (keyValue.length == 2) {
-                paramMap.put(keyValue[0], keyValue[1]);
-            }
-        }
+        // 提取goodsId
+        int start = str.indexOf("goodsId='") + "goodsId='".length();
+        int end = str.indexOf("'", start);
+        String goodsId = str.substring(start, end);
 
-        if (paramMap.containsKey("goodsId")) {
-            goods.goodsId = paramMap.get("goodsId");
-        }
-        if (paramMap.containsKey("name")) {
-            goods.name = paramMap.get("name");
-        }
-        if (paramMap.containsKey("description")) {
-            goods.description = paramMap.get("description");
-        }
-        if (paramMap.containsKey("price")) {
-            goods.price = Double.parseDouble(paramMap.get("price"));
-        }
-        if (paramMap.containsKey("stock")) {
-            goods.stock = Integer.parseInt(paramMap.get("stock"));
-        }
-        if (paramMap.containsKey("image")) {
-            goods.image = paramMap.get("image");
-        }
-        if (paramMap.containsKey("category")) {
-            goods.category = paramMap.get("category");
-        }
-        if (paramMap.containsKey("createTime")) {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-            goods.createTime = LocalDateTime.parse(paramMap.get("createTime"), formatter);
-        }
-        if (paramMap.containsKey("updateTime")) {
-            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-            goods.updateTime = LocalDateTime.parse(paramMap.get("updateTime"), formatter);
-        }
-        if (paramMap.containsKey("version")) {
-            goods.version = paramMap.get("version");
-        }
-        if (paramMap.containsKey("productId")) {
-            goods.productId = paramMap.get("productId");
-        }
+        // 提取name
+        start = str.indexOf("name='") + "name='".length();
+        end = str.indexOf("'", start);
+        String name = str.substring(start, end);
 
-        return goods;
+        // 提取description
+        start = str.indexOf("description='") + "description='".length();
+        end = str.indexOf("'", start);
+        String description = str.substring(start, end);
+
+        // 提取price
+        start = str.indexOf("price=") + "price=".length();
+        end = str.indexOf(",", start);
+        Double price = Double.parseDouble(str.substring(start, end));
+
+        // 提取stock
+        start = str.indexOf("stock=") + "stock=".length();
+        end = str.indexOf(",", start);
+        Integer stock = Integer.parseInt(str.substring(start, end));
+
+        // 提取image
+        start = str.indexOf("image='") + "image='".length();
+        end = str.indexOf("'", start);
+        String image = str.substring(start, end);
+
+        // 提取category
+        start = str.indexOf("category='") + "category='".length();
+        end = str.indexOf("'", start);
+        String category = str.substring(start, end);
+
+        // 提取createTime
+        start = str.indexOf("createTime=") + "createTime=".length();
+        end = str.indexOf(",", start);
+        LocalDateTime createTime = LocalDateTime.parse(str.substring(start, end));
+
+        // 提取updateTime
+        start = str.indexOf("updateTime=") + "updateTime=".length();
+        end = str.indexOf(",", start);
+        LocalDateTime updateTime = LocalDateTime.parse(str.substring(start, end));
+
+        // 提取version
+        start = str.indexOf("version='") + "version='".length();
+        end = str.indexOf("'", start);
+        String version = str.substring(start, end);
+
+        // 提取productId
+        start = str.indexOf("productId='") + "productId='".length();
+        end = str.indexOf("'", start);
+        String productId = str.substring(start, end);
+
+        return new Goods(goodsId, name, description, price, stock, image, category, createTime, updateTime, version, productId);
     }
-
 }

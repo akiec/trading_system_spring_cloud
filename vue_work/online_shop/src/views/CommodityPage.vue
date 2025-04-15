@@ -61,6 +61,8 @@ async function addGoods(userid) {
 function buy() {
     const paymentList = reactive([{
         goodsId: goodsId,
+        goodsName: product.value.name,
+        price: product.value.price,
         count: selectedNumber.value
     }])
     router.push({
@@ -70,7 +72,7 @@ function buy() {
             paymentList: JSON.stringify(paymentList)
         }
     })
-    console.log(paymentList)
+    // console.log(paymentList)
 }
 onMounted(async () => {
     product.value = await getProductById()

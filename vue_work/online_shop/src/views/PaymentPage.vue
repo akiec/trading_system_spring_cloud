@@ -2,17 +2,17 @@
     <div class="payment-container">
       <h2>商品结算</h2>
       <div class="goods-list">
-        <div v-for="(item, index) in goodsItems" :key="index" class="goods-item">
+        <div v-for="goods in props.paymentList" :key="goods.goodsId" class="goods-item">
           <div class="goods-info">
-            <h3>{{ item.name }}</h3>
-            <p>单价：¥{{ item.price.toFixed(2) }}</p>
-            <p>数量：{{ item.count }}</p>
+            <h3>{{ goods.goodsName }}</h3>
+            <p>单价：¥{{ goods.price.toFixed(2) }}</p>
+            <p>数量：{{ goods.count }}</p>
           </div>
         </div>
       </div>
   
       <div class="total-price">
-        总价：¥{{ totalPrice.toFixed(2) }}
+        总价：¥{{ totalPrice }}
       </div>
   
       <form @submit.prevent="handleSubmit" class="payment-form">
@@ -46,49 +46,70 @@
     </div>
   </template>
   
-  <script setup>
-  import { ref, computed, onMounted } from 'vue'
+<script setup>
+  import { ref, computed, onMounted, reactive } from 'vue'
   import { useRouter } from 'vue-router'
+  import { useAuthStore } from '../stores/auth';
+  import axios from 'axios';
   
   const props = defineProps(['userId', 'paymentList'])
   console.log(props.paymentList)
   const router = useRouter()
-  
-  // 模拟商品数据（实际应从接口获取）
-  const goodsList = ref([
-    { id: 1, name: '商品A', price: 99.99 },
-    { id: 2, name: '商品B', price: 199.99 },
-    { id: 3, name: '商品C', price: 299.99 }
-  ])
-  
-  // 表单数据
-  const formData = ref({
-    address: '上海市浦东新区', // 默认地址
-    phone: '13800138000',    // 默认联系方式
+  const authStore = useAuthStore()
+    const user = reactive({
+        userid: null,
+        username: '',
+        phone: null,
+        address: ''
+    })
+    // 表单数据
+  const formData = reactive({
+    address: '', // 默认地址
+    phone: '',    // 默认联系方式
     paymentMethod: ''
   })
   
   // 支付方式选项
   const paymentMethods = ['微信', '支付宝', '银行卡']
-  
-  // 处理商品信息
-  const goodsItems = computed(() => {
-    return props.paymentList.map(payment => {
-      const goods = goodsList.value.find(item => item.id === payment.goodsId)
-      return {
-        ...payment,
-        name: goods?.name || '未知商品',
-        price: goods?.price || 0
-      }
-    })
-  })
-  
+
+    function getUserInformation() {
+        // 从数据库获取用户数据
+        user.userid = authStore.currentUserId
+        const url = `http://localhost:8080/user/${user.userid}`
+        axios.get(url)
+        .then(function (response) {
+            console.log(response)
+            user.username = response.data.data.userName
+            user.phone = response.data.data.phone
+            user.nickname = response.data.data.nickName
+            formData.phone = response.data.data.phone
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+
+    function getUserAddress() {
+        const url = `http://localhost:8080/user/getAddress/${user.userid}`
+        axios.get(url)
+        .then(function (response) {
+            console.log(response)
+            user.address = response.data.data
+            formData.address = response.data.data
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
   // 计算总价
   const totalPrice = computed(() => {
-    return goodsItems.value.reduce((sum, item) => {
-      return sum + (item.price * item.count)
-    }, 0)
-  })
+  return props.paymentList.reduce((sum, item) => {
+    // 添加安全数值转换
+    const price = Number(item.price) || 0
+    const count = Number(item.count) || 0
+    return sum + (price * count)
+  }, 0).toFixed(2) // 保留两位小数
+})
   
   // 提交订单
   const handleSubmit = async () => {
@@ -110,9 +131,15 @@
       alert('订单提交失败，请重试！')
     }
   }
-  </script>
+
+  onMounted(() => {
+    getUserInformation()
+    getUserAddress()
+    console.log(user)
+  })
+</script>
   
-  <style scoped>
+<style scoped>
   .payment-container {
     max-width: 800px;
     margin: 20px auto;

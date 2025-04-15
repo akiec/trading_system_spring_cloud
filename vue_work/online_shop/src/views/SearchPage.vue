@@ -61,7 +61,8 @@ async function searchGoods() {
 const Products = ref([])
 const route = useRoute()
 const content = route.query.content
-const currentPage = ref(route.query.page)
+let TotalPage = ref(10)
+let currentPage = ref(route.query.page)
 console.log(Number(currentPage.value)+1)
 console.log(content)//输入的搜索信息
 /*
@@ -69,12 +70,17 @@ onMounted( async() => {
   Products.value = await searchGoods();
 })
 */
+watch(() => route.query.page, (newPage) => {
+  currentPage = newPage
+});
 watch(
-  () => [route.query.content,route.query.page],
-  async ([newContent,newPage]) => {
+  () => route.query.content,
+  async (newContent) => {
     if (newContent) {
       Products.value = await searchGoods(newContent)
-      currentPage = newPage
+      TotalPage = Products.value.length / 10
+      console.log(TotalPage)
+      console.log(currentPage>=TotalPage-1)
     }
   },
   { immediate: true } // 立即执行一次以处理初始参数
@@ -101,10 +107,10 @@ watch(
       </div>
     </div>
     <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)-1}}">
-        <button >上一页</button>
+        <button :disabled="currentPage==1">上一页</button>
     </router-link>
     <router-link :to="{path:'search',query:{content:content,page:Number(currentPage)+1}}">
-        <button >下一页</button>
+        <button :disabled="currentPage>=TotalPage-1">下一页</button>
     </router-link>
 
 </template>

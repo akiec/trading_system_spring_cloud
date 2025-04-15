@@ -84,7 +84,7 @@ public class Goods {
             goods.version = paramMap.get("version");
         }
         if (paramMap.containsKey("productId")) {
-            goods.productId = Long.parseLong(paramMap.get("productId"));
+            goods.productId = String.valueOf(paramMap.get("productId"));
         }
 
         return goods;

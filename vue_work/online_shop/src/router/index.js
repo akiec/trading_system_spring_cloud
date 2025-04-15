@@ -30,6 +30,7 @@ const router = createRouter({
             component:ProfilePage,
             children: [
                 {
+                    name: 'Order',
                     path: '/order',
                     component: OrderPage,
                     props(route) {

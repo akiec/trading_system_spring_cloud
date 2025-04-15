@@ -19,7 +19,7 @@ async function getProductById() {
   try {
       let response = await axios.post(url + `/goods/details/${(goodsId)}`)
       console.log("搜索成功")
-      console.log(response.data.data)
+    //   console.log(response.data.data)
     return response.data.data
   } catch (error) {
     console.error('失败:', error)
@@ -76,7 +76,7 @@ function buy() {
 }
 onMounted(async () => {
     product.value = await getProductById()
-    console.log(product)
+    // console.log(product)
  //   loadImage(product.value.image,"img")
 })
 

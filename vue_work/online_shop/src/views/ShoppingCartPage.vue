@@ -6,6 +6,7 @@ import axios from 'axios';
 const router = useRouter()
 const authStore = useAuthStore()
 const Products = ref([])
+const selectedNumber = ref(0)
 let goodsList = []
 let count =ref(0)
 // 模拟数据
@@ -38,6 +39,7 @@ async function searchGoods() {
   }
 }
 async function buy(id) {//商品结算函数
+  console.log(goodsList)
   const url = "http://localhost:8080"
   try {
     console.log(url + `/shopCart/summary/${authStore.currentUserId}`)
@@ -58,7 +60,7 @@ function selected(id) {//选择该商品函数
     goodsList.splice(index, 1);//存在则删除
     //控件样式变化
   }
-  console.log(goodsList)
+  // console.log(goodsList)
   summary()
 }
 async function remove(id) {//移除购物车
@@ -76,15 +78,15 @@ async function summary() {//计算当前选中的商品的总价值
   for (let id of goodsList) {
     const url = "http://localhost:8080"
     try {
-      console.log(url + `/goods/details/${id}`)
+      // console.log(url + `/goods/details/${id}`)
       let response = await axios.post(url + `/goods/details/${id}`)
-      console.log(response)
+      // console.log(response)
       total+=response.data.data.price
     } catch (error) {
       console.error('删除失败:', error)
     }
   }
-  console.log(total)
+  // console.log(total)
   count.value = total;
 }
 onMounted( async() => {
@@ -100,7 +102,7 @@ onMounted( async() => {
     <div class="product-grid" id="productList">
       <div v-for="product in Products" class = "product-card">
         <div class = "card-text">
-            <input type="checkbox" v-model="product.selected" @click="selected(product.goodsId)">
+            <input type="checkbox" v-model="product.selected" @click="selected(product.goodsId, product.name, product.price)">
             <h3>{{product.name}}</h3>
             <p>价格：{{product.price}}</p>
             <p>库存：{{product.stock}}件</p>

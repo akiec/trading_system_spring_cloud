@@ -7,7 +7,7 @@
     <insert id="createPayment">
         insert into Payment
         (totalMoney,paymentId,orderId,userId,paymentStatus,productId,createTime,updateTime)
-        values(#{totalMoney},#{paymentId},#{orderId},#{userId}.#{paymentStatus},#{productId},#{createTime},#{updateTime})
+        values(#{totalMoney},#{paymentId},#{orderId},#{userId},#{paymentStatus},#{productId},#{createTime},#{updateTime})
     </insert>
    <!-- 根据订单id删除-->
     <delete id="deleteByOrderId">

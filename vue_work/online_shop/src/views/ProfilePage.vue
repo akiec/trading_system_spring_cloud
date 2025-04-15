@@ -41,7 +41,7 @@
     // 订单详情跳转
     const viewOrderDetail = (order) => {
     router.push({
-        path:'/order',
+        name:'Order',
         query: {
         order: order.orderId,
         goods: order.goodsId,

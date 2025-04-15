@@ -78,7 +78,7 @@
         const url = `http://localhost:8080/user/${user.userid}`
         axios.get(url)
         .then(function (response) {
-            console.log(response)
+            // console.log(response)
             user.username = response.data.data.userName
             user.phone = response.data.data.phone
             user.nickname = response.data.data.nickName
@@ -93,7 +93,7 @@
         const url = `http://localhost:8080/user/getAddress/${user.userid}`
         axios.get(url)
         .then(function (response) {
-            console.log(response)
+            // console.log(response)
             user.address = response.data.data
             formData.address = response.data.data
         })
@@ -110,27 +110,81 @@
     return sum + (price * count)
   }, 0).toFixed(2) // 保留两位小数
 })
-  
-  // 提交订单
-  const handleSubmit = async () => {
-    const orderData = {
-      userId: props.paymentList[0].userId, // 假设所有商品属于同一用户
-      goods: props.paymentList,
-      ...formData.value,
-      totalPrice: totalPrice.value
+    
+// 创建订单函数
+async function createOrders() {
+  try {
+    if (!props.paymentList?.length) {
+      alert('未选择商品')
+      return { success: false, message: '未选择商品' }
     }
-  
-    try {
-      // 这里调用实际接口
-      // const res = await api.submitOrder(orderData)
-      console.log('提交订单数据：', orderData)
-      alert('订单提交成功！')
-      router.push('/order-success') // 跳转到成功页面
-    } catch (error) {
-      console.error('订单提交失败：', error)
-      alert('订单提交失败，请重试！')
+
+    // 创建请求数组
+    const requests = props.paymentList.map(item => {
+      // 参数预处理
+      const goodsId = String(item.goodsId)
+      const count = Math.max(Number(item.count) || 0, 0)
+      console.log(goodsId)
+      // 生成请求配置
+      return axios.post(`http://localhost:8080/order/createOrder/${props.userId}/${goodsId}/${count}`)
+    })
+
+    // 并行发送所有请求
+    const results = await Promise.allSettled(requests)
+    
+    // 处理结果
+    const successOrders = []
+    const failedOrders = []
+    
+    results.forEach((result, index) => {
+      const item = props.paymentList[index]
+      if (result.status === 'fulfilled') {
+        successOrders.push({
+          goodsId: item.goodsId,
+          data: result.value.data
+        })
+      } else {
+        failedOrders.push({
+          goodsId: item.goodsId,
+          error: result.reason.message
+        })
+      }
+    })
+
+    // 返回详细结果
+    return {
+      success: true,
+      total: props.paymentList.length,
+      successCount: successOrders.length,
+      failedCount: failedOrders.length,
+      successOrders,
+      failedOrders
+    }
+    
+  } catch (error) {
+    console.error('订单创建异常:', error)
+    return {
+      success: false,
+      message: '系统异常: ' + error.message
     }
   }
+}
+
+  // 提交订单
+  const handleSubmit = async () => {
+  const result = await createOrders()
+  if (result.success) {
+    if (result.failedCount > 0) {
+      alert(`成功创建 ${result.successCount} 个订单，失败 ${result.failedCount} 个`)
+      console.log('失败详情:', result.failedOrders)
+    } else {
+      alert('所有订单创建成功！')
+      router.push('/order-success')
+    }
+  } else {
+    alert(result.message)
+  }
+}
 
   onMounted(() => {
     getUserInformation()

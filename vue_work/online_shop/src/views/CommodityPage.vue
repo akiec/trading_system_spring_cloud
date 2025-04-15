@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useRoute,useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import { onMounted } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { ref } from 'vue';
 const authStore = useAuthStore()
 const route = useRoute()
@@ -59,17 +59,18 @@ async function addGoods(userid) {
 }
 // 跳转支付界面
 function buy() {
-    // console.log(goodsId)
+    const paymentList = reactive([{
+        goodsId: goodsId,
+        count: selectedNumber.value
+    }])
     router.push({
         path: '/payment',
         query: {
             userId: String(userid),
-            paymentList: [{
-                goodsId: goodsId,
-                count: selectedNumber.value
-            }]
+            paymentList: JSON.stringify(paymentList)
         }
     })
+    console.log(paymentList)
 }
 onMounted(async () => {
     product.value = await getProductById()

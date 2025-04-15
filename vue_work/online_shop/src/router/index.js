@@ -55,8 +55,18 @@ const router = createRouter({
             name: 'Payment',
             component:PaymentPage,
             props(route) {
-                return route.query
-            }
+                try {
+                    return {
+                      paymentList: route.query.paymentList 
+                        ? JSON.parse(route.query.paymentList)
+                        : [],
+                      userId: route.query.userId
+                    }
+                  } catch (e) {
+                    console.error('参数解析失败', e);
+                    return { paymentList: [], userId: null };
+                  }
+                }
         },
         {
             path:'/',

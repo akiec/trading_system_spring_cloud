@@ -5,6 +5,7 @@
     import axios from 'axios';
 
     const showUpdateDialog = ref(false)
+    const showAddressDialog = ref(false)
     const activeTab = ref('all')
 
     const tabs = [
@@ -105,7 +106,7 @@
             orders.unshift(response.data.data[i])
             // console.log(response.data.data[i])
         }
-        console.log(orders)
+        // console.log(orders)
     }
 
     onBeforeMount(() => {
@@ -113,7 +114,7 @@
         getOrderInformation()
         getUserAddress()
         // orders = toRaw(orders)
-        console.log(orders)
+        // console.log(orders)
     })
 
     function updateInformation() {
@@ -122,30 +123,28 @@
             isAdmin: false,       
             phone: user.phone, 
             token: '',
-            nickName: user.nickname,
-            address: user.address,
+            nickName: user.nickname
         }
         
         const update_url = "http://localhost:8080/user/detail"
         axios.post(update_url, json).then(function (response) {
             alert('信息更新成功！')
-            console.log(user.username,user.phone)
-            router.push('/home')
+            // console.log(user.username,user.phone)
+            showUpdateDialog.value = false
         }).catch(function (error) {
             console.log(error)
         })  
     }
 
-    function changeAddress() {
-        // console.log(user.address)
+    const changeAddress = () => {
         const address_url = "http://localhost:8080/user/address"
         const json = {
             address: user.address,
         }
-        axios.post(address_url, json).then(function (response) {
+        axios.post(address_url, json).then(() => {
             alert("地址修改成功")
-            console.log(response)
-        }).catch(function (error) {
+            showAddressDialog.value = false
+        }).catch((error) => {
             console.log(error)
         })
     }
@@ -173,7 +172,7 @@
           <router-link :to="{path:'upload',query:{page:1}}" class="btn primary">
             上传商品
           </router-link>
-          <button class="btn warning" @click="changeAddress">更新地址</button>
+          <button class="btn warning" @click="showAddressDialog = true">更新地址</button>
           <button class="btn danger" @click="Logout">退出登录</button>
         </div>
       </div>
@@ -210,25 +209,43 @@
       <!-- 更新信息对话框 -->
       <div v-if="showUpdateDialog" class="modal-mask">
         <div class="modal-wrapper">
-          <div class="modal-container">
-            <h3 class="modal-title">更新用户信息</h3>
-            <form @submit.prevent="updateInformation">
-              <div class="form-group">
-                <label>手机号码</label>
-                <input type="tel" v-model="user.phone" required>
-              </div>
-              <div class="form-group">
-                <label>收货地址</label>
-                <input type="text" v-model="user.address" required>
-              </div>
-              <div class="form-actions">
-                <button type="button" class="btn" @click="showUpdateDialog = false">取消</button>
-                <button type="submit" class="btn primary">保存更改</button>
-              </div>
-            </form>
-          </div>
+            <div class="modal-container">
+                <h3 class="modal-title">更新用户信息</h3>
+                <form @submit.prevent="updateInformation">
+                    <div class="form-group">
+                        <label>昵称</label>
+                        <input type="text" v-model="user.nickname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>手机号码</label>
+                        <input type="tel" v-model="user.phone" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn" @click="showUpdateDialog = false">取消</button>
+                        <button type="submit" class="btn primary">保存更改</button>
+                    </div>
+                </form>
+            </div>
         </div>
       </div>
+
+      <div v-if="showAddressDialog" class="modal-mask">
+        <div class="modal-wrapper">
+            <div class="modal-container">
+                <h3 class="modal-title">修改收货地址</h3>
+                <form @submit.prevent="changeAddress">
+                    <div class="form-group">
+                        <label>收货地址</label>
+                        <input type="text" v-model="user.address" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn" @click="showAddressDialog = false">取消</button>
+                        <button type="submit" class="btn primary">保存地址</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     </div>
   </template>
 

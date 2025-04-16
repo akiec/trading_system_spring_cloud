@@ -41,7 +41,14 @@
           </div>
         </div>
   
-        <button type="submit" class="submit-btn">提交订单</button>
+        <button 
+        type="submit" 
+        class="submit-btn"
+        :disabled="!isFormValid"
+        :class="{ disabled: !isFormValid }"
+      >
+        {{ submitBtnText }}
+      </button>
       </form>
     </div>
   </template>
@@ -109,6 +116,17 @@
     const count = Number(item.count) || 0
     return sum + (price * count)
   }, 0).toFixed(2) // 保留两位小数
+})
+
+const isFormValid = computed(() => {
+  return (
+    formData.address.trim() !== '' &&
+    formData.phone.trim() !== '' &&
+    formData.paymentMethod !== ''
+  )
+})
+const submitBtnText = computed(() => {
+  return isFormValid.value ? '提交订单' : '请填写完整信息'
 })
     
 // 创建订单函数

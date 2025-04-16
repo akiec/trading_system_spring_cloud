@@ -137,37 +137,47 @@ async function createOrders() {
       return { success: false, message: '未选择商品' }
     }
 
-    // 创建请求数组
-    const requests = props.paymentList.map(item => {
-      // 参数预处理
-      const goodsId = String(item.goodsId)
-      const count = Math.max(Number(item.count) || 0, 0)
-      console.log(count)
-      // 生成请求配置
-      return axios.post(`http://localhost:8080/order/createOrder/${props.userId}/${goodsId}/${count}`)
-    })
-
-    // 并行发送所有请求
-    const results = await Promise.allSettled(requests)
-    
-    // 处理结果
     const successOrders = []
     const failedOrders = []
     
-    results.forEach((result, index) => {
-      const item = props.paymentList[index]
-      if (result.status === 'fulfilled') {
-        successOrders.push({
-          goodsId: item.goodsId,
-          data: result.value.data
-        })
-      } else {
+    for (const [index, item] of props.paymentList.entries()) {
+      try {
+        // 确保变量在循环体内定义
+        const goodsId = String(item.goodsId)
+        const count = Math.max(Number(item.count) || 0, 0)
+
+        // 请求间隔
+        if (index > 0) await new Promise(resolve => setTimeout(resolve, 100))
+
+        let retries = 3
+        while (retries > 0) {
+          try {
+            const response = await axios.post(
+              `http://localhost:8080/order/createOrder/${props.userId}/${goodsId}/${count}`,
+              null,
+              { headers: { 'Concurrency-Control': 'sequential' } }
+            )
+            // console.log(response)
+
+            successOrders.push({
+              goodsId: goodsId, // 使用局部变量
+              data: response.data
+            })
+            break
+          } catch (error) {
+            retries--
+            if (retries === 0) throw error
+            await new Promise(resolve => setTimeout(resolve, 300))
+          }
+        }
+      } catch (error) {
         failedOrders.push({
-          goodsId: item.goodsId,
-          error: result.reason.message
+          goodsId: item.goodsId, // 直接访问 item 属性
+          error: error.message
         })
+        console.error(`订单创建失败 (商品 ${item.goodsId}):`, error)
       }
-    })
+    }
 
     // 返回详细结果
     return {

@@ -140,7 +140,7 @@ onMounted( async() => {
             </router-link>
             <label>购买数量</label>
             <input type="number" v-model.number="selectedNumbers[index]" @input="summary()" min="0" required>
-            <button @click="singleBuy(product.goodsId, product.goodsName, product.price, selectedNumbers[index])">单独结算</button>
+            <button @click="singleBuy(product.goodsId, product.name, product.price, selectedNumbers[index])">单独结算</button>
             <button @click="remove(product.goodsId)">移出购物车</button>
         </div>
         <div class = "card-img">

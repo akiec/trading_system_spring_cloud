@@ -50,8 +50,8 @@
         {{ submitBtnText }}
       </button>
       </form>
-    </div>
-  </template>
+  </div>
+</template>
   
 <script setup>
   import { ref, computed, onMounted, reactive } from 'vue'
@@ -276,4 +276,4 @@ async function createOrders() {
     margin: 20px 0;
     text-align: right;
   }
-  </style>
+</style>

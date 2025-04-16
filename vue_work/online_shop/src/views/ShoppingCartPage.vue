@@ -95,41 +95,23 @@ function summaryBuy() {
   }
 }
 
-function selected(id) {//选择该商品函数
-  let indexid = goodsList.indexOf(id)
-  if (indexid==-1) {
-    goodsList.push(id);//不存在则加入
-    //控件样式变化
-  } else {
-    goodsList.splice(indexid, 1);//存在则删除
-    //控件样式变化
-  }
-  // console.log(goodsList)
-  summary()
-}
-async function remove(id) {//移除购物车
-  const url = "http://localhost:8080"
+async function remove(id) {
   try {
-    console.log(url + `/shopCart/${id}`)
-    let response = await axios.delete(url + `/shopCart/delete/${id}`)
-    console.log(response)
+    await axios.delete(`http://localhost:8080/shopCart/delete/${id}`);
+    Products.value = await searchGoods();
+    selectedNumbers.value = Products.value.map(() => 0); // 重新初始化数量数组
   } catch (error) {
-    console.error('删除失败:', error)
+    console.error('删除失败:', error);
   }
 }
-async function summary() {
+function summary() {
   let total = 0;
   for (let i = 0; i < Products.value.length; i++) {
     const product = Products.value[i];
-    // console.log(product)
-    if (product.selected) { // 仅计算选中的商品
-      const id = product.goodsId;
-      const quantity = selectedNumbers.value[i]; // 获取对应数量
-      try {
-        const response = await axios.post(`http://localhost:8080/goods/details/${id}`);
-        total += response.data.data.price * quantity; // 单价 * 数量
-      } catch (error) {
-        console.error('获取商品详情失败:', error);
+    if (product.selected) {
+      const quantity = selectedNumbers.value[i];
+      if (quantity > 0) { // 确保数量有效
+        total += product.price * quantity;
       }
     }
   }
@@ -141,7 +123,7 @@ onMounted( async() => {
         router.push('/login')
   }  
   Products.value = await searchGoods();
-  selectedNumbers = Products.value.map(() => 0);
+  selectedNumbers.value = Products.value.map(() => 0);
 }) 
 </script>
 
@@ -149,7 +131,7 @@ onMounted( async() => {
     <div class="product-grid" id="productList">
       <div v-for="(product, index) in Products" class = "product-card">
         <div class = "card-text">
-            <input type="checkbox" v-model="product.selected" @click="selected(product.goodsId, product.name, product.price)">
+            <input type="checkbox" v-model="product.selected" @change="summary()">
             <h3>{{product.name}}</h3>
             <p>价格：{{product.price}}</p>
             <p>库存：{{product.stock}}件</p>
@@ -157,7 +139,7 @@ onMounted( async() => {
                 <button >查看详情页</button>
             </router-link>
             <label>购买数量</label>
-            <input type="number" v-model.number="selectedNumbers[index]" min="0" required>
+            <input type="number" v-model.number="selectedNumbers[index]" @input="summary()" min="0" required>
             <button @click="singleBuy(product.goodsId, product.goodsName, product.price, selectedNumbers[index])">单独结算</button>
             <button @click="remove(product.goodsId)">移出购物车</button>
         </div>

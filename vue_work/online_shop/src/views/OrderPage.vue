@@ -29,7 +29,7 @@
             </div>
 
             <div class="action-buttons" v-if="order_info.status != 1">
-                <button @click="handlePayment" class="action-button pay-btn">
+                <button @click="payOrder" class="action-button pay-btn">
                     <span class="button-text">支付订单</span>
                     <span class="button-icon">✓</span>
                 </button>

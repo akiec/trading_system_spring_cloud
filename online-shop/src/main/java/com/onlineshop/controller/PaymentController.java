@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin
-@RestController("/payment")
+@RestController
+@RequestMapping("/payment")
 public class PaymentController {
     @Resource
     PaymentService paymentService;

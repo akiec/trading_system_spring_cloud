@@ -28,10 +28,21 @@
                 </div>
             </div>
 
-            <button @click="cancelOrder" class="action-button cancel-btn">
-                <span class="button-text">取消订单</span>
-                <span class="button-icon">×</span>
-            </button>
+            <div class="action-buttons" v-if="order_info.status != 1">
+                <button @click="handlePayment" class="action-button pay-btn">
+                    <span class="button-text">支付订单</span>
+                    <span class="button-icon">✓</span>
+                </button>
+                <button @click="cancelOrder" class="action-button cancel-btn">
+                    <span class="button-text">取消订单</span>
+                    <span class="button-icon">×</span>
+                </button>
+            </div>
+            
+            <!-- 已支付状态显示提示 -->
+            <div v-if="order_info.status == 1" class="status-message">
+                订单已完成支付
+            </div>
         </div>
     </div>
 </template>
@@ -41,7 +52,7 @@
     import axios from 'axios';
     import { reactive } from 'vue';
     
-    const order_info = defineProps(['order', 'goods', 'product', 'count', 'totalPrice', 'address', 'status', 'customer'])
+    const order_info = defineProps(['order', 'goods', 'product', 'count', 'totalPrice', 'address', 'status', 'customer', 'payment'])
     const router = useRouter()
     function searchProduct(product) {
         console.log(product)
@@ -56,15 +67,36 @@
         const url = `http://localhost:8080/order/delete/${String(order_info.order)}/${Number(order_info.status)}`
         // console.log(order_info)
         axios.delete(url,{
-            goodsId: order_info.goods,
+            goodsId: String(order_info.goods),
             count: order_info.count,
-            id: order_info.order,
+            id: String(order_info.order),
             status: order_info.status,
             userId: order_info.customer
         }).then((response) => {
-            console.log(response)
+            // console.log(response)
+            alert("取消成功！")
             router.push({
-                path: '/home'
+                path: '/profile'
+            })
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+    function payOrder() {
+        const url = "http://localhost:8080/payment/payOrder"
+        console.log(order_info)
+        axios.post(url,{
+            totalPrice: Number(order_info.totalPrice),
+            paymentId: String(order_info.payment),
+            orderId: String(order_info.order),            
+            userId: String(order_info.customer),
+            paymentStatus: order_info.status,
+            productId: String(order_info.product)
+        }).then((response) => {
+            console.log(response)
+            alert("支付成功！")
+            router.push({
+                path: '/profile'
             })
         }).catch((error) => {
             console.log(error)
@@ -188,32 +220,81 @@
     text-decoration: underline;
 }
 
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: flex-end;
+}
+
+/* 通用按钮样式调整 */
 .action-button {
     display: inline-flex;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-    color: white;
     font-weight: 600;
+    min-width: 120px;
+    justify-content: space-between;
 }
 
-.action-button:hover {
+/* 支付按钮样式 */
+.pay-btn {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+}
+
+.pay-btn:hover {
+    box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3);
     transform: translateY(-2px);
+}
+
+/* 取消按钮样式调整 */
+.cancel-btn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+    color: white;
+}
+
+.cancel-btn:hover {
     box-shadow: 0 4px 6px rgba(255, 82, 82, 0.3);
+    transform: translateY(-2px);
 }
 
 .button-icon {
-    margin-left: 0.8rem;
-    font-size: 1.2rem;
-    font-weight: 700;
+margin-left: 0.8rem;
+font-size: 1.2rem;
+font-weight: 700;
+}
+
+.status-message {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    border-radius: 0.5rem;
+    color: #2e7d32;
+    text-align: center;
+    font-weight: 500;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .button-icon {
+        margin-left: 0.5rem;
+    }
+
     .page {
         grid-template-columns: 1fr;
         padding: 1rem;

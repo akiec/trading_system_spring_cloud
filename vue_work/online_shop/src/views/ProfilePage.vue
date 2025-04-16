@@ -50,7 +50,8 @@
         totalPrice: order.totalPrice,
         address: order.address,
         status: order.status,
-        customer: order.customerId
+        customer: order.customerId,
+        payment: order.paymentId
         }
     })
     }
@@ -72,7 +73,7 @@
         const url = `http://localhost:8080/user/${user.userid}`
         axios.get(url)
         .then(function (response) {
-            console.log(response)
+            // console.log(response)
             user.username = response.data.data.userName
             user.phone = response.data.data.phone
             user.nickname = response.data.data.nickName
@@ -104,7 +105,7 @@
             orders.unshift(response.data.data[i])
             // console.log(response.data.data[i])
         }
-        // console.log(orders)
+        console.log(orders)
     }
 
     onBeforeMount(() => {
